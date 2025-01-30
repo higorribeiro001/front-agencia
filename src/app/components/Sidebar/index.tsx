@@ -13,12 +13,17 @@ import perfil from "../../../../public/assets/perfil.svg";
 import sair from "../../../../public/assets/sair.svg";
 import { Divider } from "@mui/material";
 import { useState } from "react";
+import { logout } from "@/app/service/api/auth";
+import { useRouter } from "next/navigation";
+import AlertApp from "../AlertApp";
+import { DialogApp } from "../DialogApp";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
     const optionsMenu = [
         {
             icon: <Image
-                className="w-[25px]" 
+                className="w-[25px] h-[25px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -27,7 +32,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px]" 
+                className="w-[25px] h-[25px]" 
                 src={porta} 
                 alt="logo"     
             />,
@@ -36,7 +41,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px]" 
+                className="w-[25px] h-[25px]" 
                 src={recobrimento} 
                 alt="logo"     
             />,
@@ -45,7 +50,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px]" 
+                className="w-[25px] h-[25px]" 
                 src={custo} 
                 alt="logo"     
             />,
@@ -54,18 +59,58 @@ export default function Sidebar() {
         }
     ];
 
-    const pathname = location.pathname;
+    const pathname = usePathname();
     const [isExpanded, setIsExpanded] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleExpandedMenu = () => {
         setIsExpanded(!isExpanded);
     }
 
+    const [openAlert, setOpenAlert] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [messageAlert, setMessageAlert] = useState('');
+    const router = useRouter();
+    
+    const closeAlert = () => {
+        setTimeout(() => {
+          setOpenAlert(false);
+        }, 6000);
+    }
+
+    const handleDialog = () => {
+        setOpenDialog(true);
+        console.log(openDialog)
+    }
+
+    const handleClose = () => {
+        setOpenDialog(false);
+    };
+
+    const handleLogout = async () => {
+        const response = await logout();
+        if (response.status === 200) {
+            setOpenAlert(true);
+            setMessageAlert('O token de acesso foi adicionado à lista negra.');
+            setIsSuccess(true);
+            
+            closeAlert();
+            router.replace('/');
+        }
+    }
+
     return (
-        <div className={isExpanded ? "flex flex-col justify-between w-[300px] bg-primary h-[100vh] px-4 py-6 overflow-hidden  transition-all" : "flex flex-col justify-between w-[63px] bg-primary h-[100vh] px-4 py-6 overflow-hidden  transition-all"}>
+        <div className={isExpanded ? "flex flex-col justify-between w-[300px] bg-primary h-screen px-4 py-6 overflow-hidden  transition-all" : "flex flex-col justify-between w-[63px] bg-primary h-screen px-4 py-6 overflow-hidden  transition-all"}>
+            <DialogApp 
+                isOpen={openDialog}
+                title="Sair"
+                content="Deseja realmente sair?"
+                func={handleLogout}
+                handleClose={handleClose}
+            />
             <div className="flex flex-row justify-between mb-16">
                 <Image 
-                    className={isExpanded ? "max-w-[200px] max-h-[80px] transition-all" : "w-[120px] transition-all cursor-pointer"}
+                    className={isExpanded ? "max-w-[180px] transition-all" : "w-[120px] transition-all cursor-pointer"}
                     src={isExpanded ? logoG : logoP} 
                     alt="logo" 
                     onClick={handleExpandedMenu}    
@@ -92,7 +137,7 @@ export default function Sidebar() {
                             <Link 
                                 href={value.to}
                             >
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 h-[24px]">
                                     {value.icon}
                                     <p className="text-background font-medium">{value.title}</p>
                                 </div>
@@ -101,6 +146,11 @@ export default function Sidebar() {
                     </div>
                 ))}
             </div>
+            <AlertApp 
+                isOpen={openAlert}
+                isSuccess={isSuccess}
+                message={messageAlert}
+            />
             <div className="flex flex-col">
                 <Divider className="bg-background" />
                 <div
@@ -114,7 +164,7 @@ export default function Sidebar() {
                         >
                             <div className="flex gap-2">
                                 <Image
-                                    className="w-[25px]" 
+                                    className="w-[25px] h-[25px]" 
                                     src={perfil} 
                                     alt="logo"     
                                 />
@@ -129,9 +179,12 @@ export default function Sidebar() {
                     <div
                         className={ pathname === '/profile' ? "uppercase p-1 rounded-md bg-secondary" : "uppercase p-1"}
                     >
-                        <button className="flex gap-2">
+                        <button 
+                            className="flex gap-2"
+                            onClick={handleDialog}
+                        >
                             <Image
-                                className="w-[25px]" 
+                                className="w-[25px] h-[25px]" 
                                 src={sair} 
                                 alt="logo"     
                             />

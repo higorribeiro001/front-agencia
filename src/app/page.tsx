@@ -173,7 +173,7 @@ export default function Login() {
             </Button>
           </form>
         </div>
-        <span className="text-gray-600 text-center">© concrem | 2025</span>
+        <span className="text-gray-600 text-center text-[14px]">© concrem | 2025</span>
       </div>
       <Image 
         className="h-[100vh]"

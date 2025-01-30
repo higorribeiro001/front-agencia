@@ -1,8 +1,16 @@
-import Image from "next/image";
+"use client"
 
-export const CardApp = ({image, title, subtitle}: Card) => {
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+export const CardApp = ({image, title, subtitle, to}: Card) => {
+    const router = useRouter();
+
     return (
-        <div className="rounded-md shadow-md bg-background w-[300px] h-[285px] hover:scale-110 transition-all cursor-pointer">
+        <div 
+            className="rounded-md shadow-md bg-background w-[300px] h-[285px] hover:scale-110 transition-all cursor-pointer"
+            onClick={() => router.replace(to)}
+        >
             <Image 
                 className="rounded-t-md"
                 src={image} 

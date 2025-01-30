@@ -34,4 +34,13 @@ interface Card {
     image: string;
     title: string;
     subtitle: string;
+    to: string;
+}
+
+interface Dialog {
+    isOpen: boolean;
+    title: string;
+    content: string;
+    func: () => void;
+    handleClose: () => void;
 }

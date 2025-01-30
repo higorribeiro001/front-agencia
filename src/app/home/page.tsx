@@ -9,64 +9,77 @@ import capuccino from "../../../public/assets/Capuccino.svg"
 import coins from "../../../public/assets/coins-1726618_640.svg"
 import profile from "../../../public/assets/307ce493-b254-4b2d-8ba4-d12c080d6651.svg"
 import { CardApp } from "../components/CardApp";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
     const [username, setUsername] = useState('');
+    const router = useRouter();
     const listOptions = [
         {
             image: bianco,
             title: 'Kit de Porta',
-            subtitle: 'Gerencimento de produtos.'
+            subtitle: 'Gerencimento de produtos.',
+            to: '/products'
         },
         {
             image: capuccino,
             title: 'Recobrimento',
-            subtitle: 'Definições de recobrimentos.'
+            subtitle: 'Definições de recobrimentos.',
+            to: '/covering'
         },
         {
             image: coins,
             title: 'Descriminação de custo',
-            subtitle: 'Definições de custos de produção.'
+            subtitle: 'Definições de custos de produção.',
+            to: '/cost'
         },
         {
             image: profile,
             title: 'Perfil',
-            subtitle: 'Gerenciamento de perfil de usuário.'
+            subtitle: 'Gerenciamento de perfil de usuário.',
+            to: '/profile'
         }
-    ]
+    ];
 
     useEffect(() => {
-        const getMe = async () => {
-            const response = await me();
-            const meAdapt = new MeAdapt(response!);
-
-            setUsername(`, ${meAdapt.externalMeAdapt?.name}`);
+        try {
+            const getMe = async () => {
+                const response = await me();
+                const meAdapt = new MeAdapt(response!);
+    
+                setUsername(`, ${meAdapt.externalMeAdapt?.name}`);
+            }
+    
+            getMe();
+        } catch {
+            router.refresh();
         }
-
-        getMe();
-    }, [])
+    });
 
     return (
         <Base>
-            <h1
-                className="font-medium text-[22px] text-primary mb-2"
-            >
-                Olá{username}! Seja bem-vindo(a)!
-            </h1>
-            <h2
-                className="text-[14px] mb-10"
-            >
-                Este sistema foi desenvolvido com o objetivo de trazer facilidade no registro e acompanhamento de custos de produção. Abaixo estão as principais páginas do sistema.
-            </h2>
-            <div className="flex flex-wrap gap-10">
-                {listOptions.map((value, index) => (
-                    <CardApp 
-                        key={index}
-                        image={value.image}
-                        title={value.title}
-                        subtitle={value.subtitle}
-                    />
-                ))}
+            <div>
+                <h1
+                    className="font-medium text-[22px] text-primary mb-2"
+                >
+                    Olá{username}! Seja bem-vindo(a)!
+                </h1>
+                <h2
+                    className="text-[14px] mb-10"
+                >
+                    Este sistema foi desenvolvido com o objetivo de trazer facilidade no registro e acompanhamento de custos de produção. Abaixo estão as principais páginas do sistema.
+                </h2>
+                <div className="flex flex-wrap gap-10">
+                    {listOptions.map((value, index) => (
+                        <CardApp 
+                            key={index}
+                            image={value.image}
+                            title={value.title}
+                            subtitle={value.subtitle}
+                            to={value.to}
+                        />
+                    ))}
+                </div>
             </div>
         </Base>
     );
