@@ -12,8 +12,9 @@ import { Button, TextField } from "@mui/material";
 import FormBuilder from "./service/forms/FormBuilder";
 import { login } from "./service/api/auth";
 import AlertApp from "./components/AlertApp";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   const formFields = new FormBuilder()
     .addTextField('email', 'E-mail', 'email')
@@ -24,6 +25,7 @@ export default function Home() {
   const [openAlert, setOpenAlert] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [messageAlert, setMessageAlert] = useState('');
+  const router = useRouter();
 
   const [model, setModel] = useState([
     {
@@ -96,8 +98,9 @@ export default function Home() {
         setOpenAlert(true);
         setMessageAlert('Seja bem-vindo(a)!');
         setIsSuccess(true);
-
+        
         closeAlert();
+        router.replace('/home');
       }
     } catch (e: unknown) {
       const error = e as StatusResponse;

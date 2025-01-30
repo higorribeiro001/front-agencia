@@ -6,12 +6,15 @@
   --primary: #02521F;
   --background: #E6E6E6;
   --foreground: #171717;
+  --secondary: #04782E;
+  --black2: #1E1E1E;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #E6E6E6;
     --foreground: #171717;
+    --black2: #1E1E1E;
   }
 }
 

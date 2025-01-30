@@ -21,3 +21,17 @@ interface AlertApp {
     isSuccess: boolean;
     message: string;
 }
+
+interface BaseProps {
+    children: ReactNode;
+}
+
+interface MeAdaptInterface {
+    name: string;
+}
+
+interface Card {
+    image: string;
+    title: string;
+    subtitle: string;
+}
