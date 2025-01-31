@@ -9,11 +9,10 @@ import capuccino from "../../../public/assets/Capuccino.svg"
 import coins from "../../../public/assets/coins-1726618_640.svg"
 import profile from "../../../public/assets/307ce493-b254-4b2d-8ba4-d12c080d6651.svg"
 import { CardApp } from "../components/CardApp";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
     const [username, setUsername] = useState('');
-    const router = useRouter();
+
     const listOptions = [
         {
             image: bianco,
@@ -42,18 +41,14 @@ export default function Home() {
     ];
 
     useEffect(() => {
-        try {
-            const getMe = async () => {
-                const response = await me();
-                const meAdapt = new MeAdapt(response!);
-    
-                setUsername(`, ${meAdapt.externalMeAdapt?.name}`);
-            }
-    
-            getMe();
-        } catch {
-            router.refresh();
+        const getMe = async () => {
+            const response = await me();
+            const meAdapt = new MeAdapt(response!);
+
+            setUsername(`, ${meAdapt.externalMeAdapt?.name}`);
         }
+
+        getMe();
     });
 
     return (

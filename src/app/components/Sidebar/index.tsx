@@ -3,14 +3,14 @@
 import Image from "next/image";
 import logoP from "../../../../public/assets/logo_pequeno.svg"
 import logoG from "../../../../public/assets/logo_concrem_grande.png";
-import arrow from "../../../../public/assets/close-menu.svg";
+import arrow from "../../../../public/assets/close-menu.png";
 import Link from "next/link";
-import home from "../../../../public/assets/home.svg";
-import porta from "../../../../public/assets/porta.svg";
-import recobrimento from "../../../../public/assets/recobrimento.svg";
-import custo from "../../../../public/assets/custo.svg";
-import perfil from "../../../../public/assets/perfil.svg";
-import sair from "../../../../public/assets/sair.svg";
+import home from "../../../../public/assets/home.png";
+import porta from "../../../../public/assets/porta.png";
+import recobrimento from "../../../../public/assets/recobrimento.png";
+import custo from "../../../../public/assets/custo.png";
+import perfil from "../../../../public/assets/perfil.png";
+import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
 import { useState } from "react";
 import { logout } from "@/app/service/api/auth";
@@ -119,7 +119,7 @@ export default function Sidebar() {
                     onClick={handleExpandedMenu}
                 >
                     <Image
-                        className="w-[35px]" 
+                        className="w-[25px]" 
                         src={arrow} 
                         alt="arrow"     
                     />
@@ -162,7 +162,7 @@ export default function Sidebar() {
                         <Link 
                             href={'/profile'}
                         >
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 h-[24px]">
                                 <Image
                                     className="w-[25px] h-[25px]" 
                                     src={perfil} 
@@ -180,7 +180,7 @@ export default function Sidebar() {
                         className={ pathname === '/profile' ? "uppercase p-1 rounded-md bg-secondary" : "uppercase p-1"}
                     >
                         <button 
-                            className="flex gap-2"
+                            className="flex gap-2 h-[24px]"
                             onClick={handleDialog}
                         >
                             <Image

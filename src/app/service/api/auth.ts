@@ -12,18 +12,24 @@ export async function login(email: string, password: string) {
     const response: { data: { access: string }, status: number } = await axios.post(url+'/login', { email, password }, config);
 
     if (response.status === 200) {
+        deleteCookie('statusMe');
         setCookie('access', response.data['access']);
-    }
+    } 
 
     return response;
 }
 
 export async function me() {
-    const response: { data: { name: string, role: string }, status: number } = await axios.get(url+'/me', configAuth());
-
-    if (response.status === 200) {
-        setCookie('role', response.data.role);
-        return response.data;
+    try {
+        const response: { data: { name: string, role: string }, status: number } = await axios.get(url+'/me', configAuth());
+    
+        if (response.status === 200) {
+            setCookie('role', response.data.role);
+            return response.data;
+        } 
+    } catch (e) {
+        const error = e as StatusResponse;
+        setCookie('statusMe', error.response.status);
     }
 }
 
