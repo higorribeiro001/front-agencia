@@ -1,12 +1,13 @@
+import { BreadcrumbsInterface } from "@/data/types";
 import { Breadcrumbs, Link, Typography } from "@mui/material";
 
-export const Breadcrumb = ({options}: Breadcrumbs) => {
+export const Breadcrumb = ({options}: BreadcrumbsInterface) => {
     return (
         <Breadcrumbs 
             className="mb-10"
             aria-label="breadcrumb"
         >
-            {options.map((value, index) => (
+            {options.map((value, index: number) => (
                 value.current ? (
                     <Typography 
                         key={index}
@@ -19,7 +20,7 @@ export const Breadcrumb = ({options}: Breadcrumbs) => {
                         key={index}
                         underline="hover" 
                         color="inherit" 
-                        href="/"
+                        href={value.href}
                     >
                         {value.page}
                     </Link>

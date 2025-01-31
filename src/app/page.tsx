@@ -13,6 +13,7 @@ import FormBuilder from "./service/forms/FormBuilder";
 import { login } from "./service/api/auth";
 import AlertApp from "./components/AlertApp";
 import { useRouter } from "next/navigation";
+import { StatusResponse } from "@/data/types";
 
 export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -141,7 +142,7 @@ export default function Login() {
             className="flex flex-col gap-10" 
             onSubmit={submitForm}
           >
-            {formFields.map((value, index) => (
+            {formFields.map((value, index: number) => (
               <TextField
                 key={index}
                 label={value.label} 

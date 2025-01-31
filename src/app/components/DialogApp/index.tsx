@@ -1,7 +1,8 @@
+import { DialogInterface } from "@/data/types";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import React from "react";
 
-export const DialogApp = ({isOpen, title, content, func, handleClose}: Dialog) => {
+export const DialogApp = ({isOpen, title, content, func, handleClose}: DialogInterface) => {
 
     return (
         <Dialog

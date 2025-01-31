@@ -1,14 +1,19 @@
 "use client"
 
-import { Box, Button, Drawer, IconButton, InputAdornment, Pagination, Tab, Tabs, TextField } from "@mui/material";
+import { Box, Drawer, IconButton, Tab, Tabs, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
 import { Breadcrumb } from "../components/Breadcrumb";
-import React, { useEffect, useState } from "react";
-import { Search, Visibility } from "@mui/icons-material";
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
-import { mdfDoorLeave, mdfDoorLeaves } from "../service/api/mdfDoorLeaves";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Visibility, Edit, Delete } from "@mui/icons-material";
+import { GridColDef } from "@mui/x-data-grid";
+import { deleteMdfDoorLeave, mdfDoorLeave, mdfDoorLeaveFindName, mdfDoorLeaves } from "../service/api/mdfDoorLeaves";
 import MdfDoorLeavesAdapt from "../service/adapt/MdfDoorLeavesAdapt";
 import MdfDoorLeaveAdapt from "../service/adapt/MdfDoorLeaveAdapt";
+import { RowDrawer } from "../components/RowDrawer";
+import { getCookie } from "cookies-next";
+import { DataTable } from "../components/DataTable";
+import { DataMdfDoorLeaveInterface, MdfDoorLeaveInterface, TabPanelProps } from "@/data/types";
+import { DialogApp } from "../components/DialogApp";
 
 function CustomTabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -27,20 +32,8 @@ function CustomTabPanel(props: TabPanelProps) {
 }
 
 export default function Products() {
-    const toggleDrawer =
-        (open: boolean) =>
-        (event: React.KeyboardEvent | React.MouseEvent) => {
-        if (
-            event.type === 'keydown' &&
-            ((event as React.KeyboardEvent).key === 'Tab' ||
-            (event as React.KeyboardEvent).key === 'Shift')
-        ) {
-            return;
-        }
+    const role = getCookie('role');
 
-        setOpenDrawer(open);
-    };
-    
     const breadcrumbOptions = [
         {
             page: 'Kit de Porta',
@@ -82,18 +75,23 @@ export default function Products() {
         setValue(newValue);
     };
 
-    const [rowsMdfDoorLeaves, setRowsMdfDoorLeaves] = useState<GridRowsProp>([]);
+    const [rowsMdfDoorLeaves, setRowsMdfDoorLeaves] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [messageAlert, setMessageAlert] = useState('');
     const [pages, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [openDrawer, setOpenDrawer] = useState(false);
+    const [dataMdfDoorLeave, setDataMdfDoorLeave] = useState<MdfDoorLeaveInterface>();
+    const [openDialog, setOpenDialog] = useState(false);
 
     const getMdfDoorLeave = async (id: string) => {
         const dataMdfDoorLeave = await mdfDoorLeave(id);
         const mdfDoorLeaveAdapt = new MdfDoorLeaveAdapt(dataMdfDoorLeave);
 
-        console.log(mdfDoorLeaveAdapt.externalMdfDoorLeaveAdapt)
-        toggleDrawer(true);
+        setOpenDrawer(true);
+        setDataMdfDoorLeave(mdfDoorLeaveAdapt.externalMdfDoorLeaveAdapt)
     }
       
     const columnsMdfDoorLeaves: GridColDef[] = [
@@ -113,30 +111,196 @@ export default function Products() {
           ), },
     ];
 
-    useEffect(() => {
+    const convertDate = (isoDate: string) => {
+        const date = new Date(isoDate);
+
+        return date.toLocaleDateString('pt-BR');
+    }
+
+    let timeout: NodeJS.Timeout;
+
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        clearTimeout(timeout);
         setIsLoading(true);
-        const getMdf = async () => {
-            const dataMdfDoorLeaves = await mdfDoorLeaves(currentPage);
+        
+        timeout = setTimeout(async () => {
+            const dataMdfDoorLeaves = await mdfDoorLeaveFindName(e.target.value);
             const mdfAdapt = new MdfDoorLeavesAdapt(dataMdfDoorLeaves!);
 
             const doorLeaves = mdfAdapt.externalMdfDoorLeavesAdapt;
             setRowsMdfDoorLeaves(doorLeaves?.data ?? []);
             setPages(doorLeaves?.last_page ?? 0);
             setCurrentPage(doorLeaves?.last_page ?? 0);
-        }
+            setIsLoading(false);
+        }, 3000);
+    }
+
+    const ContentViewMdfDoorLeave = ({dataMdfDoorLeave}: DataMdfDoorLeaveInterface) => {
+        return (
+            <div className="flex flex-col gap-1">
+                <h2 className="text-primary text-[25px] font-semibold mb-2">{ dataMdfDoorLeave?.nome }</h2>
+                <RowDrawer
+                    keyRow="Chave"
+                    value={dataMdfDoorLeave?.chave ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Largura"
+                    value={dataMdfDoorLeave?.largura ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Altura"
+                    value={dataMdfDoorLeave?.altura ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Sarrafo"
+                    value={dataMdfDoorLeave?.sarrafo ?? ''}
+                />
+                <RowDrawer
+                    keyRow="MDF 30"
+                    value={dataMdfDoorLeave?.mdf_30 ?? ''}
+                />
+                <RowDrawer
+                    keyRow="MDF 6 comum (2° qualidade)"
+                    value={dataMdfDoorLeave?.mdf_6_comum_2_qualidade ?? ''}
+                />
+                <RowDrawer
+                    keyRow="MDF 3 comum (1° qualidade)"
+                    value={dataMdfDoorLeave?.mdf_3_comum_1_qualidade ?? ''}
+                />
+                <RowDrawer
+                    keyRow="MDF 3 comum (2° qualidade)"
+                    value={dataMdfDoorLeave?.mdf_3_comum_2_qualidade ?? ''}
+                />
+                <RowDrawer
+                    keyRow="MDF 3 Berneck"
+                    value={dataMdfDoorLeave?.mdf_3_berneck ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Madeira"
+                    value={dataMdfDoorLeave?.madeira ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Bondoor"
+                    value={dataMdfDoorLeave?.bondoor ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Total MDF (m)"
+                    value={dataMdfDoorLeave?.total_mdf_m ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Total MDF (m²)_Rec"
+                    value={dataMdfDoorLeave?.total_mdf_m2_rec ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Total MDF (m²)"
+                    value={dataMdfDoorLeave?.total_mdf_m2_pintura ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Total MDF (m³)"
+                    value={dataMdfDoorLeave?.total_mdf_m3 ?? ''}
+                />
+                <RowDrawer
+                    keyRow="Data de criação"
+                    value={ convertDate(dataMdfDoorLeave?.created_at ?? '') }
+                />
+                <RowDrawer
+                    keyRow="Data de edição"
+                    value={ convertDate(dataMdfDoorLeave?.updated_at ?? '') }
+                />
+            </div>
+        );
+    }
+
+    const getMdf = async () => {
+        const dataMdfDoorLeaves = await mdfDoorLeaves(currentPage);
+        const mdfAdapt = new MdfDoorLeavesAdapt(dataMdfDoorLeaves!);
+
+        const doorLeaves = mdfAdapt.externalMdfDoorLeavesAdapt;
+        setRowsMdfDoorLeaves(doorLeaves?.data ?? []);
+        setPages(doorLeaves?.last_page ?? 0);
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+        setIsLoading(true);
 
         getMdf();
-        setIsLoading(false);
-    }, [])
+    }, [currentPage])
+
+    const removeMdfDoomLeave = async (id: string) => {
+        const response = await deleteMdfDoorLeave(id);
+        if (response.status === 200) {
+            setOpenAlert(true);
+            setMessageAlert('Excluído com sucesso!');
+            setIsSuccess(true);
+
+            setOpenDrawer(false);
+            getMdf();
+        }
+    }
+
+    const handleDialog = () => {
+        setOpenDialog(true);
+    }
+
+    const handleClose = () => {
+        setOpenDialog(false);
+    };
 
     return (
-        <Base>
+        <Base
+            openAlert={openAlert}
+            isSuccess={isSuccess}
+            messageAlert={messageAlert}
+        >
             <Drawer
                 anchor="right"
                 open={openDrawer}
-                onClose={toggleDrawer(false)}
+                onClose={() => setOpenDrawer(false)}
             >
-                <h1>Testeeeeeeeeeeeeeeeeeeeeeeeeeeeee</h1>
+                <div className="flex flex-col justify-between gap-4 px-10 py-5 h-full">
+                    <DialogApp 
+                        isOpen={openDialog}
+                        title="Excluir"
+                        content="Tem certeza que deseja excluir?"
+                        func={() => removeMdfDoomLeave(dataMdfDoorLeave!.id)}
+                        handleClose={handleClose}
+                    />
+                    <ContentViewMdfDoorLeave 
+                        dataMdfDoorLeave={dataMdfDoorLeave!}
+                    />
+                    {role === 'admin' && <footer className="flex flex-row justify-between gap-3">
+                        <IconButton 
+                            className="gap-2"
+                        >
+                            <Edit 
+                                fontSize="small"
+                                color="success" 
+                            /> 
+                            <Typography 
+                                className="font-semibold text-[16px]"
+                                color="success"
+                            >
+                                Editar
+                            </Typography>
+                        </IconButton>
+                        <IconButton 
+                            className="gap-2"
+                            onClick={handleDialog}
+                        >
+                            <Delete
+                                fontSize="small"
+                                color="error" 
+                            /> 
+                            <Typography 
+                                className="font-semibold text-[16px]"
+                                color="error"
+                            >
+                                Excluir
+                            </Typography>
+                        </IconButton>
+                    </footer>}
+                </div>
             </Drawer>
             <div>
                 <Breadcrumb 
@@ -158,63 +322,19 @@ export default function Products() {
                         ))}
                     </Tabs>
                 </Box>
-                <CustomTabPanel value={value} index={0}>
-                    <div className="flex flex-col p-4 border gap-4 border-gray-400 rounded">
-                        <h2>FOLHA DE PORTA</h2>
-                        <div className="flex flex-row gap-4 justify-between">
-                            <TextField
-                                variant="outlined"
-                                fullWidth
-                                type="text"
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton>
-                                                <Search />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                                // onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
-                                // value={model[index].value}
-                            />
-                            <Button 
-                                className="bg-primary font-semibold w-[200px] h-[56px]"
-                                variant="contained"
-                                type="button"
-                                href="register-leave"
-                            >
-                                Cadastrar
-                            </Button>
-                        </div>
-                        <Box sx={{ width: 1 }}>
-                            <div className="flex flex-col gap-3 items-end">
-                                <DataGrid 
-                                    sx={{"& .MuiDataGrid-columnHeaders": {
-                                        bgcolor: "#000000",
-                                    }}} 
-                                    className="w-full"
-                                    rows={rowsMdfDoorLeaves} 
-                                    columns={columnsMdfDoorLeaves} 
-                                    loading={isLoading}
-                                    pageSizeOptions={[]} 
-                                    hideFooter 
-                                    disableColumnMenu 
-                                />
-                                <Pagination 
-                                    count={pages} 
-                                    variant="outlined" 
-                                    sx={{
-                                        "& .MuiPaginationItem-root.Mui-selected": {
-                                            backgroundColor: "#02521F", 
-                                            color: "#FFFFFF",
-                                        },
-                                    }}   
-                                    shape="rounded" 
-                                />
-                            </div>
-                        </Box>
-                    </div>
+                <CustomTabPanel 
+                    value={value} 
+                    index={0}
+                >
+                    <DataTable 
+                        handleSearch={handleSearch} 
+                        rows={rowsMdfDoorLeaves} 
+                        columns={columnsMdfDoorLeaves} 
+                        isLoading={isLoading} 
+                        pages={pages}     
+                        hrefRegister="/products/register-door-leave" 
+                        handleCurrentPage={setCurrentPage}   
+                    />
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
                     Item Two

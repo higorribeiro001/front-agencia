@@ -80,7 +80,6 @@ export default function Sidebar() {
 
     const handleDialog = () => {
         setOpenDialog(true);
-        console.log(openDialog)
     }
 
     const handleClose = () => {
@@ -132,7 +131,7 @@ export default function Sidebar() {
                         key={index}
                     >
                         <div
-                            className={value.to === pathname ? "uppercase p-1 rounded-md bg-secondary mb-4" : "uppercase p-1 mb-4"}
+                            className={String(pathname).includes(value.to) ? "uppercase p-1 rounded-md bg-secondary mb-4" : "uppercase p-1 mb-4"}
                         >
                             <Link 
                                 href={value.to}

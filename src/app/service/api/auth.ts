@@ -1,3 +1,4 @@
+import { StatusResponse } from '@/data/types';
 import axios from 'axios';
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
