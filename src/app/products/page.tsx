@@ -131,7 +131,6 @@ export default function Products() {
             const doorLeavesData = doorLeaves.data;
             setRowsMdfDoorLeaves(doorLeavesData);
             setPages(doorLeaves?.last_page ?? 0);
-            setCurrentPage(doorLeaves?.last_page ?? 0);
             setIsLoading(false);
         }, 3000);
     }
@@ -242,12 +241,14 @@ export default function Products() {
             setIsSuccess(true);
 
             setOpenDrawer(false);
+            setOpenDialog(false);
             closeAlert();
             getMdf();
         }
     }
 
-    const handleDialog = () => {
+    const handleDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         setOpenDialog(true);
     }
 
@@ -295,7 +296,7 @@ export default function Products() {
                         </IconButton>
                         <IconButton 
                             className="gap-2"
-                            onClick={handleDialog}
+                            onClick={(e) => handleDialog(e)}
                         >
                             <Delete
                                 fontSize="small"
@@ -311,11 +312,14 @@ export default function Products() {
                     </footer>}
                 </div>
             </Drawer>
-            <div>
+            <div className="transition-all">
                 <Breadcrumb 
                     options={breadcrumbOptions}
                 />
-                <Box sx={{ width: '100%' }}>
+                <Box 
+                    className="animate-fade-left"
+                    sx={{ width: '100%' }}
+                >
                     <Tabs
                         value={value}
                         onChange={handleChange}
@@ -335,15 +339,17 @@ export default function Products() {
                     value={value} 
                     index={0}
                 >
-                    <DataTable 
-                        handleSearch={handleSearch} 
-                        rows={rowsMdfDoorLeaves} 
-                        columns={columnsMdfDoorLeaves} 
-                        isLoading={isLoading} 
-                        pages={pages}     
-                        hrefRegister="/products/register-door-leave" 
-                        handleCurrentPage={setCurrentPage}   
-                    />
+                    <div className="animate-fade-up">
+                        <DataTable 
+                            handleSearch={handleSearch} 
+                            rows={rowsMdfDoorLeaves} 
+                            columns={columnsMdfDoorLeaves} 
+                            isLoading={isLoading} 
+                            pages={pages}     
+                            hrefRegister="/products/register-door-leave" 
+                            handleCurrentPage={setCurrentPage}   
+                        />
+                    </div>
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
                     Item Two

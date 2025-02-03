@@ -130,7 +130,7 @@ export default function Login() {
         isSuccess={isSuccess}
         message={messageAlert}
       />
-      <div className="w-[100%] bg-background py-12 px-16 flex flex-col justify-between">
+      <div className="w-[100%] bg-background py-12 px-16 flex flex-col justify-between animate-fade-up">
         <Image 
           className="w-[250px]"
           src={logo} 

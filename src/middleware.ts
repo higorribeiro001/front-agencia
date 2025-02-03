@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const protectedPageRoutes = [
     '/home',
+    '/products'
 ];
 
 const adminPageRoutes = [

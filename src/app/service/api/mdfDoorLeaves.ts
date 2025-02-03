@@ -1,6 +1,6 @@
-import { MdfDoorLeaveInterface, MdfDoorLeavesInterface } from '@/data/types';
+import { MdfDoorLeaveInterface, MdfDoorLeavesInterface, StatusResponse } from '@/data/types';
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const configAuth = () => {
@@ -9,8 +9,15 @@ const configAuth = () => {
 }
 
 export async function mdfDoorLeaves(page: number) {
-    const response: { data: MdfDoorLeavesInterface, status: number } = await axios.get(url+`/mdf-door-leaves?page=${page}`, configAuth());
-    return response.data;
+    try {
+        const response: { data: MdfDoorLeavesInterface, status: number } = await axios.get(url+`/mdf-door-leaves?page=${page}`, configAuth());
+        return response.data;
+    } catch(e: unknown) {
+        const error = e as StatusResponse;
+        if (error.response.status === 401) {
+            setCookie('statusMe', 401);
+        }
+    }
 }
 
 export async function mdfDoorLeave(id: string) {
