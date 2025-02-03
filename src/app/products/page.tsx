@@ -108,7 +108,7 @@ export default function Products() {
             <IconButton onClick={() => getMdfDoorLeave(String(data.id))}>
               <Visibility />
             </IconButton>
-          ), },
+        ), },
     ];
 
     const convertDate = (isoDate: string) => {
@@ -228,6 +228,12 @@ export default function Products() {
         getMdf();
     }, [currentPage])
 
+    const closeAlert = () => {
+        setTimeout(() => {
+          setOpenAlert(false);
+        }, 6000);
+    }
+
     const removeMdfDoomLeave = async (id: string) => {
         const response = await deleteMdfDoorLeave(id);
         if (response.status === 200) {
@@ -236,6 +242,7 @@ export default function Products() {
             setIsSuccess(true);
 
             setOpenDrawer(false);
+            closeAlert();
             getMdf();
         }
     }
