@@ -317,7 +317,7 @@ export default function Products() {
                     options={breadcrumbOptions}
                 />
                 <Box 
-                    className="animate-fade-left"
+                    className="animate-fade-up"
                     sx={{ width: '100%' }}
                 >
                     <Tabs
@@ -339,7 +339,7 @@ export default function Products() {
                     value={value} 
                     index={0}
                 >
-                    <div className="animate-fade-up">
+                    <div className="animate-fade-left">
                         <DataTable 
                             handleSearch={handleSearch} 
                             rows={rowsMdfDoorLeaves} 
