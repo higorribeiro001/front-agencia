@@ -1,5 +1,7 @@
+import { MeAdaptInterface } from "@/data/types";
+
 export default class MeAdapt {
-    externalMeAdapt: MeAdaptInterface | undefined;
+    externalMeAdapt: MeAdaptInterface;
 
     constructor(externalMeAdapt: MeAdaptInterface) {
         this.externalMeAdapt = externalMeAdapt;

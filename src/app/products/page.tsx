@@ -75,7 +75,7 @@ export default function Products() {
         setValue(newValue);
     };
 
-    const [rowsMdfDoorLeaves, setRowsMdfDoorLeaves] = useState([]);
+    const [rowsMdfDoorLeaves, setRowsMdfDoorLeaves] = useState<MdfDoorLeaveInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -128,7 +128,8 @@ export default function Products() {
             const mdfAdapt = new MdfDoorLeavesAdapt(dataMdfDoorLeaves!);
 
             const doorLeaves = mdfAdapt.externalMdfDoorLeavesAdapt;
-            setRowsMdfDoorLeaves(doorLeaves?.data ?? []);
+            const doorLeavesData = doorLeaves.data;
+            setRowsMdfDoorLeaves(doorLeavesData);
             setPages(doorLeaves?.last_page ?? 0);
             setCurrentPage(doorLeaves?.last_page ?? 0);
             setIsLoading(false);
@@ -192,7 +193,7 @@ export default function Products() {
                     value={dataMdfDoorLeave?.total_mdf_m2_rec ?? ''}
                 />
                 <RowDrawer
-                    keyRow="Total MDF (m²)"
+                    keyRow="Total MDF (m²)_Pintura"
                     value={dataMdfDoorLeave?.total_mdf_m2_pintura ?? ''}
                 />
                 <RowDrawer
@@ -216,7 +217,7 @@ export default function Products() {
         const mdfAdapt = new MdfDoorLeavesAdapt(dataMdfDoorLeaves!);
 
         const doorLeaves = mdfAdapt.externalMdfDoorLeavesAdapt;
-        setRowsMdfDoorLeaves(doorLeaves?.data ?? []);
+        setRowsMdfDoorLeaves(doorLeaves.data);
         setPages(doorLeaves?.last_page ?? 0);
         setIsLoading(false);
     }
@@ -272,6 +273,7 @@ export default function Products() {
                     {role === 'admin' && <footer className="flex flex-row justify-between gap-3">
                         <IconButton 
                             className="gap-2"
+                            href={"/products/edit-door-leave/"+dataMdfDoorLeave?.id}
                         >
                             <Edit 
                                 fontSize="small"

@@ -1,5 +1,7 @@
+import { MdfDoorLeaveInterface } from "@/data/types";
+
 export default class MdfDoorLeaveAdapt {
-    externalMdfDoorLeaveAdapt: MdfDoorLeaveInterface | undefined;
+    externalMdfDoorLeaveAdapt: MdfDoorLeaveInterface;
 
     constructor(externalMdfDoorLeavesAdapt: MdfDoorLeaveInterface) {
         this.externalMdfDoorLeaveAdapt = externalMdfDoorLeavesAdapt;

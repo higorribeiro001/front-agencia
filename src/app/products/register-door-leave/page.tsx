@@ -10,7 +10,7 @@ import { postMdfDoorLeaveFindName } from "@/app/service/api/mdfDoorLeaves";
 import { Loading } from "@/app/components/Loading";
 
 
-export default function Products() {
+export default function RegisterProduct() {
     const breadcrumbOptions = [
         {
             page: 'Kit de Porta',
@@ -114,7 +114,7 @@ export default function Products() {
     
       const registerMdfDoorLeave = async () => {
         try {
-          const response = await postMdfDoorLeaveFindName(model[0].value, parseFloat(model[1].value.replace(',', '.')), parseFloat(model[2].value.replace(',', '.')), parseFloat(model[1].value.replace(',', '.')));
+          const response = await postMdfDoorLeaveFindName(model[0].value, parseFloat(model[1].value.replace(',', '.')), parseFloat(model[2].value.replace(',', '.')), parseFloat(model[3].value.replace(',', '.')));
     
           if (response.status === 201) {
             setOpenAlert(true);
@@ -194,7 +194,7 @@ export default function Products() {
                             className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                             variant="contained"
                             type="button"
-                            
+                            href="/products"
                         >
                             Cancelar
                         </Button>

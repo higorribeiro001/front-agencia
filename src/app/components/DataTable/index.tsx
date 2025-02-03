@@ -5,6 +5,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { ChangeEvent } from "react";
 
 export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRegister, handleCurrentPage}: DataTableInterface) => {
+
+    const CustomNoRowsOverlay = () => (
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <p>❌ Nenhum dado encontrado!</p>
+        </div>
+      );
     return (
         <div className="flex flex-col p-4 border gap-4 border-gray-400 rounded">
             <h2>FOLHA DE PORTA</h2>
@@ -44,6 +50,9 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRe
                         columns={columns} 
                         loading={isLoading}
                         pageSizeOptions={[]} 
+                        slots={{
+                            noRowsOverlay: CustomNoRowsOverlay,
+                        }}
                         hideFooter 
                         disableColumnMenu 
                     />
