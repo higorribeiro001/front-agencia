@@ -28,6 +28,7 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRe
                             </InputAdornment>
                         ),
                     }}
+                    placeholder="pesquise..."
                     onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch(e)}
                 />
                 <Button 
