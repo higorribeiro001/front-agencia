@@ -40,9 +40,9 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
 
   const formFieldsTwo = new FormBuilder()
   .addTextField('mdf_3_comum_2_qualidade', '* MDF 3 comum (2° qualidade)', 'text')
-  .addTextField('mdf_3_Berneck', '* MDF 3 Berneck', 'text')
+  .addTextField('mdf_3_Berneck', '* Hydro', 'text')
   .addTextField('madeira', '* Madeira', 'text')
-  .addTextField('bondoor', '* Bondoor', 'text')
+  .addTextField('bondoor', '* Enchimento sólido', 'text')
   .addTextField('total_mdf_m', '* Total MDF (m)', 'text')
   .addTextField('total_mdf_m2_rec', '* Total MDF (m²)_Rec', 'text')
   .addTextField('total_mdf_m2_rec', '* Total MDF (m²) Pintura', 'text')
@@ -149,7 +149,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
           error: '',
         },
         {
-          name: 'mdf 3 berneck',
+          name: 'Hydro',
           value: '',
           error: '',
         },
@@ -159,7 +159,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
           error: '',
         },
         {
-          name: 'bondoor',
+          name: 'enchimento sólido',
           value: '',
           error: '',
         },

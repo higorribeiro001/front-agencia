@@ -101,7 +101,7 @@ export default function Products() {
         { field: 'altura', headerName: 'Altura', width: 80 },
         { field: 'sarrafo', headerName: 'Sarrafo', width: 80 },
         { field: 'madeira', headerName: 'Madeira', width: 150 },
-        { field: 'bondoor', headerName: 'Bondoor', width: 150 },
+        { field: 'bondoor', headerName: 'Enchimento sólido', width: 150 },
         { field: 'total_mdf_m', headerName: 'Total MDF (m)', width: 150 },
         { field: 'total_mdf_m3', headerName: 'Total MDF (m³)', width: 150 },
         { field: 'acao', headerName: 'Ação', width: 60 , renderCell: (data) => (
@@ -172,7 +172,7 @@ export default function Products() {
                     value={dataMdfDoorLeave?.mdf_3_comum_2_qualidade ?? ''}
                 />
                 <RowDrawer
-                    keyRow="MDF 3 Berneck"
+                    keyRow="Hydro"
                     value={dataMdfDoorLeave?.mdf_3_berneck ?? ''}
                 />
                 <RowDrawer
@@ -180,7 +180,7 @@ export default function Products() {
                     value={dataMdfDoorLeave?.madeira ?? ''}
                 />
                 <RowDrawer
-                    keyRow="Bondoor"
+                    keyRow="Enchimento sólido"
                     value={dataMdfDoorLeave?.bondoor ?? ''}
                 />
                 <RowDrawer
@@ -188,11 +188,11 @@ export default function Products() {
                     value={dataMdfDoorLeave?.total_mdf_m ?? ''}
                 />
                 <RowDrawer
-                    keyRow="Total MDF (m²)_Rec"
+                    keyRow="Total MDF (m²) Rec"
                     value={dataMdfDoorLeave?.total_mdf_m2_rec ?? ''}
                 />
                 <RowDrawer
-                    keyRow="Total MDF (m²)_Pintura"
+                    keyRow="Total MDF (m²) Pintura"
                     value={dataMdfDoorLeave?.total_mdf_m2_pintura ?? ''}
                 />
                 <RowDrawer
