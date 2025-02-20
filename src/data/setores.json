@@ -1,0 +1,207 @@
+[
+    {
+        "label": "Afiação",
+        "value": "Afiação",
+        "error": ""
+    },
+    {
+        "label": "Almoxarifado",
+        "value": "Almoxarifado",
+        "error": ""
+    },
+    {
+        "label": "Aplicação de Borracha",
+        "value": "Aplicação de Borracha",
+        "error": ""
+    },
+    {
+        "label": "Coladeira de Alizar",
+        "value": "Coladeira de Alizar",
+        "error": ""
+    },
+    {
+        "label": "Destopadeira 45°",
+        "value": "Destopadeira 45°",
+        "error": ""
+    },
+    {
+        "label": "Destopadeira de Alizar",
+        "value": "Destopadeira de Alizar",
+        "error": ""
+    },
+    {
+        "label": "Destopadeira de Cabeceiras",
+        "value": "Destopadeira de Cabeceiras",
+        "error": ""
+    },
+    {
+        "label": "Embalagem de Kits",
+        "value": "Embalagem de Kits",
+        "error": ""
+    },
+    {
+        "label": "Embalagem de Perfil",
+        "value": "Embalagem de Perfil",
+        "error": ""
+    },
+    {
+        "label": "Embalagem de Portas",
+        "value": "Embalagem de Portas",
+        "error": ""
+    },
+    {
+        "label": "Empilhador",
+        "value": "Empilhador",
+        "error": ""
+    },
+    {
+        "label": "Esquadrejadeira",
+        "value": "Esquadrejadeira",
+        "error": ""
+    },
+    {
+        "label": "Expedição",
+        "value": "Expedição",
+        "error": ""
+    },
+    {
+        "label": "Fatiadeira de papel",
+        "value": "Fatiadeira de papel",
+        "error": ""
+    },
+    {
+        "label": "Ferragens",
+        "value": "Ferragens",
+        "error": ""
+    },
+    {
+        "label": "Furação e corte das portas",
+        "value": "Furação e corte das portas",
+        "error": ""
+    },
+    {
+        "label": "Líder de Setor",
+        "value": "Líder de Setor",
+        "error": ""
+    },
+    {
+        "label": "Limpeza",
+        "value": "Limpeza",
+        "error": ""
+    },
+    {
+        "label": "Lixadeira (Tampos)",
+        "value": "Lixadeira (Tampos)",
+        "error": ""
+    },
+    {
+        "label": "Marcenaria",
+        "value": "Marcenaria",
+        "error": ""
+    },
+    {
+        "label": "Material dos Quadros (reguas, topas, sarrafos, lamelas)",
+        "value": "Material dos Quadros (reguas, topas, sarrafos, lamelas)",
+        "error": ""
+    },
+    {
+        "label": "Mesa de Montagem de Quadro",
+        "value": "Mesa de Montagem de Quadro",
+        "error": ""
+    },
+    {
+        "label": "Montadora de Grade",
+        "value": "Montadora de Grade",
+        "error": ""
+    },
+    {
+        "label": "Montagem do Kit",
+        "value": "Montagem do Kit",
+        "error": ""
+    },
+    {
+        "label": "Montagem dos Quadros p/ Kit",
+        "value": "Montagem dos Quadros p/ Kit",
+        "error": ""
+    },
+    {
+        "label": "Multiserra perfil",
+        "value": "Multiserra perfil",
+        "error": ""
+    },
+    {
+        "label": "Oficina mecanica/fábrica",
+        "value": "Oficina mecanica/fábrica",
+        "error": ""
+    },
+    {
+        "label": "Pallet",
+        "value": "Pallet",
+        "error": ""
+    },
+    {
+        "label": "Pintor",
+        "value": "Pintor",
+        "error": ""
+    },
+    {
+        "label": "Pintura de Portas",
+        "value": "Pintura de Portas",
+        "error": ""
+    },
+    {
+        "label": "Pintura de Tampos",
+        "value": "Pintura de Tampos",
+        "error": ""
+    },
+    {
+        "label": "Plaina Moldureira de Alizar",
+        "value": "Plaina Moldureira de Alizar",
+        "error": ""
+    },
+    {
+        "label": "Plaina Moldureira de Batente",
+        "value": "Plaina Moldureira de Batente",
+        "error": ""
+    },
+    {
+        "label": "Prensa Reciclagem",
+        "value": "Prensa Reciclagem",
+        "error": ""
+    },
+    {
+        "label": "Prensagem de Portas",
+        "value": "Prensagem de Portas",
+        "error": ""
+    },
+    {
+        "label": "Recobridora de Perfil",
+        "value": "Recobridora de Perfil",
+        "error": ""
+    },
+    {
+        "label": "Recobridora de Tampos",
+        "value": "Recobridora de Tampos",
+        "error": ""
+    },
+    {
+        "label": "Seccionadora 01",
+        "value": "Seccionadora 01",
+        "error": ""
+    },
+    {
+        "label": "Trava Kit",
+        "value": "Trava Kit",
+        "error": ""
+    },
+    {
+        "label": "Usinagem de Batentes",
+        "value": "Usinagem de Batentes",
+        "error": ""
+    },
+    {
+        "label": "Usinagem de Frisos",
+        "value": "Usinagem de Frisos",
+        "error": ""
+    }
+]

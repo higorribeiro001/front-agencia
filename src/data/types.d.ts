@@ -29,6 +29,7 @@ interface BaseProps {
     openAlert?: boolean; 
     isSuccess?: boolean; 
     messageAlert?: string;
+    title: string;
 }
 
 interface MeAdaptInterface {
@@ -64,54 +65,38 @@ interface TabPanelProps {
     value: number;
 }
 
-interface MdfDoorLeavesInterface {
+interface EmployeesInterface {
     current_page: number;
-    data: MdfDoorLeaveInterface[];
+    data: EmployeeInterface[];
     last_page: number;
     total: string;
 }
 
-interface MdfDoorLeaveInterface {
+interface EmployeeInterface {
     id: string;
-    nome: string;
-    chave: string;
-    largura: number;
-    altura: number;
-    sarrafo: number;
-    mdf_30: number;
-    mdf_6_comum_2_qualidade: number;
-    mdf_3_comum_1_qualidade: number;
-    mdf_3_comum_2_qualidade: number;
-    mdf_3_berneck: number;
-    madeira: number;
-    bondoor: number;
-    total_mdf_m: number;
-    total_mdf_m2_rec: number;
-    total_mdf_m2_pintura: number;
-    total_mdf_m3: number;
+    cod_funcionario: number;
+    mes: string;
+    funcionario: string;
+    setor: string;
+    funcao: string;
+    categoria: string;
+    categoria_bonus: string;
+    is_active: boolean;
     created_at: string;
     updated_at: string;
 }
 
-interface DataMdfDoorLeaveInterface {
-    dataMdfDoorLeave: {
+interface DataEmployeeInterface {
+    dataEmployee: {
         id: string;
-        nome: string;
-        chave: string;
-        largura: number;
-        altura: number;
-        sarrafo: number;
-        mdf_30: number;
-        mdf_6_comum_2_qualidade: number;
-        mdf_3_comum_1_qualidade: number;
-        mdf_3_comum_2_qualidade: number;
-        mdf_3_berneck: number;
-        madeira: number;
-        bondoor: number;
-        total_mdf_m: number;
-        total_mdf_m2_rec: number;
-        total_mdf_m2_pintura: number;
-        total_mdf_m3: number;
+        cod_funcionario: number;
+        mes: string;
+        funcionario: string;
+        setor: string;
+        funcao: string;
+        categoria: string;
+        categoria_bonus: string;
+        is_active: boolean;
         created_at: string;
         updated_at: string;
     }
@@ -124,15 +109,19 @@ interface RowDrawerInterface {
 
 interface DataTableInterface {
     handleSearch: (e: ChangeEvent<HTMLInputElement>) => void; 
-    rows: MdfDoorLeaveInterface[]; 
+    rows: EmployeeInterface[]; 
     columns: GridColDef[]; 
     isLoading: boolean; 
     pages: number;
     hrefRegister: string;
     handleCurrentPage: (page: number) => void;
+    title: string;
+    monthFilter: boolean;
+    funcMonthFilter: (e: SelectChangeEvent<string>) => void;
+    valueMonthFilter: string;
 }
 
-interface RegisterMdfDoorLeave {
+interface RegisterEmployee {
     nome: string;
     chave: string;
     largura: number;

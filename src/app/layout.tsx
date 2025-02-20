@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CONCREM: Custos de Produção",
-  description: "Sistema de Gerenciamento de custos de produção de portas na CONCREM.",
+  title: "CONCREM: Sistema de Remuneração",
+  description: "Sistema de Gerenciamento de remuneração de funcionários da CONCREM.",
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

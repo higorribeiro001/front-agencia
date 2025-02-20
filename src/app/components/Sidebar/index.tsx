@@ -6,9 +6,10 @@ import logoG from "../../../../public/assets/logo_concrem_grande.png";
 import arrow from "../../../../public/assets/close-menu.png";
 import Link from "next/link";
 import home from "../../../../public/assets/home.png";
-import porta from "../../../../public/assets/porta.png";
-import recobrimento from "../../../../public/assets/recobrimento.png";
-import custo from "../../../../public/assets/custo.png";
+import funcionarios from "../../../../public/assets/funcionarios.png";
+import dss from "../../../../public/assets/dss.png";
+import epi from "../../../../public/assets/epi.png";
+import chamada from "../../../../public/assets/chamada.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
@@ -33,28 +34,37 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={porta} 
+                src={funcionarios} 
                 alt="logo"     
             />,
-            title: 'Kit de porta',
-            to: '/products'
+            title: 'Funcionários',
+            to: '/employees'
         },
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={recobrimento} 
+                src={dss} 
                 alt="logo"     
             />,
-            title: 'Recobrimento',
+            title: 'DSS',
             to: '/covering'
         },
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={custo} 
+                src={epi} 
                 alt="logo"     
             />,
-            title: 'custos',
+            title: 'EPI',
+            to: '/cost'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={chamada} 
+                alt="logo"     
+            />,
+            title: 'falta/advertência',
             to: '/cost'
         }
     ];

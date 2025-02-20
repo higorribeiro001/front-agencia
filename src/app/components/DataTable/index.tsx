@@ -1,10 +1,11 @@
 import { DataTableInterface } from "@/data/types";
 import { Search } from "@mui/icons-material";
-import { Box, Button, IconButton, InputAdornment, Pagination, TextField } from "@mui/material";
+import { Box, Button, IconButton, InputAdornment, MenuItem, Pagination, Select, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ChangeEvent } from "react";
+import meses from "@/data/meses.json"
 
-export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRegister, handleCurrentPage}: DataTableInterface) => {
+export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRegister, handleCurrentPage, title, monthFilter, valueMonthFilter, funcMonthFilter}: DataTableInterface) => {
 
     const CustomNoRowsOverlay = () => (
         <div style={{ textAlign: 'center', padding: '20px' }}>
@@ -13,7 +14,7 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRe
       );
     return (
         <div className="flex flex-col p-4 border gap-4 border-gray-400 rounded">
-            <h2>FOLHA DE PORTA</h2>
+            <h2 className="uppercase">{title}</h2>
             <div className="flex flex-row gap-4 justify-between">
                 <TextField
                     variant="outlined"
@@ -31,6 +32,28 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRe
                     placeholder="pesquise..."
                     onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch(e)}
                 />
+                {monthFilter && (
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={valueMonthFilter}
+                        label=""
+                        className="w-[200px]"
+                        onChange={funcMonthFilter}
+                    >
+                        <MenuItem disabled value="default">
+                            Mês
+                        </MenuItem>
+                        {meses.map((value, index) => (
+                            <MenuItem 
+                                key={index}
+                                value={value.value}
+                            >
+                                {value.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                )}
                 <Button 
                     className="bg-primary font-semibold w-[200px] h-[56px]"
                     variant="contained"
