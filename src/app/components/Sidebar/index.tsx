@@ -47,7 +47,7 @@ export default function Sidebar() {
                 alt="logo"     
             />,
             title: 'DSS',
-            to: '/covering'
+            to: '/dss'
         },
         {
             icon: <Image
@@ -56,7 +56,7 @@ export default function Sidebar() {
                 alt="logo"     
             />,
             title: 'EPI',
-            to: '/cost'
+            to: '/epi'
         },
         {
             icon: <Image
@@ -65,7 +65,7 @@ export default function Sidebar() {
                 alt="logo"     
             />,
             title: 'falta/advertência',
-            to: '/cost'
+            to: '/absence-warning'
         }
     ];
 

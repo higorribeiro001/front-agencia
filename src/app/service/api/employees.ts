@@ -1,4 +1,4 @@
-import { EmployeeInterface, EmployeesInterface, StatusResponse } from '@/data/types';
+import { EmployeeInterface, EmployeeLabelInterface, EmployeesInterface, StatusResponse } from '@/data/types';
 import axios from 'axios';
 // import { getCookie } from 'cookies-next';
 
@@ -41,4 +41,14 @@ export async function postEmployee(cod_funcionario: number, funcionario: string,
 export async function putEmployee(id: string, cod_funcionario: number, funcionario: string, setor: string, funcao: string, categoria: string, categoria_bonus: string, mes: string, is_active: boolean) {
     const response: { data: EmployeesInterface, status: number } = await axios.put(url+`/employee/${id}`, {cod_funcionario, funcionario, setor, funcao, categoria, categoria_bonus, mes, is_active});
     return response;
+}
+
+export async function employeesLabel() {
+    try {
+        const response: { data: EmployeeLabelInterface[], status: number } = await axios.get(url+`/employees`);
+        return response.data;
+    } catch(e: unknown) {
+        const error = e as StatusResponse;
+        console.log(error);
+    }
 }

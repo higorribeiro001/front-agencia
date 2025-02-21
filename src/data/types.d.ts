@@ -72,6 +72,12 @@ interface EmployeesInterface {
     total: string;
 }
 
+interface EmployeeLabelInterface {
+    label: string;
+    value: string;
+    error: string;
+};
+
 interface EmployeeInterface {
     id: string;
     cod_funcionario: number;
@@ -102,6 +108,123 @@ interface DataEmployeeInterface {
     }
 }
 
+interface DsssInterface {
+    current_page: number;
+    data: DssInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface DssInterface {
+    id: string;
+    matricula: number;
+    funcionario_id: string;
+    data_realizacao: string;
+    funcionario: {
+        id: string;
+        funcionario: string;
+    };
+    presenca: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+interface DataDssInterface {
+    dataDss: {
+        id: string;
+        matricula: number;
+        funcionario_id: string;
+        data_realizacao: string;
+        funcionario: {
+            id: string;
+            funcionario: string;
+        };
+        presenca: boolean;
+        created_at: string;
+        updated_at: string;
+    }
+}
+
+// 
+
+interface EpisInterface {
+    current_page: number;
+    data: EpiInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface EpiInterface {
+    id: string;
+    matricula: number;
+    funcionario_id: string;
+    data_abordagem: string;
+    funcionario: {
+        id: string;
+        funcionario: string;
+    };
+    conforme: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+interface DataEpiInterface {
+    dataEpi: {
+        id: string;
+        matricula: number;
+        funcionario_id: string;
+        data_abordagem: string;
+        funcionario: {
+            id: string;
+            funcionario: string;
+        };
+        conforme: boolean;
+        created_at: string;
+        updated_at: string;
+    }
+}
+
+// 
+
+interface AbsenseWarningsInterface {
+    current_page: number;
+    data: AbsenseWarningInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface AbsenseWarningInterface {
+    id: string;
+    matricula: number;
+    funcionario_id: string;
+    mes: string;
+    funcionario: {
+        id: string;
+        funcionario: string;
+    };
+    faltas: number;
+    advertencias: number;
+    created_at: string;
+    updated_at: string;
+}
+
+interface DataAbsenseWarningInterface {
+    dataAbsenseWarning: {
+        id: string;
+        matricula: number;
+        funcionario_id: string;
+        mes: string;
+        funcionario: {
+            id: string;
+            funcionario: string;
+        };
+        faltas: number;
+        advertencias: number;
+        created_at: string;
+        updated_at: string;
+    }
+}
+
 interface RowDrawerInterface {
     keyRow: string;
     value: string | number;
@@ -109,7 +232,7 @@ interface RowDrawerInterface {
 
 interface DataTableInterface {
     handleSearch: (e: ChangeEvent<HTMLInputElement>) => void; 
-    rows: EmployeeInterface[]; 
+    rows: Array<T>; 
     columns: GridColDef[]; 
     isLoading: boolean; 
     pages: number;
@@ -119,6 +242,12 @@ interface DataTableInterface {
     monthFilter: boolean;
     funcMonthFilter: (e: SelectChangeEvent<string>) => void;
     valueMonthFilter: string;
+    listDateDss: boolean;
+    listDateEpi: boolean;
+    listDateAbsenseWarning: boolean;
+    handleSearchDss: (value: EmployeeLabelInterface) => void;
+    handleSearchEpi: (value: EmployeeLabelInterface) => void;
+    handleSearchAbsenseWarning: (value: EmployeeLabelInterface) => void;
 }
 
 interface RegisterEmployee {

@@ -2,19 +2,19 @@
 
 import { Drawer, IconButton, SelectChangeEvent, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Visibility, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
-import { deleteEmployee, employee, employeeFindName, employees } from "../service/api/employees";
-import EmployeesAdapt from "../service/adapt/EmployeesAdapt";
-import EmployeeAdapt from "../service/adapt/EmployeeAdapt";
 import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
-import { DataEmployeeInterface, EmployeeInterface } from "@/data/types";
+import { AbsenseWarningInterface, DataAbsenseWarningInterface } from "@/data/types";
+import AbsenseWarningAdapt from "../service/adapt/AbsenseWarningAdapt";
+import AbsenseWarningsAdapt from "../service/adapt/AbsenseWarningsAdapt";
+import { absenseWarning, absenseWarningFindName, absenseWarnings, deleteAbsenseWarning } from "../service/api/absenseWarning";
 
-export default function Employees() {
-    const [rowsEmployee, setRowsEmployee] = useState<EmployeeInterface[]>([]);
+export default function AbsenceWarnings() {
+    const [rowsAbsenseWarning, setRowsAbsenseWarning] = useState<AbsenseWarningInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -22,36 +22,35 @@ export default function Employees() {
     const [pages, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [dataEmployee, setDataEmployee] = useState<EmployeeInterface>();
+    const [dataAbsenseWarning, setDataAbsenseWarning] = useState<AbsenseWarningInterface>();
     const [openDialog, setOpenDialog] = useState(false);
     const [monthSelected, setMonthSelected] = useState('default');
 
-    const getEmployee = async (id: string) => {
-        const dataEmployee = await employee(id);
-        const employeeAdapt = new EmployeeAdapt(dataEmployee);
+    const getAbsenseWarning = async (id: string) => {
+        const dataAbsenseWarning = await absenseWarning(id);
+        const absenseWarningAdapt = new AbsenseWarningAdapt(dataAbsenseWarning);
 
         setOpenDrawer(true);
-        setDataEmployee(employeeAdapt.externalEmployeeAdapt)
+        setDataAbsenseWarning(absenseWarningAdapt.externalAbsenseWarningAdapt)
     }
 
     useEffect(() => {
-        const getEmployeeData = async () => {
-            getEmployees();
-            const dataEmployees = await employeeFindName(monthSelected);
-            const employeeAdapt = new EmployeesAdapt(dataEmployees!);
+        const getAbsenseWarningData = async () => {
+            getAbsenseWarnings();
+            const dataAbsenseWarnings = await absenseWarningFindName(monthSelected);
+            const absenseWarningsAdapt = new AbsenseWarningsAdapt(dataAbsenseWarnings!);
 
-            const employeesData = employeeAdapt.externalEmployeesAdapt;
-            const employeesDataData = employeesData.data;
-            setRowsEmployee(employeesDataData);
-            setPages(employeesData?.last_page ?? 0);
+            const dataAbsenseWarning = absenseWarningsAdapt.externalAbsenseWarningsAdapt;
+            setRowsAbsenseWarning(dataAbsenseWarning.data);
+            setPages(dataAbsenseWarning?.last_page ?? 0);
             setIsLoading(false);
         }
 
-        getEmployeeData();
+        getAbsenseWarningData();
     }, [monthSelected])
       
-    const columnsEmployee: GridColDef[] = [
-        { field: 'mes', headerName: 'Mês', width: 120, renderCell: (params) => {
+    const columnsAbsenseWarning: GridColDef[] = [
+        { field: 'mes', headerName: 'Data', width: 180, renderCell: (params) => {
             const formattedDate = convertDate(params.value);
 
             return (
@@ -60,23 +59,36 @@ export default function Employees() {
                 </div>
               );
         } },
-        { field: 'cod_funcionario', headerName: 'COD', width: 100 },
-        { field: 'funcionario', headerName: 'Funcionário', width: 300 },
-        { field: 'setor', headerName: 'Setor', width: 190 },
-        { field: 'funcao', headerName: 'Função', width: 220 },
-        { field: 'categoria', headerName: 'Categoria', width: 190 },
-        { field: 'categoria_bonus', headerName: 'Categoria Bônus', width: 190 },
-        { field: 'is_active', headerName: 'Status', width: 100, renderCell: (params) => {
+        { field: 'matricula', headerName: 'Matrícula', width: 150 },
+        { field: 'funcionario', headerName: 'Funcionário', width: 350 , renderCell: (params) => {
             return (
-                <div className="flex justify-center items-center py-[10px]">
-                    <div className="flex justify-center items-center font-semibold px-2 w-full" style={params.value ? { backgroundColor: 'green', color: 'white', height: '30px', borderRadius: '4px' } : { backgroundColor: 'red', color: 'white', height: '30px', borderRadius: '4px' }}>
-                        <p>{params.value ? 'ativo' : 'inativo'}</p>
-                    </div>
+                <div>
+                  {params.value.funcionario}
+                </div>
+              );
+        } },
+        { field: 'faltas', headerName: 'Faltas', width: 190},
+        { field: 'advertencias', headerName: 'Advertências', width: 190},
+        { field: 'created_at', headerName: 'Data de Criação', width: 200, renderCell: (params) => {
+            const formattedDate = convertDateDrawer(params.value);
+
+            return (
+                <div>
+                  {formattedDate}
+                </div>
+              );
+        } },
+        { field: 'updated_at', headerName: 'Data de Edição', width: 200, renderCell: (params) => {
+            const formattedDate = convertDateDrawer(params.value);
+
+            return (
+                <div>
+                  {formattedDate}
                 </div>
               );
         } },
         { field: 'acao', headerName: 'Ação', width: 60 , renderCell: (data) => (
-            <IconButton onClick={() => getEmployee(String(data.id))}>
+            <IconButton onClick={() => getAbsenseWarning(String(data.id))}>
               <Visibility />
             </IconButton>
         ), },
@@ -94,84 +106,76 @@ export default function Employees() {
 
     let timeout: NodeJS.Timeout;
 
-    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleSearch = (values: {label: string; value: string; error: string}) => {
         clearTimeout(timeout);
         setIsLoading(true);
         
-        timeout = setTimeout(async () => {
-            const dataEmployees = await employeeFindName(e.target.value);
-            const employeeAdapt = new EmployeesAdapt(dataEmployees!);
-
-            const employeesData = employeeAdapt.externalEmployeesAdapt;
-            const employeesDataData = employeesData.data;
-            setRowsEmployee(employeesDataData);
-            setPages(employeesData?.last_page ?? 0);
-            setIsLoading(false);
-        }, 3000);
+        if (values) {
+            timeout = setTimeout(async () => {
+                const dataAbsenseWarnings = await absenseWarningFindName(values.value ?? '');
+                const absenseWarningAdapt = new AbsenseWarningsAdapt(dataAbsenseWarnings!);
+    
+                const absenseWarningsData = absenseWarningAdapt.externalAbsenseWarningsAdapt;
+                const absenseWarningsDataData = absenseWarningsData.data;
+                setRowsAbsenseWarning(absenseWarningsDataData);
+                setPages(absenseWarningsData?.last_page ?? 0);
+                setIsLoading(false);
+            }, 1000);
+        } else {
+            getAbsenseWarnings();
+        }
     }
 
     const changeValuesSelect = (e: SelectChangeEvent<string>) => {
         setMonthSelected(e.target.value);
     }
 
-    const ContentViewEmployee = ({dataEmployee}: DataEmployeeInterface) => {
+    const ContentViewAbsenseWarning = ({dataAbsenseWarning}: DataAbsenseWarningInterface) => {
         return (
             <div className="flex flex-col gap-1">
-                <h2 className="text-primary text-[25px] font-semibold mb-2">{ dataEmployee?.funcionario }</h2>
+                <h2 className="text-primary text-[25px] font-semibold mb-2">{ dataAbsenseWarning?.funcionario.funcionario }</h2>
                 <RowDrawer
-                    keyRow="Mês"
-                    value={convertDate(dataEmployee?.mes ?? '')}
+                    keyRow="Data"
+                    value={convertDateDrawer(dataAbsenseWarning?.mes ?? '')}
                 />
                 <RowDrawer
-                    keyRow="COD"
-                    value={dataEmployee?.cod_funcionario ?? ''}
+                    keyRow="Matrícula"
+                    value={dataAbsenseWarning?.matricula ?? ''}
                 />
                 <RowDrawer
-                    keyRow="Setor"
-                    value={dataEmployee?.setor ?? ''}
+                    keyRow="Faltas"
+                    value={dataAbsenseWarning?.faltas ?? ''}
                 />
                 <RowDrawer
-                    keyRow="Função"
-                    value={dataEmployee?.funcao ?? ''}
-                />
-                <RowDrawer
-                    keyRow="Categoria"
-                    value={dataEmployee?.categoria ?? ''}
-                />
-                <RowDrawer
-                    keyRow="Categoria Bônus"
-                    value={dataEmployee?.categoria_bonus ?? ''}
-                />
-                <RowDrawer
-                    keyRow="Status"
-                    value={dataEmployee?.is_active ? 'ativo' : 'inativo'}
+                    keyRow="Advertências"
+                    value={dataAbsenseWarning?.advertencias ?? ''}
                 />
                 <RowDrawer
                     keyRow="Data de criação"
-                    value={ convertDateDrawer(dataEmployee?.created_at ?? '') }
+                    value={ convertDateDrawer(dataAbsenseWarning?.created_at ?? '') }
                 />
                 <RowDrawer
                     keyRow="Data de edição"
-                    value={ convertDateDrawer(dataEmployee?.updated_at ?? '') }
+                    value={ convertDateDrawer(dataAbsenseWarning?.updated_at ?? '') }
                 />
             </div>
         );
     }
 
-    const getEmployees = async () => {
-        const dataEmployees = await employees(currentPage);
-        const employeesAdapt = new EmployeesAdapt(dataEmployees!);
+    const getAbsenseWarnings = async () => {
+        const dataAbsenseWarnings = await absenseWarnings(currentPage);
+        const absenseWarningsAdapt = new AbsenseWarningsAdapt(dataAbsenseWarnings!);
 
-        const dataEmployee = employeesAdapt.externalEmployeesAdapt;
-        setRowsEmployee(dataEmployee.data);
-        setPages(dataEmployee?.last_page ?? 0);
+        const dataAbsenseWarning = absenseWarningsAdapt.externalAbsenseWarningsAdapt;
+        setRowsAbsenseWarning(dataAbsenseWarning?.data ?? []);
+        setPages(dataAbsenseWarning?.last_page ?? 0);
         setIsLoading(false);
     }
 
     useEffect(() => {
         setIsLoading(true);
 
-        getEmployees();
+        getAbsenseWarnings();
     }, [currentPage])
 
     const closeAlert = () => {
@@ -181,7 +185,7 @@ export default function Employees() {
     }
 
     const removeMdfDoomLeave = async (id: string) => {
-        const response = await deleteEmployee(id);
+        const response = await deleteAbsenseWarning(id);
         if (response.status === 200) {
             setOpenAlert(true);
             setMessageAlert('Excluído com sucesso!');
@@ -190,14 +194,9 @@ export default function Employees() {
             setOpenDrawer(false);
             setOpenDialog(false);
             closeAlert();
-            getEmployees();
+            getAbsenseWarnings();
         }
     }
-
-    // const handleDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
-    //     e.preventDefault();
-    //     setOpenDialog(true);
-    // }
 
     const handleClose = () => {
         setOpenDialog(false);
@@ -208,7 +207,7 @@ export default function Employees() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="funcionários"
+            title="Faltas/Advertências"
         >
             <Drawer
                 anchor="right"
@@ -220,16 +219,16 @@ export default function Employees() {
                         isOpen={openDialog}
                         title="Excluir"
                         content="Tem certeza que deseja excluir?"
-                        func={() => removeMdfDoomLeave(dataEmployee!.id)}
+                        func={() => removeMdfDoomLeave(dataAbsenseWarning!.id)}
                         handleClose={handleClose}
                     />
-                    <ContentViewEmployee 
-                        dataEmployee={dataEmployee!}
+                    <ContentViewAbsenseWarning 
+                        dataAbsenseWarning={dataAbsenseWarning!}
                     />
                     <footer className="flex flex-row justify-between gap-3">
                         <IconButton 
                             className="gap-2"
-                            href={"/employees/edit/"+dataEmployee?.id}
+                            href={"/absence-warning/edit/"+dataAbsenseWarning?.id}
                         >
                             <Edit 
                                 fontSize="small"
@@ -263,23 +262,23 @@ export default function Employees() {
             <div className="transition-all h-full">
                 <div className="animate-fade-up">
                     <DataTable 
-                        title="Lista de Funcionários"
-                        handleSearch={handleSearch} 
-                        rows={rowsEmployee} 
-                        columns={columnsEmployee} 
+                        title="Listagem de Faltas/Adervertências"
+                        rows={rowsAbsenseWarning} 
+                        columns={columnsAbsenseWarning} 
                         isLoading={isLoading} 
                         pages={pages}     
-                        hrefRegister="/employees/register" 
+                        hrefRegister="/absence-warning/register" 
                         handleCurrentPage={setCurrentPage}  
                         monthFilter={true} 
                         valueMonthFilter={monthSelected}
                         funcMonthFilter={changeValuesSelect}
                         listDateDss={false}
                         listDateEpi={false}
-                        listDateAbsenseWarning={false}
+                        listDateAbsenseWarning={true}
+                        handleSearch={()=>{}}
                         handleSearchDss={()=>{}}
                         handleSearchEpi={()=>{}}
-                        handleSearchAbsenseWarning={()=>{}}
+                        handleSearchAbsenseWarning={handleSearch}
                     />
                 </div>
             </div>

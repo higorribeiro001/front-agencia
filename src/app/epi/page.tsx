@@ -2,19 +2,19 @@
 
 import { Drawer, IconButton, SelectChangeEvent, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Visibility, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
-import { deleteEmployee, employee, employeeFindName, employees } from "../service/api/employees";
-import EmployeesAdapt from "../service/adapt/EmployeesAdapt";
-import EmployeeAdapt from "../service/adapt/EmployeeAdapt";
+import EpisAdapt from "../service/adapt/EpisAdapt";
+import EpiAdapt from "../service/adapt/EpiAdapt";
 import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
-import { DataEmployeeInterface, EmployeeInterface } from "@/data/types";
+import { DataEpiInterface, EpiInterface } from "@/data/types";
+import { deleteEpi, epi, epiFindName, epis } from "../service/api/epi";
 
-export default function Employees() {
-    const [rowsEmployee, setRowsEmployee] = useState<EmployeeInterface[]>([]);
+export default function Epis() {
+    const [rowsEpi, setRowsEpi] = useState<EpiInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -22,36 +22,35 @@ export default function Employees() {
     const [pages, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [dataEmployee, setDataEmployee] = useState<EmployeeInterface>();
+    const [dataEpi, setDataEpi] = useState<EpiInterface>();
     const [openDialog, setOpenDialog] = useState(false);
     const [monthSelected, setMonthSelected] = useState('default');
 
-    const getEmployee = async (id: string) => {
-        const dataEmployee = await employee(id);
-        const employeeAdapt = new EmployeeAdapt(dataEmployee);
+    const getEpi = async (id: string) => {
+        const dataEpi = await epi(id);
+        const epiAdapt = new EpiAdapt(dataEpi);
 
         setOpenDrawer(true);
-        setDataEmployee(employeeAdapt.externalEmployeeAdapt)
+        setDataEpi(epiAdapt.externalEpiAdapt)
     }
 
     useEffect(() => {
-        const getEmployeeData = async () => {
-            getEmployees();
-            const dataEmployees = await employeeFindName(monthSelected);
-            const employeeAdapt = new EmployeesAdapt(dataEmployees!);
+        const getEpiData = async () => {
+            getEpis();
+            const dataEpis = await epiFindName(monthSelected);
+            const episAdapt = new EpisAdapt(dataEpis!);
 
-            const employeesData = employeeAdapt.externalEmployeesAdapt;
-            const employeesDataData = employeesData.data;
-            setRowsEmployee(employeesDataData);
-            setPages(employeesData?.last_page ?? 0);
+            const dataEpi = episAdapt.externalEpisAdapt;
+            setRowsEpi(dataEpi.data);
+            setPages(dataEpi?.last_page ?? 0);
             setIsLoading(false);
         }
 
-        getEmployeeData();
+        getEpiData();
     }, [monthSelected])
       
-    const columnsEmployee: GridColDef[] = [
-        { field: 'mes', headerName: 'Mês', width: 120, renderCell: (params) => {
+    const columnsEpi: GridColDef[] = [
+        { field: 'data_abordagem', headerName: 'Data de Abordagem', width: 200, renderCell: (params) => {
             const formattedDate = convertDate(params.value);
 
             return (
@@ -60,23 +59,43 @@ export default function Employees() {
                 </div>
               );
         } },
-        { field: 'cod_funcionario', headerName: 'COD', width: 100 },
-        { field: 'funcionario', headerName: 'Funcionário', width: 300 },
-        { field: 'setor', headerName: 'Setor', width: 190 },
-        { field: 'funcao', headerName: 'Função', width: 220 },
-        { field: 'categoria', headerName: 'Categoria', width: 190 },
-        { field: 'categoria_bonus', headerName: 'Categoria Bônus', width: 190 },
-        { field: 'is_active', headerName: 'Status', width: 100, renderCell: (params) => {
+        { field: 'matricula', headerName: 'Matrícula', width: 150 },
+        { field: 'funcionario', headerName: 'Funcionário', width: 500 , renderCell: (params) => {
+            return (
+                <div>
+                  {params.value.funcionario}
+                </div>
+              );
+        } },
+        { field: 'conforme', headerName: 'Conforme', width: 190, renderCell: (params) => {
             return (
                 <div className="flex justify-center items-center py-[10px]">
                     <div className="flex justify-center items-center font-semibold px-2 w-full" style={params.value ? { backgroundColor: 'green', color: 'white', height: '30px', borderRadius: '4px' } : { backgroundColor: 'red', color: 'white', height: '30px', borderRadius: '4px' }}>
-                        <p>{params.value ? 'ativo' : 'inativo'}</p>
+                        <p>{params.value ? 'sim' : 'não'}</p>
                     </div>
                 </div>
               );
         } },
+        { field: 'created_at', headerName: 'Data de Criação', width: 200, renderCell: (params) => {
+            const formattedDate = convertDateDrawer(params.value);
+
+            return (
+                <div>
+                  {formattedDate}
+                </div>
+              );
+        } },
+        { field: 'updated_at', headerName: 'Data de Edição', width: 200, renderCell: (params) => {
+            const formattedDate = convertDateDrawer(params.value);
+
+            return (
+                <div>
+                  {formattedDate}
+                </div>
+              );
+        } },
         { field: 'acao', headerName: 'Ação', width: 60 , renderCell: (data) => (
-            <IconButton onClick={() => getEmployee(String(data.id))}>
+            <IconButton onClick={() => getEpi(String(data.id))}>
               <Visibility />
             </IconButton>
         ), },
@@ -94,84 +113,72 @@ export default function Employees() {
 
     let timeout: NodeJS.Timeout;
 
-    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleSearch = (values: {label: string; value: string; error: string}) => {
         clearTimeout(timeout);
         setIsLoading(true);
         
-        timeout = setTimeout(async () => {
-            const dataEmployees = await employeeFindName(e.target.value);
-            const employeeAdapt = new EmployeesAdapt(dataEmployees!);
-
-            const employeesData = employeeAdapt.externalEmployeesAdapt;
-            const employeesDataData = employeesData.data;
-            setRowsEmployee(employeesDataData);
-            setPages(employeesData?.last_page ?? 0);
-            setIsLoading(false);
-        }, 3000);
+        if (values) {
+            timeout = setTimeout(async () => {
+                const dataEpis = await epiFindName(values.value ?? '');
+                const epiAdapt = new EpisAdapt(dataEpis!);
+    
+                const episData = epiAdapt.externalEpisAdapt;
+                const episDataData = episData.data;
+                setRowsEpi(episDataData);
+                setPages(episData?.last_page ?? 0);
+                setIsLoading(false);
+            }, 1000);
+        } else {
+            getEpis();
+        }
     }
 
     const changeValuesSelect = (e: SelectChangeEvent<string>) => {
         setMonthSelected(e.target.value);
     }
 
-    const ContentViewEmployee = ({dataEmployee}: DataEmployeeInterface) => {
+    const ContentViewEpi = ({dataEpi}: DataEpiInterface) => {
         return (
             <div className="flex flex-col gap-1">
-                <h2 className="text-primary text-[25px] font-semibold mb-2">{ dataEmployee?.funcionario }</h2>
+                <h2 className="text-primary text-[25px] font-semibold mb-2">{ dataEpi?.funcionario.funcionario }</h2>
                 <RowDrawer
-                    keyRow="Mês"
-                    value={convertDate(dataEmployee?.mes ?? '')}
+                    keyRow="Data de abordagem"
+                    value={convertDateDrawer(dataEpi?.data_abordagem ?? '')}
                 />
                 <RowDrawer
-                    keyRow="COD"
-                    value={dataEmployee?.cod_funcionario ?? ''}
+                    keyRow="Matrícula"
+                    value={dataEpi?.matricula ?? ''}
                 />
                 <RowDrawer
-                    keyRow="Setor"
-                    value={dataEmployee?.setor ?? ''}
-                />
-                <RowDrawer
-                    keyRow="Função"
-                    value={dataEmployee?.funcao ?? ''}
-                />
-                <RowDrawer
-                    keyRow="Categoria"
-                    value={dataEmployee?.categoria ?? ''}
-                />
-                <RowDrawer
-                    keyRow="Categoria Bônus"
-                    value={dataEmployee?.categoria_bonus ?? ''}
-                />
-                <RowDrawer
-                    keyRow="Status"
-                    value={dataEmployee?.is_active ? 'ativo' : 'inativo'}
+                    keyRow="Conforme"
+                    value={dataEpi?.conforme ? 'sim' : 'não'}
                 />
                 <RowDrawer
                     keyRow="Data de criação"
-                    value={ convertDateDrawer(dataEmployee?.created_at ?? '') }
+                    value={ convertDateDrawer(dataEpi?.created_at ?? '') }
                 />
                 <RowDrawer
                     keyRow="Data de edição"
-                    value={ convertDateDrawer(dataEmployee?.updated_at ?? '') }
+                    value={ convertDateDrawer(dataEpi?.updated_at ?? '') }
                 />
             </div>
         );
     }
 
-    const getEmployees = async () => {
-        const dataEmployees = await employees(currentPage);
-        const employeesAdapt = new EmployeesAdapt(dataEmployees!);
+    const getEpis = async () => {
+        const dataEpis = await epis(currentPage);
+        const episAdapt = new EpisAdapt(dataEpis!);
 
-        const dataEmployee = employeesAdapt.externalEmployeesAdapt;
-        setRowsEmployee(dataEmployee.data);
-        setPages(dataEmployee?.last_page ?? 0);
+        const dataEpi = episAdapt.externalEpisAdapt;
+        setRowsEpi(dataEpi.data);
+        setPages(dataEpi?.last_page ?? 0);
         setIsLoading(false);
     }
 
     useEffect(() => {
         setIsLoading(true);
 
-        getEmployees();
+        getEpis();
     }, [currentPage])
 
     const closeAlert = () => {
@@ -181,7 +188,7 @@ export default function Employees() {
     }
 
     const removeMdfDoomLeave = async (id: string) => {
-        const response = await deleteEmployee(id);
+        const response = await deleteEpi(id);
         if (response.status === 200) {
             setOpenAlert(true);
             setMessageAlert('Excluído com sucesso!');
@@ -190,7 +197,7 @@ export default function Employees() {
             setOpenDrawer(false);
             setOpenDialog(false);
             closeAlert();
-            getEmployees();
+            getEpis();
         }
     }
 
@@ -208,7 +215,7 @@ export default function Employees() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="funcionários"
+            title="epi"
         >
             <Drawer
                 anchor="right"
@@ -220,16 +227,16 @@ export default function Employees() {
                         isOpen={openDialog}
                         title="Excluir"
                         content="Tem certeza que deseja excluir?"
-                        func={() => removeMdfDoomLeave(dataEmployee!.id)}
+                        func={() => removeMdfDoomLeave(dataEpi!.id)}
                         handleClose={handleClose}
                     />
-                    <ContentViewEmployee 
-                        dataEmployee={dataEmployee!}
+                    <ContentViewEpi 
+                        dataEpi={dataEpi!}
                     />
                     <footer className="flex flex-row justify-between gap-3">
                         <IconButton 
                             className="gap-2"
-                            href={"/employees/edit/"+dataEmployee?.id}
+                            href={"/epi/edit/"+dataEpi?.id}
                         >
                             <Edit 
                                 fontSize="small"
@@ -263,22 +270,22 @@ export default function Employees() {
             <div className="transition-all h-full">
                 <div className="animate-fade-up">
                     <DataTable 
-                        title="Lista de Funcionários"
-                        handleSearch={handleSearch} 
-                        rows={rowsEmployee} 
-                        columns={columnsEmployee} 
+                        title="Listagem de EPI"
+                        rows={rowsEpi} 
+                        columns={columnsEpi} 
                         isLoading={isLoading} 
                         pages={pages}     
-                        hrefRegister="/employees/register" 
+                        hrefRegister="/epi/register" 
                         handleCurrentPage={setCurrentPage}  
                         monthFilter={true} 
                         valueMonthFilter={monthSelected}
                         funcMonthFilter={changeValuesSelect}
                         listDateDss={false}
-                        listDateEpi={false}
+                        listDateEpi={true}
                         listDateAbsenseWarning={false}
+                        handleSearch={()=>{}}
                         handleSearchDss={()=>{}}
-                        handleSearchEpi={()=>{}}
+                        handleSearchEpi={handleSearch}
                         handleSearchAbsenseWarning={()=>{}}
                     />
                 </div>
