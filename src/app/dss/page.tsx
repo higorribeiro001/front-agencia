@@ -24,7 +24,7 @@ export default function Dsss() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [dataDss, setDataDss] = useState<DssInterface>();
     const [openDialog, setOpenDialog] = useState(false);
-    const [monthSelected, setMonthSelected] = useState('default');
+    const [monthSelected, setMonthSelected] = useState('');
 
     const getDss = async (id: string) => {
         const dataDss = await dss(id);

@@ -24,7 +24,7 @@ export default function AbsenceWarnings() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [dataAbsenseWarning, setDataAbsenseWarning] = useState<AbsenseWarningInterface>();
     const [openDialog, setOpenDialog] = useState(false);
-    const [monthSelected, setMonthSelected] = useState('default');
+    const [monthSelected, setMonthSelected] = useState('');
 
     const getAbsenseWarning = async (id: string) => {
         const dataAbsenseWarning = await absenseWarning(id);

@@ -24,7 +24,7 @@ export default function Employees() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [dataEmployee, setDataEmployee] = useState<EmployeeInterface>();
     const [openDialog, setOpenDialog] = useState(false);
-    const [monthSelected, setMonthSelected] = useState('default');
+    const [monthSelected, setMonthSelected] = useState('');
 
     const getEmployee = async (id: string) => {
         const dataEmployee = await employee(id);

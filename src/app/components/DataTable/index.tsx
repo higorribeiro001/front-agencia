@@ -10,7 +10,7 @@ import { employeesLabel } from "@/app/service/api/employees";
 import { dateEpi } from "@/app/service/api/epi";
 import { dateAbsenseWarning } from "@/app/service/api/absenseWarning";
 
-export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRegister, handleCurrentPage, title, monthFilter, valueMonthFilter, funcMonthFilter, listDateDss, handleSearchDss, listDateEpi, handleSearchEpi, listDateAbsenseWarning, handleSearchAbsenseWarning}: DataTableInterface) => {
+export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRegister, handleCurrentPage, title, monthFilter, valueMonthFilter="", funcMonthFilter, listDateDss, handleSearchDss, listDateEpi, handleSearchEpi, listDateAbsenseWarning, handleSearchAbsenseWarning}: DataTableInterface) => {
     const [dateDssData, setDateDssData] = useState<EmployeeLabelInterface[]>([]);
     const [dateEpiData, setDateEpiData] = useState<EmployeeLabelInterface[]>([]);
     const [dateAbsenseWarningData, setDateAbsenseWarningData] = useState<EmployeeLabelInterface[]>([]);
@@ -156,10 +156,12 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRe
                         id="demo-simple-select"
                         value={valueMonthFilter}
                         label=""
+                        displayEmpty
                         className="w-[200px]"
                         onChange={funcMonthFilter}
+                        defaultValue=""
                     >
-                        <MenuItem disabled value="default">
+                        <MenuItem disabled value="">
                             Data
                         </MenuItem>
                         {listDateDss ? 

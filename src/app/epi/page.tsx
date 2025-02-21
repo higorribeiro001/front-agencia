@@ -24,7 +24,7 @@ export default function Epis() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [dataEpi, setDataEpi] = useState<EpiInterface>();
     const [openDialog, setOpenDialog] = useState(false);
-    const [monthSelected, setMonthSelected] = useState('default');
+    const [monthSelected, setMonthSelected] = useState('');
 
     const getEpi = async (id: string) => {
         const dataEpi = await epi(id);
@@ -200,11 +200,6 @@ export default function Epis() {
             getEpis();
         }
     }
-
-    // const handleDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
-    //     e.preventDefault();
-    //     setOpenDialog(true);
-    // }
 
     const handleClose = () => {
         setOpenDialog(false);
