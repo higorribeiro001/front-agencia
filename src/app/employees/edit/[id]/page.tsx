@@ -27,7 +27,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
           .addTextField('categoria', '* Categoria', 'select')
           .addTextField('categoria_bonus', '* Categoria Bônus', 'select')
           .addTextField('mes', '* Mês', 'select')
-          .addTextField('is_active', '* Status', 'select')
+          .addTextField('status', '* Status', 'select')
           .build();
   
     const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +54,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
           updateModel[4].value = employeeData!.categoria;
           updateModel[5].value = employeeData!.categoria_bonus;
           updateModel[6].value = employeeData!.mes;
-          updateModel[7].value = employeeData!.is_active ? 'ativo' : 'inativo';
+          updateModel[7].value = employeeData!.status;
 
           return updateModel;
         });
@@ -102,7 +102,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
             error: '',
         },
         {
-            label: 'is_active',
+            label: 'status',
             value: '',
             error: '',
         }
@@ -163,7 +163,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
     
       const editEmployee = async () => {
         try {
-          const response = await putEmployee(resolvedParams.id, parseInt(model[0].value), model[1].value, model[2].value, model[3].value, model[4].value, model[5].value, model[6].value, model[7].value === 'ativo' ? true : false);
+          const response = await putEmployee(resolvedParams.id, parseInt(model[0].value), model[1].value, model[2].value, model[3].value, model[4].value, model[5].value, model[6].value, model[7].value);
     
           if (response.status === 200) {
             setOpenAlert(true);

@@ -66,11 +66,11 @@ export default function Employees() {
         { field: 'funcao', headerName: 'Função', width: 220 },
         { field: 'categoria', headerName: 'Categoria', width: 190 },
         { field: 'categoria_bonus', headerName: 'Categoria Bônus', width: 190 },
-        { field: 'is_active', headerName: 'Status', width: 100, renderCell: (params) => {
+        { field: 'status', headerName: 'Status', width: 100, renderCell: (params) => {
             return (
                 <div className="flex justify-center items-center py-[10px]">
-                    <div className="flex justify-center items-center font-semibold px-2 w-full" style={params.value ? { backgroundColor: 'green', color: 'white', height: '30px', borderRadius: '4px' } : { backgroundColor: 'red', color: 'white', height: '30px', borderRadius: '4px' }}>
-                        <p>{params.value ? 'ativo' : 'inativo'}</p>
+                    <div className="flex justify-center items-center font-semibold px-2 w-full" style={params.value === 'ativo' ? { backgroundColor: 'green', color: 'white', height: '30px', borderRadius: '4px' } : { backgroundColor: 'red', color: 'white', height: '30px', borderRadius: '4px' }}>
+                        <p>{params.value}</p>
                     </div>
                 </div>
               );
@@ -144,7 +144,7 @@ export default function Employees() {
                 />
                 <RowDrawer
                     keyRow="Status"
-                    value={dataEmployee?.is_active ? 'ativo' : 'inativo'}
+                    value={dataEmployee?.status}
                 />
                 <RowDrawer
                     keyRow="Data de criação"

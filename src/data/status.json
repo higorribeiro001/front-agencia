@@ -5,8 +5,18 @@
         "error": ""
     },
     {
-        "label": "inativo",
-        "value": "inativo",
+        "label": "férias",
+        "value": "férias",
+        "error": ""
+    },
+    {
+        "label": "licença",
+        "value": "licença",
+        "error": ""
+    },
+    {
+        "label": "rescisão",
+        "value": "rescisão",
         "error": ""
     }
 ]

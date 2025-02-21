@@ -34,12 +34,12 @@ export async function employeeFindName(name: string) {
 }
 
 export async function postEmployee(cod_funcionario: number, funcionario: string, setor: string, funcao: string, categoria: string, categoria_bonus: string, mes: string) {
-    const response: { data: EmployeesInterface, status: number } = await axios.post(url+`/employee`, {cod_funcionario, funcionario, setor, funcao, categoria, categoria_bonus, mes, is_active: true});
+    const response: { data: EmployeesInterface, status: number } = await axios.post(url+`/employee`, {cod_funcionario, funcionario, setor, funcao, categoria, categoria_bonus, mes, status: 'ativo'});
     return response;
 }
 
-export async function putEmployee(id: string, cod_funcionario: number, funcionario: string, setor: string, funcao: string, categoria: string, categoria_bonus: string, mes: string, is_active: boolean) {
-    const response: { data: EmployeesInterface, status: number } = await axios.put(url+`/employee/${id}`, {cod_funcionario, funcionario, setor, funcao, categoria, categoria_bonus, mes, is_active});
+export async function putEmployee(id: string, cod_funcionario: number, funcionario: string, setor: string, funcao: string, categoria: string, categoria_bonus: string, mes: string, status: string) {
+    const response: { data: EmployeesInterface, status: number } = await axios.put(url+`/employee/${id}`, {cod_funcionario, funcionario, setor, funcao, categoria, categoria_bonus, mes, status});
     return response;
 }
 

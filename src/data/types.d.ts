@@ -87,7 +87,7 @@ interface EmployeeInterface {
     funcao: string;
     categoria: string;
     categoria_bonus: string;
-    is_active: boolean;
+    status: string;
     created_at: string;
     updated_at: string;
 }
@@ -102,7 +102,7 @@ interface DataEmployeeInterface {
         funcao: string;
         categoria: string;
         categoria_bonus: string;
-        is_active: boolean;
+        status: string;
         created_at: string;
         updated_at: string;
     }
