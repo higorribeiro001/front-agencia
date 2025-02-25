@@ -1,5 +1,3 @@
-import { ChangeEvent } from react;
-
 interface FormBuilderInterface {
     formFields: {
         type?: string;
@@ -76,6 +74,7 @@ interface OrderInterface {
     id: string;
     num_pedido: string;
     status: string;
+    conforme: boolean;
     cliente: string;
     fantasia: string;
     telefone: string;
@@ -95,6 +94,7 @@ interface OrderInterface {
     previsao_embarque: string;
     ultima_entrega: string;
     dados_tabela:  {
+        id: string;
         produto: string;
         un: string;
         qtd: number;
@@ -102,23 +102,22 @@ interface OrderInterface {
         desconto: number;
         valor_total: number;
     }[];
-    resultados: [
-        {
-            total_qtd: number;
-            total_qtd_m3: number;
-            total_produtos: number;
-            total_st: number;
-            frete: number;
-            desp_acess: number;
-            desconto: number;
-            total_ipi: number;
-            total_pedido_venda: number;
-            valor_desconto_2_porc: number;
-            valor_pos_6_meses_retirada: number;
-            valor_frete: number;
-            descontos_adicionais_p_kit: number
-        }
-    ];
+    resultados: {
+        id: number;
+        total_qtd: number;
+        total_qtd_m3: number;
+        total_produtos: number;
+        total_st: number;
+        frete: number;
+        desp_acess: number;
+        desconto: number;
+        total_ipi: number;
+        total_pedido_venda: number;
+        valor_desconto_2_porc: number;
+        valor_pos_6_meses_retirada: number;
+        valor_frete: number;
+        descontos_adicionais_p_kit: number
+    }[];
     observacoes: string;
     tipo_venda: string;
     forma_pagamento: string;
@@ -132,6 +131,7 @@ interface DataOrderInterface {
         id: string;
         num_pedido: string;
         status: string;
+        conforme: boolean;
         cliente: string;
         fantasia: string;
         telefone: string;
@@ -151,6 +151,7 @@ interface DataOrderInterface {
         previsao_embarque: string;
         ultima_entrega: string;
         dados_tabela:  {
+            id: string;
             produto: string;
             un: string;
             qtd: number;
@@ -190,21 +191,20 @@ interface RowDrawerInterface {
 }
 
 interface DataTableInterface {
-    handleSearch: (e: ChangeEvent<HTMLInputElement>) => void; 
+    handleSearch?: (e: ChangeEvent<HTMLInputElement>) => void; 
     rows: Array<T>; 
     columns: GridColDef[]; 
     isLoading: boolean; 
-    pages: number;
-    hrefRegister: string;
-    handleCurrentPage: (page: number) => void;
+    pages?: number;
+    hrefRegister?: string;
+    handleCurrentPage?: (page: number) => void;
     title: string;
-    monthFilter: boolean;
-    funcMonthFilter: (e: SelectChangeEvent<string>) => void;
-    valueMonthFilter: string;
-    listDateOrder: boolean;
-    listDateEpi: boolean;
-    listDateAbsenseWarning: boolean;
-    handleSearchOrder: (value: EmployeeLabelInterface) => void;
-    handleSearchEpi: (value: EmployeeLabelInterface) => void;
-    handleSearchAbsenseWarning: (value: EmployeeLabelInterface) => void;
+    monthFilter?: boolean;
+    funcMonthFilter?: (e: SelectChangeEvent<string>) => void;
+    valueMonthFilter?: string;
+}
+
+interface RowInfo {
+    title: string;
+    info: string;
 }

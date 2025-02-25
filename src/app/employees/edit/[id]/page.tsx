@@ -7,7 +7,7 @@ import FormBuilder from "@/app/service/forms/FormBuilder";
 import { EmployeeInterface, StatusResponse } from "@/data/types";
 import { employee, putEmployee } from "@/app/service/api/employees";
 import { Loading } from "@/app/components/Loading";
-import EmployeeAdapt from "@/app/service/adapt/EmployeeAdapt";
+import EmployeeAdapt from "@/app/service/adapt/OrderAdapt";
 import { ArrowBack } from "@mui/icons-material";
 import meses from "@/data/meses.json";
 import setores from "@/data/setores.json";
