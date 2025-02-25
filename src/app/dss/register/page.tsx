@@ -5,7 +5,7 @@ import { Base } from "../../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { EmployeeLabelInterface, StatusResponse } from "@/data/types";
-import { postDss } from "@/app/service/api/dss";
+import { postDss } from "@/app/service/api/orders";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
 import sim_nao from "@/data/sim_nao.json";

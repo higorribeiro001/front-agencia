@@ -14,7 +14,7 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
             <Sidebar />
             <div className="px-10 py-5 overflow-auto flex flex-col justify-between w-full z-[1]">
                 <div className="flex flex-col animate-fade-left transition-all mb-8">
-                    <h1 className="text-primary text-[30px] font-medium">SISTEMA DE REMUNERAÇÃO</h1>
+                    <h1 className="text-primary text-[30px] font-medium">SISTEMA DE PEDIDOS</h1>
                     <p className="uppercase mb-5">{title}</p>
                     <Divider />
                 </div>

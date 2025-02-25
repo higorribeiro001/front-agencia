@@ -9,7 +9,7 @@ import { employeesLabel } from "@/app/service/api/employees";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
 import sim_nao from "@/data/sim_nao.json";
-import { dss, putDss } from "@/app/service/api/dss";
+import { dss, putDss } from "@/app/service/api/orders";
 import DssAdapt from "@/app/service/adapt/DssAdapt";
 import EmployeesLabelAdapt from "@/app/service/adapt/EmployeesLabelAdapt";
 

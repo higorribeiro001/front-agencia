@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CONCREM: Sistema de Remuneração",
-  description: "Sistema de Gerenciamento de remuneração de funcionários da CONCREM.",
+  title: "CONCREM: Sistema de Pedidos",
+  description: "Sistema de Gerenciamento de pedidos produtos da CONCREM.",
 };
 
 export default function RootLayout({

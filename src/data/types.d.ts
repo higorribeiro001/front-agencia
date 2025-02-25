@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent } from react;
 
 interface FormBuilderInterface {
     formFields: {
@@ -65,163 +65,122 @@ interface TabPanelProps {
     value: number;
 }
 
-interface EmployeesInterface {
-    current_page: number;
-    data: EmployeeInterface[];
-    last_page: number;
-    total: string;
+interface OrdersInterface {
+    next: number;
+    results: OrderInterface[];
+    previous: number;
+    count: string;
 }
 
-interface EmployeeLabelInterface {
-    label: string;
-    value: string;
-    error: string;
-};
-
-interface EmployeeInterface {
+interface OrderInterface {
     id: string;
-    cod_funcionario: number;
-    mes: string;
-    funcionario: string;
-    setor: string;
-    funcao: string;
-    categoria: string;
-    categoria_bonus: string;
+    num_pedido: string;
     status: string;
-    created_at: string;
-    updated_at: string;
+    cliente: string;
+    fantasia: string;
+    telefone: string;
+    email: string;
+    city: string;
+    uf: string;
+    cep: string;
+    endereco: string;
+    bairro: string;
+    cpf_cnpj: string;
+    inscricao_estadual: string;
+    carga: string;
+    representante: string;
+    empresa: string;
+    data_emissao: string;
+    data_validade: string;
+    previsao_embarque: string;
+    ultima_entrega: string;
+    dados_tabela:  {
+        produto: string;
+        un: string;
+        qtd: number;
+        valor_un: number;
+        desconto: number;
+        valor_total: number;
+    }[];
+    resultados: [
+        {
+            total_qtd: number;
+            total_qtd_m3: number;
+            total_produtos: number;
+            total_st: number;
+            frete: number;
+            desp_acess: number;
+            desconto: number;
+            total_ipi: number;
+            total_pedido_venda: number;
+            valor_desconto_2_porc: number;
+            valor_pos_6_meses_retirada: number;
+            valor_frete: number;
+            descontos_adicionais_p_kit: number
+        }
+    ];
+    observacoes: string;
+    tipo_venda: string;
+    forma_pagamento: string;
+    endereco_entrega: string;
+    prazo_entrega: string;
+    info_produto: Array<string>
 }
 
-interface DataEmployeeInterface {
-    dataEmployee: {
+interface DataOrderInterface {
+    dataOrder: {
         id: string;
-        cod_funcionario: number;
-        mes: string;
-        funcionario: string;
-        setor: string;
-        funcao: string;
-        categoria: string;
-        categoria_bonus: string;
+        num_pedido: string;
         status: string;
-        created_at: string;
-        updated_at: string;
-    }
-}
-
-interface DsssInterface {
-    current_page: number;
-    data: DssInterface[];
-    last_page: number;
-    total: string;
-}
-
-interface DssInterface {
-    id: string;
-    matricula: number;
-    funcionario_id: string;
-    data_realizacao: string;
-    funcionario: {
-        id: string;
-        funcionario: string;
-    };
-    presenca: boolean;
-    created_at: string;
-    updated_at: string;
-}
-
-interface DataDssInterface {
-    dataDss: {
-        id: string;
-        matricula: number;
-        funcionario_id: string;
-        data_realizacao: string;
-        funcionario: {
-            id: string;
-            funcionario: string;
-        };
-        presenca: boolean;
-        created_at: string;
-        updated_at: string;
-    }
-}
-
-// 
-
-interface EpisInterface {
-    current_page: number;
-    data: EpiInterface[];
-    last_page: number;
-    total: string;
-}
-
-interface EpiInterface {
-    id: string;
-    matricula: number;
-    funcionario_id: string;
-    data_abordagem: string;
-    funcionario: {
-        id: string;
-        funcionario: string;
-    };
-    conforme: boolean;
-    created_at: string;
-    updated_at: string;
-}
-
-interface DataEpiInterface {
-    dataEpi: {
-        id: string;
-        matricula: number;
-        funcionario_id: string;
-        data_abordagem: string;
-        funcionario: {
-            id: string;
-            funcionario: string;
-        };
-        conforme: boolean;
-        created_at: string;
-        updated_at: string;
-    }
-}
-
-// 
-
-interface AbsenseWarningsInterface {
-    current_page: number;
-    data: AbsenseWarningInterface[];
-    last_page: number;
-    total: string;
-}
-
-interface AbsenseWarningInterface {
-    id: string;
-    matricula: number;
-    funcionario_id: string;
-    mes: string;
-    funcionario: {
-        id: string;
-        funcionario: string;
-    };
-    faltas: number;
-    advertencias: number;
-    created_at: string;
-    updated_at: string;
-}
-
-interface DataAbsenseWarningInterface {
-    dataAbsenseWarning: {
-        id: string;
-        matricula: number;
-        funcionario_id: string;
-        mes: string;
-        funcionario: {
-            id: string;
-            funcionario: string;
-        };
-        faltas: number;
-        advertencias: number;
-        created_at: string;
-        updated_at: string;
+        cliente: string;
+        fantasia: string;
+        telefone: string;
+        email: string;
+        city: string;
+        uf: string;
+        cep: string;
+        endereco: string;
+        bairro: string;
+        cpf_cnpj: string;
+        inscricao_estadual: string;
+        carga: string;
+        representante: string;
+        empresa: string;
+        data_emissao: string;
+        data_validade: string;
+        previsao_embarque: string;
+        ultima_entrega: string;
+        dados_tabela:  {
+            produto: string;
+            un: string;
+            qtd: number;
+            valor_un: number;
+            desconto: number;
+            valor_total: number;
+        }[];
+        resultados: [
+            {
+                total_qtd: number;
+                total_qtd_m3: number;
+                total_produtos: number;
+                total_st: number;
+                frete: number;
+                desp_acess: number;
+                desconto: number;
+                total_ipi: number;
+                total_pedido_venda: number;
+                valor_desconto_2_porc: number;
+                valor_pos_6_meses_retirada: number;
+                valor_frete: number;
+                descontos_adicionais_p_kit: number
+            }
+        ];
+        observacoes: string;
+        tipo_venda: string;
+        forma_pagamento: string;
+        endereco_entrega: string;
+        prazo_entrega: string;
+        info_produto: Array<string>
     }
 }
 
@@ -242,18 +201,10 @@ interface DataTableInterface {
     monthFilter: boolean;
     funcMonthFilter: (e: SelectChangeEvent<string>) => void;
     valueMonthFilter: string;
-    listDateDss: boolean;
+    listDateOrder: boolean;
     listDateEpi: boolean;
     listDateAbsenseWarning: boolean;
-    handleSearchDss: (value: EmployeeLabelInterface) => void;
+    handleSearchOrder: (value: EmployeeLabelInterface) => void;
     handleSearchEpi: (value: EmployeeLabelInterface) => void;
     handleSearchAbsenseWarning: (value: EmployeeLabelInterface) => void;
-}
-
-interface RegisterEmployee {
-    nome: string;
-    chave: string;
-    largura: number;
-    altura: number;
-    sarrafo: number;
 }

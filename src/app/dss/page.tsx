@@ -5,7 +5,7 @@ import { Base } from "../components/Base/layout";
 import React, { useEffect, useState } from "react";
 import { Visibility, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
-import { deleteDss, dss, dssFindName, dsss } from "../service/api/dss";
+import { deleteDss, dss, dssFindName, dsss } from "../service/api/orders";
 import DsssAdapt from "../service/adapt/DsssAdapt";
 import DssAdapt from "../service/adapt/DssAdapt";
 import { RowDrawer } from "../components/RowDrawer";
