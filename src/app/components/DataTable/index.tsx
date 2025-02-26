@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Pagination, } from "@mui/material";
+import { Autocomplete, Box, Button, Pagination, TextField, } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRegister, handleCurrentPage, title, monthFilter, valueMonthFilter="", funcMonthFilter}: DataTableInterface) => { 
@@ -15,13 +15,11 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRe
             <div className="flex flex-row gap-4 justify-between">
                 {/* <Autocomplete
                     disablePortal
-                    options={employeesData!}
+                    options={}
                     sx={{ width: 300 }}
                     className="w-full"
                     onChange={(event, newValue) => {
-                        if (listDateAbsenseWarning) {
-                            handleSearchAbsenseWarning(newValue!);
-                        }
+                        handleSearch!(newValue!);
                     }}
                     isOptionEqualToValue={(option, value) => option?.value === value?.value}
                     renderInput={(params) => 

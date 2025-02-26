@@ -64,10 +64,10 @@ interface TabPanelProps {
 }
 
 interface OrdersInterface {
-    next: number;
+    next: string;
     results: OrderInterface[];
-    previous: number;
-    count: string;
+    previous: string;
+    count: number;
 }
 
 interface OrderInterface {
@@ -159,23 +159,22 @@ interface DataOrderInterface {
             desconto: number;
             valor_total: number;
         }[];
-        resultados: [
-            {
-                total_qtd: number;
-                total_qtd_m3: number;
-                total_produtos: number;
-                total_st: number;
-                frete: number;
-                desp_acess: number;
-                desconto: number;
-                total_ipi: number;
-                total_pedido_venda: number;
-                valor_desconto_2_porc: number;
-                valor_pos_6_meses_retirada: number;
-                valor_frete: number;
-                descontos_adicionais_p_kit: number
-            }
-        ];
+        resultados: 
+        {
+            total_qtd: number;
+            total_qtd_m3: number;
+            total_produtos: number;
+            total_st: number;
+            frete: number;
+            desp_acess: number;
+            desconto: number;
+            total_ipi: number;
+            total_pedido_venda: number;
+            valor_desconto_2_porc: number;
+            valor_pos_6_meses_retirada: number;
+            valor_frete: number;
+            descontos_adicionais_p_kit: number
+        }[];
         observacoes: string;
         tipo_venda: string;
         forma_pagamento: string;
@@ -202,6 +201,10 @@ interface DataTableInterface {
     monthFilter?: boolean;
     funcMonthFilter?: (e: SelectChangeEvent<string>) => void;
     valueMonthFilter?: string;
+    options?: {
+        label: string;
+        value: string;
+    }
 }
 
 interface RowInfo {
