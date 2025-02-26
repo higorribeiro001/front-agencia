@@ -227,7 +227,7 @@ export default function Home() {
                                 <h2 className='text-primary font-semibold mb-3'>{dataResponse?.cliente}</h2>
                                 <RowInfo title="Número do Pedido:" info={dataResponse?.num_pedido} />
                                 <RowInfo title="Status:" info={dataResponse?.status} />
-                                <RowInfo title="Conformidade:" info={dataResponse?.conforme ? 'sim' : 'não'} />
+                                <RowInfo title="Conformidade:" info={dataResponse?.conforme ? 'Sim' : 'Não'} />
                                 <RowInfo title="Empresa:" info={dataResponse?.empresa} />
                                 <RowInfo title="Fantasia:" info={dataResponse?.fantasia} />
                                 <RowInfo title="Carga:" info={dataResponse?.carga} />

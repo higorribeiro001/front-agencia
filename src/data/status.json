@@ -1,22 +1,12 @@
 [
     {
-        "label": "ativo",
-        "value": "ativo",
+        "label": "Sim",
+        "value": "Sim",
         "error": ""
     },
     {
-        "label": "férias",
-        "value": "férias",
-        "error": ""
-    },
-    {
-        "label": "licença",
-        "value": "licença",
-        "error": ""
-    },
-    {
-        "label": "rescisão",
-        "value": "rescisão",
+        "label": "Não",
+        "value": "Não",
         "error": ""
     }
 ]

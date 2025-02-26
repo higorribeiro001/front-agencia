@@ -31,16 +31,6 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRe
                         />
                     }
                 /> */}
-                {hrefRegister && (
-                    <Button 
-                        className="bg-primary font-semibold w-[200px] h-[56px]"
-                        variant="contained"
-                        type="button"
-                        href={hrefRegister}
-                    >
-                        Cadastrar
-                    </Button>
-                )}
             </div>
             <Box sx={{ width: 1 }}>
                 <div className="flex flex-col gap-3 items-end">

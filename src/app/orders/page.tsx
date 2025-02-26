@@ -41,8 +41,14 @@ export default function Orders() {
                 {params.value ? 'Sim' : 'Não'}
             </div>
         }  },
-        { field: 'cliente', headerName: 'Cliente', width: 220 },
-        { field: 'fantasia', headerName: 'Fantasia', width: 220 },
+        { field: 'cliente', headerName: 'Cliente', width: 280 },
+        { field: 'representante', headerName: 'Representante', width: 260, minWidth: 260 },
+        { field: 'resultados', headerName: 'Total pedido venda', width: 160, renderCell: (params) => {
+            const total = params.value?.[0]?.total_pedido_venda;
+            return <div>
+                R$ {total ? String(total.toFixed(2)).replace('.', ',') : ''}
+            </div>
+        } },
         { field: 'data_emissao', headerName: 'Data de emissão', width: 140, renderCell: (params) => {
             return <div>
                 {convertDate(params.value)}
@@ -98,7 +104,7 @@ export default function Orders() {
                 <h2 className="text-primary text-[25px] font-semibold mb-2">{ dataOrder?.cliente }</h2>
                 <RowDrawer
                     keyRow="N° pedido"
-                    value={convertDate(dataOrder?.num_pedido ?? '')}
+                    value={dataOrder?.num_pedido ?? ''}
                 />
                 <RowDrawer
                     keyRow="Status"
@@ -106,7 +112,7 @@ export default function Orders() {
                 />
                 <RowDrawer
                     keyRow="Conforme"
-                    value={dataOrder?.conforme ?? ''}
+                    value={dataOrder?.conforme ? 'Sim' : 'Não'}
                 />
                 <RowDrawer
                     keyRow="Cliente"
@@ -122,7 +128,27 @@ export default function Orders() {
                 />
                 <RowDrawer
                     keyRow="Telefone"
-                    value={dataOrder?.status}
+                    value={dataOrder?.telefone}
+                />
+                <RowDrawer
+                    keyRow="Representante"
+                    value={dataOrder?.representante}
+                />
+                <RowDrawer
+                    keyRow="Forma de pagamento"
+                    value={dataOrder?.forma_pagamento}
+                />
+                <RowDrawer
+                    keyRow="Total pedido venda"
+                    value={`R$ ${dataOrder?.resultados?.[0]?.total_pedido_venda.toFixed(2)}`}
+                />
+                <RowDrawer
+                    keyRow="Valor desconto"
+                    value={`R$ ${dataOrder?.resultados?.[0]?.valor_desconto_2_porc.toFixed(2)}`}
+                />
+                <RowDrawer
+                    keyRow="Frete"
+                    value={`R$ ${dataOrder?.resultados?.[0]?.frete.toFixed(2)}`}
                 />
                 <RowDrawer
                     keyRow="Data de validade"
