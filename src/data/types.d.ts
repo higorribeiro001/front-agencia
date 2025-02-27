@@ -15,6 +15,7 @@ interface Model {
 }
 
 interface StatusResponse { response: { status: number; } }
+interface ErrorResponse { response: { status: number; data: { erro: string } } }
 
 interface AlertAppInterface {
     isOpen: boolean;

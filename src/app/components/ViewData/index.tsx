@@ -167,11 +167,18 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                     setIsSuccess(true);
                     closeAlert();
                 }
-            } catch {
-                setOpenAlert(true);
-                setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
-                setIsSuccess(false);
-        
+            } catch (e: unknown) {
+                const error = e as ErrorResponse;
+                if (error.response.data.erro === "{'num_pedido': [ErrorDetail(string='pedidos com este num pedido já existe.', code='unique')]}") {
+                    setOpenAlert(true);
+                    setMessageAlert('Pedido com este número pedido já existe.');
+                    setIsSuccess(false);
+                } else {
+                    setOpenAlert(true);
+                    setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
+                    setIsSuccess(false);
+                }
+                
                 closeAlert();
             } finally {
                 setIsLoading(false);

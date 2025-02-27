@@ -14,24 +14,26 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
     return (
         <div className="flex flex-col p-4 border gap-4 border-gray-400 rounded">
             <h2 className="uppercase">{title}</h2>
-            <div className="flex flex-row gap-4 justify-between">
-                <TextField
-                    variant="outlined"
-                    fullWidth
-                    type="text"
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton>
-                                    <Search />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    placeholder="pesquise pelo n° do pedido..."
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch!(e)}
-                /> 
-            </div>
+            {handleSearch && (
+                <div className="flex flex-row gap-4 justify-between">
+                    <TextField
+                        variant="outlined"
+                        fullWidth
+                        type="text"
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton>
+                                        <Search />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                        placeholder="pesquise pelo n° do pedido..."
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch!(e)}
+                    /> 
+                </div>
+            )}
             <Box sx={{ width: 1 }}>
                 <div className="flex flex-col gap-3 items-end">
                     <DataGrid 
