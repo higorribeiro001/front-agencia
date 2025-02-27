@@ -28,7 +28,7 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                             </InputAdornment>
                         ),
                     }}
-                    placeholder="pesquise..."
+                    placeholder="pesquise pelo n° do pedido..."
                     onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch!(e)}
                 /> 
             </div>
