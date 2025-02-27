@@ -256,6 +256,21 @@ export default function Orders() {
                                 Excluir
                             </Typography>
                         </IconButton> */}
+                        <IconButton 
+                            className="gap-2"
+                            href={"/orders/view/"+dataOrder?.id}
+                        >
+                            <Visibility 
+                                fontSize="small"
+                                color="success" 
+                            /> 
+                            <Typography 
+                                className="font-semibold text-[16px]"
+                                color="success"
+                            >
+                                Ver mais
+                            </Typography>
+                        </IconButton>
                     </footer>
                 </div>
             </Drawer>

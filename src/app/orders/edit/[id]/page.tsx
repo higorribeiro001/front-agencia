@@ -6,11 +6,6 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import meses from "@/data/meses.json";
-import setores from "@/data/setores.json";
-import funcoes from "@/data/funcoes.json";
-import categorias from "@/data/categorias.json";
-import categorias_bonus from "@/data/categorias_bonus.json";
 import status from "@/data/status.json";
 import OrderAdapt from "@/app/service/adapt/OrderAdapt";
 import { order, putOrder } from "@/app/service/api/orders";
@@ -19,7 +14,7 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
     const resolvedParams = React.use(params);
     
     const formFields = new FormBuilder()
-          .addTextField('num_pedido', '* N° pedido', 'number')
+          .addTextField('num_pedido', '* N° pedido', 'text')
           .addTextField('cliente', '* Cliente', 'text')
           .addTextField('fantasia', '* Fantasia', 'text')
           .addTextField('empresa', '* Empresa', 'text')
@@ -78,7 +73,8 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
           updateModel[12].value = orderData!.inscricao_estadual;
           updateModel[13].value = orderData!.representante;
           updateModel[14].value = orderData!.status;
-          updateModel[15].value = orderData!.conforme ? 'Sim' : 'Não';
+          updateModel[15].label = orderData!.conforme ? 'Sim' : 'Não';
+          updateModel[15].value = String(orderData!.conforme);
           updateModel[16].value = orderData!.carga;
           updateModel[17].value = orderData!.data_emissao !== '' ? orderData!.data_emissao : '2025-01-01';
           updateModel[18].value = orderData!.data_validade !== '' ? orderData!.data_validade : '2025-01-01';
@@ -100,127 +96,152 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
 
     const initModel = [
         {
-            label: 'num_pedido',
+            name: 'num_pedido',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'cliente',
+            name: 'cliente',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'fantasia',
+            name: 'fantasia',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'empresa',
+            name: 'empresa',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'cpf_cnpj',
+            name: 'cpf_cnpj',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'telefone',
+            name: 'telefone',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'email',
+            name: 'email',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'cep',
+            name: 'cep',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'endereco',
+            name: 'endereco',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'bairro',
+            name: 'bairro',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'city',
+            name: 'city',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'uf',
+            name: 'uf',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'inscricao_estadual',
+            name: 'inscricao_estadual',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'representante',
+            name: 'representante',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'status',
+            name: 'status',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'conforme',
+            name: 'conforme',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'carga',
+            name: 'carga',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'data_emissao',
+            name: 'data_emissao',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'data_validade',
+            name: 'data_validade',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'previsao_embarque',
+            name: 'previsao_embarque',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'ultima_entrega',
+            name: 'ultima_entrega',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'tipo_venda',
+            name: 'tipo_venda',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'forma_pagamento',
+            name: 'forma_pagamento',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'endereco_entrega',
+            name: 'endereco_entrega',
+            label: '',
             value: '',
             error: '',
         },
         {
-            label: 'prazo_entrega',
+            name: 'prazo_entrega',
+            label: '',
             value: '',
             error: '',
         },
@@ -281,7 +302,7 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
     
       const editOrder = async () => {
         try {
-          const response = await putOrder(resolvedParams.id, parseInt(model[0].value), model[1].value, Boolean(model[2].value), model[3].value);
+          const response = await putOrder(resolvedParams.id, model[0].value, model[1].value, model[2].value, model[3].value, model[4].value, model[5].value, model[6].value, model[7].value, model[8].value, model[9].value, model[10].value, model[11].value, model[12].value, model[13].value, model[14].value, Boolean(model[15].value), model[16].value, model[17].value, model[18].value, model[19].value, model[20].value, model[21].value, model[22].value, model[23].value, model[24].value);
     
           if (response.status === 200) {
             setOpenAlert(true);
@@ -291,7 +312,7 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
           }
         } catch (e: unknown) {
           const error = e as StatusResponse;
-          if (error.response.status === 422) {
+          if (error.response && error.response.status === 422) {
             setOpenAlert(true);
             setMessageAlert('Preencha todos os campos obrigatórios.');
             setIsSuccess(false);
@@ -301,6 +322,7 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
             setOpenAlert(true);
             setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
             setIsSuccess(false);
+            console.log(e)
     
             closeAlert();
           }
@@ -311,7 +333,7 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
 
     return (
         <Base 
-          title="Edição de Funcionário"
+          title="Edição de Pedidos"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
@@ -342,7 +364,7 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
                     onSubmit={submitForm}
                 >
                     <div className="w-full flex flex-wrap gap-5 mb-10">
-                      {formFields.map((value, index: number) => (
+                      {formFields.map((value: {type: string; label: string;}, index: number) => (
                             value.type === 'select' ? (
                               <Autocomplete
                                   key={index}
@@ -350,13 +372,14 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
                                   options={status}
                                   sx={{ width: 300 }}
                                   className="w-[49%]"
-                                  value={model[index].value} 
+                                  value={model[index]} 
                                   onChange={(event, newValue) => {
                                     if (newValue) {
                                       setModel((prevModel) => {
                                         const updateModel = [...prevModel];
                                         updateModel[index] = { 
                                           label: newValue.label,
+                                          name: updateModel[index].name,
                                           value: newValue.value, 
                                           error: newValue.error ?? ''
                                         };

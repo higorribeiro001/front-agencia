@@ -32,7 +32,7 @@ export async function postOrder(formData: FormData) {
     return response;
 }
 
-export async function putOrder(id: string, matricula: number, funcionario_id: string, presenca: boolean, data_realizacao: string) {
-    const response: { data: OrdersInterface, status: number } = await axios.put(url+`/v1/pedidos/${id}/`, {matricula, funcionario_id, presenca, data_realizacao});
+export async function putOrder(id: string, num_pedido: string, cliente: string, fantasia: string, empresa: string, cpf_cnpj: string, telefone: string, email: string, cep: string, endereco: string, bairro: string, city: string, uf: string, inscricao_estadual: string, representante: string, status: string, conforme: boolean, carga: string, data_emissao: string, data_validade: string, previsao_embarque: string, ultima_entrega: string, tipo_venda: string, forma_pagamento: string, endereco_entrega: string, prazo_entrega: string) {
+    const response: { data: OrdersInterface, status: number } = await axios.put(url+`/v1/pedidos/${id}/`, {num_pedido, cliente, fantasia, empresa, cpf_cnpj, telefone, email, cep, endereco, bairro, city, uf, inscricao_estadual, representante, status, conforme, carga, data_emissao, data_validade, previsao_embarque, ultima_entrega, tipo_venda, forma_pagamento, endereco_entrega, prazo_entrega});
     return response;
 }
