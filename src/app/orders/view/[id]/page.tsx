@@ -22,6 +22,6 @@ export default function OrderView({ params }: { params: Promise<{ id: string }> 
     }, []);
 
     return (
-        <ViewData importFile={false} data={dataOrder!} title="Pedidos" />
+        <ViewData importFile={false} data={dataOrder!} title="Pedido" />
     );
 }
