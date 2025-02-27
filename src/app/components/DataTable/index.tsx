@@ -1,7 +1,9 @@
-import { Autocomplete, Box, Button, Pagination, TextField, } from "@mui/material";
+import { Search } from "@mui/icons-material";
+import { Box, IconButton, InputAdornment, Pagination, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { ChangeEvent } from "react";
 
-export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRegister, handleCurrentPage, title, monthFilter, valueMonthFilter="", funcMonthFilter}: DataTableInterface) => { 
+export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handleCurrentPage, title}: DataTableInterface) => { 
     
     const CustomNoRowsOverlay = () => (
         <div style={{ textAlign: 'center', padding: '20px' }}>
@@ -13,24 +15,22 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, hrefRe
         <div className="flex flex-col p-4 border gap-4 border-gray-400 rounded">
             <h2 className="uppercase">{title}</h2>
             <div className="flex flex-row gap-4 justify-between">
-                {/* <Autocomplete
-                    disablePortal
-                    options={}
-                    sx={{ width: 300 }}
-                    className="w-full"
-                    onChange={(event, newValue) => {
-                        handleSearch!(newValue!);
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    type="text"
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton>
+                                    <Search />
+                                </IconButton>
+                            </InputAdornment>
+                        ),
                     }}
-                    isOptionEqualToValue={(option, value) => option?.value === value?.value}
-                    renderInput={(params) => 
-                        <TextField 
-                            {...params} 
-                            label="" 
-                            placeholder="pesquise..."
-                            fullWidth
-                        />
-                    }
-                /> */}
+                    placeholder="pesquise..."
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch!(e)}
+                /> 
             </div>
             <Box sx={{ width: 1 }}>
                 <div className="flex flex-col gap-3 items-end">

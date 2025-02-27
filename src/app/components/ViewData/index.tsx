@@ -1,7 +1,7 @@
 "use client"
 
 import { styled } from '@mui/material/styles';
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { Base } from "../../components/Base/layout";
 import React, { useEffect, useState } from "react";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -11,6 +11,7 @@ import OrderAdapt from '../../service/adapt/OrderAdapt';
 import RowInfo from '../../components/RowInfo';
 import { DataTable } from '../../components/DataTable';
 import { GridColDef } from '@mui/x-data-grid';
+import { ArrowBack } from '@mui/icons-material';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -193,6 +194,13 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                 <Loading 
                     isOpen={isLoading}
                 />
+                {!importFile && (
+                    <div className="flex flex-row w-full justify-between">
+                        <IconButton href="/orders">
+                            <ArrowBack color="inherit" />
+                        </IconButton>
+                    </div>
+                )}
                 <div className="lg:max-w-[400px] sm:w-full flex flex-col gap-5">
                     {importFile && (
                         <form 

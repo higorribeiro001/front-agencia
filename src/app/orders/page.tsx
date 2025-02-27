@@ -10,7 +10,7 @@ import OrderAdapt from "../service/adapt/OrderAdapt";
 import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
-import { deleteOrder, order, orders } from "../service/api/orders";
+import { deleteOrder, order, orderItem, orders } from "../service/api/orders";
 
 export default function Orders() {
     const [rowsOrder, setRowsOrder] = useState<OrderInterface[]>([]);
@@ -83,12 +83,12 @@ export default function Orders() {
         setIsLoading(true);
         
         timeout = setTimeout(async () => {
-            const dataOrders = await order(e.target.value);
-            const orderAdapt = new OrderAdapt(dataOrders!);
+            const dataOrders = await orderItem(e.target.value);
+            const orderAdapt = new OrdersAdapt(dataOrders);
 
-            const ordersData = orderAdapt.externalOrderAdapt;
+            const ordersData = orderAdapt.externalOrdersAdapt;
             const ordersDataData = ordersData;
-            setRowsOrder([ordersDataData]);
+            setRowsOrder(ordersDataData.results);
             setPages(0);
             setIsLoading(false);
         }, 3000);

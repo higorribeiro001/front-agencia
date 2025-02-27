@@ -22,6 +22,11 @@ export async function order(id: string) {
     return response.data;
 }
 
+export async function orderItem(num_pedido: string) {
+    const response: { data: OrdersInterface, status: number } = await axios.get(url+`/v1/pedidos/itens/${num_pedido}/`);
+    return response.data;
+}
+
 export async function deleteOrder(id: string) {
     const response: { data: OrderInterface, status: number } = await axios.delete(url+`/v1/pedidos/${id}/`);
     return response;
