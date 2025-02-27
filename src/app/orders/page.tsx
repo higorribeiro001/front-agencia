@@ -81,16 +81,19 @@ export default function Orders() {
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         clearTimeout(timeout);
         setIsLoading(true);
-        
         timeout = setTimeout(async () => {
-            const dataOrders = await orderItem(e.target.value);
-            const orderAdapt = new OrdersAdapt(dataOrders);
+            if (e.target.value !== "") {
+                const dataOrders = await orderItem(e.target.value);
+                const orderAdapt = new OrdersAdapt(dataOrders);
 
-            const ordersData = orderAdapt.externalOrdersAdapt;
-            const ordersDataData = ordersData;
-            setRowsOrder(ordersDataData.results);
-            setPages(0);
-            setIsLoading(false);
+                const ordersData = orderAdapt.externalOrdersAdapt;
+                const ordersDataData = ordersData;
+                setRowsOrder(ordersDataData.results);
+                setPages(0);
+                setIsLoading(false);
+            } else {
+                getOrders();
+            }
         }, 3000);
     }
 
