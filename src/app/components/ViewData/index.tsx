@@ -171,7 +171,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                 const error = e as ErrorResponse;
                 if (error.response.data.erro === "{'num_pedido': [ErrorDetail(string='pedidos com este num pedido já existe.', code='unique')]}") {
                     setOpenAlert(true);
-                    setMessageAlert('Pedido com este número pedido já existe.');
+                    setMessageAlert('Pedido com este número já existe.');
                     setIsSuccess(false);
                 } else {
                     setOpenAlert(true);
