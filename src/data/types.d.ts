@@ -114,11 +114,20 @@ interface OrderInterface {
         desconto: number;
         total_ipi: number;
         total_pedido_venda: number;
-        valor_desconto_2_porc: number;
-        valor_pos_6_meses_retirada: number;
-        valor_frete: number;
-        descontos_adicionais_p_kit: number
     }[];
+    condicoes_comerciais: {
+        id: number;
+        tipo_venda: string;
+        conforme: string;
+        forma_pagamento: string;
+        qtd_parcelas: number;
+        pos_faturamento: string;
+        percentual_desconto: number;
+        conformidade_desconto: string;
+        retirada_pagamento: string;
+        conformidade_frete: string;
+        percentual_frete: number;
+    };
     observacoes: string;
     tipo_venda: string;
     forma_pagamento: string;
@@ -171,11 +180,20 @@ interface DataOrderInterface {
             desconto: number;
             total_ipi: number;
             total_pedido_venda: number;
-            valor_desconto_2_porc: number;
-            valor_pos_6_meses_retirada: number;
-            valor_frete: number;
-            descontos_adicionais_p_kit: number
         }[];
+        condicoes_comerciais: {
+            id: number;
+            tipo_venda: string;
+            conforme: string;
+            forma_pagamento: string;
+            qtd_parcelas: number;
+            pos_faturamento: string;
+            percentual_desconto: number;
+            conformidade_desconto: string;
+            retirada_pagamento: string;
+            conformidade_frete: string;
+            percentual_frete: number;
+        };
         observacoes: string;
         tipo_venda: string;
         forma_pagamento: string;
@@ -188,6 +206,8 @@ interface DataOrderInterface {
 interface RowDrawerInterface {
     keyRow: string;
     value: string | number;
+    color?: boolean;
+    success?: boolean;
 }
 
 interface DataTableInterface {
@@ -211,4 +231,6 @@ interface DataTableInterface {
 interface RowInfo {
     title: string;
     info: string;
+    color?: boolean;
+    success?: boolean;
 }

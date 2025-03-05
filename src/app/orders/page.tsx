@@ -3,7 +3,7 @@
 import { Drawer, IconButton, SelectChangeEvent, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Visibility, Edit } from "@mui/icons-material";
+import { Visibility } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import OrdersAdapt from "../service/adapt/OrdersAdapt";
 import OrderAdapt from "../service/adapt/OrderAdapt";
@@ -36,12 +36,7 @@ export default function Orders() {
     const columnsOrder: GridColDef[] = [
         { field: 'num_pedido', headerName: 'N° pedido', width: 90 },
         { field: 'status', headerName: 'Status', width: 100 },
-        { field: 'conforme', headerName: 'Conforme', width: 100, renderCell: (params) => {
-            return <div>
-                {params.value ? 'Sim' : 'Não'}
-            </div>
-        }  },
-        { field: 'cliente', headerName: 'Cliente', width: 280 },
+        { field: 'cliente', headerName: 'Cliente', width: 400 },
         { field: 'representante', headerName: 'Representante', width: 260, minWidth: 260 },
         { field: 'resultados', headerName: 'Total pedido venda', width: 160, renderCell: (params) => {
             const total = params.value?.[0]?.total_pedido_venda;
@@ -101,6 +96,10 @@ export default function Orders() {
         setMonthSelected(e.target.value);
     }
 
+    const phraseSuccess = 'Está de acordo com a Política de Análise';
+    const phraseSuccess2 = 'Está dentro do prazo de 6 meses';
+    const phraseExtra = 'Não foi aplicado desconto no total do pedido.';
+
     const ContentViewOrder = ({dataOrder}: DataOrderInterface) => {
         return (
             <div className="flex flex-col gap-1">
@@ -112,10 +111,6 @@ export default function Orders() {
                 <RowDrawer
                     keyRow="Status"
                     value={dataOrder?.status ?? ''}
-                />
-                <RowDrawer
-                    keyRow="Conforme"
-                    value={dataOrder?.conforme ? 'Sim' : 'Não'}
                 />
                 <RowDrawer
                     keyRow="Cliente"
@@ -142,16 +137,34 @@ export default function Orders() {
                     value={dataOrder?.forma_pagamento}
                 />
                 <RowDrawer
-                    keyRow="Total pedido venda"
-                    value={`R$ ${dataOrder?.resultados?.[0]?.total_pedido_venda.toFixed(2)}`}
+                    keyRow="Tipo de venda"
+                    value={`${dataOrder?.condicoes_comerciais?.tipo_venda}`}
                 />
                 <RowDrawer
-                    keyRow="Valor desconto"
-                    value={`R$ ${dataOrder?.resultados?.[0]?.valor_desconto_2_porc.toFixed(2)}`}
+                    keyRow="% desconto"
+                    value={`${String((dataOrder?.condicoes_comerciais?.percentual_desconto * 100).toFixed(2)).replace('.', ',')}`}
                 />
                 <RowDrawer
-                    keyRow="Frete"
-                    value={`R$ ${dataOrder?.resultados?.[0]?.frete.toFixed(2)}`}
+                    keyRow="% frete"
+                    value={`${String((dataOrder?.condicoes_comerciais?.percentual_frete * 100).toFixed(2)).replace('.', ',')}`}
+                />
+                <RowDrawer
+                    keyRow="Análise de desconto"
+                    value={`${dataOrder?.condicoes_comerciais?.conformidade_desconto}`}
+                    color={true}
+                    success={dataOrder?.condicoes_comerciais?.conformidade_desconto === phraseSuccess || dataOrder?.condicoes_comerciais?.conformidade_desconto === phraseExtra}
+                />
+                <RowDrawer
+                    keyRow="Análise de retirada"
+                    value={`${dataOrder?.condicoes_comerciais?.retirada_pagamento}`}
+                    color={true}
+                    success={dataOrder?.condicoes_comerciais?.retirada_pagamento === phraseSuccess2}
+                />
+                <RowDrawer
+                    keyRow="Análise de frete"
+                    value={`${dataOrder?.condicoes_comerciais?.conformidade_frete}`}
+                    color={true}
+                    success={dataOrder?.condicoes_comerciais?.conformidade_frete === phraseSuccess}
                 />
                 <RowDrawer
                     keyRow="Data de validade"
@@ -229,7 +242,7 @@ export default function Orders() {
                         dataOrder={dataOrder!}
                     />
                     <footer className="flex flex-row justify-between gap-3">
-                        <IconButton 
+                        {/* <IconButton 
                             className="gap-2"
                             href={"/orders/edit/"+dataOrder?.id}
                         >
@@ -242,21 +255,6 @@ export default function Orders() {
                                 color="success"
                             >
                                 Editar
-                            </Typography>
-                        </IconButton>
-                        {/* <IconButton 
-                            className="gap-2"
-                            onClick={(e) => handleDialog(e)}
-                        >
-                            <Delete
-                                fontSize="small"
-                                color="error" 
-                            /> 
-                            <Typography 
-                                className="font-semibold text-[16px]"
-                                color="error"
-                            >
-                                Excluir
                             </Typography>
                         </IconButton> */}
                         <IconButton 

@@ -116,27 +116,6 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                 </div>
             );
         } },
-        { field: 'valor_desconto_2_porc', headerName: 'Valor c/ Desconto 2%', width: 100, renderCell: (params) => {
-            return (
-                <div>
-                    R$ {params.value.toFixed(2).replace('.', ',')}
-                </div>
-            );
-        } },
-        { field: 'valor_pos_6_meses_retirada', headerName: 'Valor c/juros', width: 100, renderCell: (params) => {
-            return (
-                <div>
-                    R$ {params.value.toFixed(2).replace('.', ',')}
-                </div>
-            );
-        } },
-        { field: 'valor_frete', headerName: 'Valor Frete', width: 100, renderCell: (params) => {
-            return (
-                <div>
-                    R$ {params.value.toFixed(2).replace('.', ',')}
-                </div>
-            );
-        } }
     ];
 
     const closeAlert = () => {
@@ -189,6 +168,15 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
             uploadPdf();
         }
     }, [fileUpload]);
+
+    const phraseSuccess = 'Está de acordo com a Política de Análise';
+    const phraseSuccess2 = 'Está dentro do prazo de 6 meses';
+    const phraseExtra = 'Não foi aplicado desconto no total do pedido.';
+
+    const convertDate = (isoDate: string) => {
+        const [year, month, day] = isoDate.split('-');
+        return `${day}/${month}/${year}`;
+    }
 
     return (
         <Base 
@@ -246,7 +234,6 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                 <h2 className='text-primary font-semibold mb-3'>{dataResponse?.cliente}</h2>
                                 <RowInfo title="Número do Pedido:" info={dataResponse?.num_pedido} />
                                 <RowInfo title="Status:" info={dataResponse?.status} />
-                                <RowInfo title="Conformidade:" info={dataResponse?.conforme ? 'Sim' : 'Não'} />
                                 <RowInfo title="Empresa:" info={dataResponse?.empresa} />
                                 <RowInfo title="Fantasia:" info={dataResponse?.fantasia} />
                                 <RowInfo title="Carga:" info={dataResponse?.carga} />
@@ -261,9 +248,6 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                             </div>
                             <div className='flex flex-col gap-1 rounded-md shadow-md p-4'>
                                 <h2 className='text-primary font-semibold mb-3'>Detalhes:</h2>
-                                <RowInfo title="Observações:" info={dataResponse?.observacoes} />
-                                <RowInfo title="Tipo de Venda:" info={dataResponse?.tipo_venda} />
-                                <RowInfo title="Forma de pagamento:" info={dataResponse?.forma_pagamento} />
                                 <RowInfo title="Endereço de entrega:" info={dataResponse?.endereco_entrega} />
                                 <RowInfo title="Prazo entrega:" info={dataResponse?.prazo_entrega} />
                                 {Object.keys(dataResponse?.info_produto || {}).length > 0 && (
@@ -283,7 +267,42 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                 </div>
                 {dataResponse && (
                     <div className='flex sm:w-full lg:w-4/6 h-auto flex-col gap-5 rounded-md shadow-md p-4'>
-                        <h2 className='text-primary font-semibold mb-3'>{dataResponse?.representante}</h2>
+                        <div className="flex flex-col gap-1">
+                            <h2 className='text-primary font-semibold mb-3'>{dataResponse?.representante}</h2>
+                            <RowInfo title="Tipo Venda:" info={dataResponse?.condicoes_comerciais?.tipo_venda === '' ? '-' : dataResponse?.condicoes_comerciais?.tipo_venda} />
+                            <RowInfo title="Forma de pagamento:" info={dataResponse?.condicoes_comerciais?.forma_pagamento} />
+                            <RowInfo title="Data de validade:" info={convertDate(dataResponse?.data_emissao)} />
+                            <RowInfo title="Data de validade:" info={convertDate(dataResponse?.data_validade)} />
+                            <RowInfo
+                                title="Análise de desconto:"
+                                info={`${dataResponse?.condicoes_comerciais?.conformidade_desconto}`}
+                                color={true}
+                                success={dataResponse?.condicoes_comerciais?.conformidade_desconto === phraseSuccess || dataResponse?.condicoes_comerciais?.conformidade_desconto === phraseExtra}
+                            />
+                            <RowInfo
+                                title="Análise de retirada:"
+                                info={`${dataResponse?.condicoes_comerciais?.retirada_pagamento}`}
+                                color={true}
+                                success={dataResponse?.condicoes_comerciais?.retirada_pagamento === phraseSuccess2}
+                            />
+                            <RowInfo
+                                title="Análise de frete:"
+                                info={`${dataResponse?.condicoes_comerciais?.conformidade_frete}`}
+                                color={true}
+                                success={dataResponse?.condicoes_comerciais?.conformidade_frete === phraseSuccess}
+                            />
+                            <RowInfo
+                                title="Pós-faturamento:"
+                                info={`${dataResponse?.condicoes_comerciais?.pos_faturamento}`}
+                                color={true}
+                                success={dataResponse?.condicoes_comerciais?.pos_faturamento === phraseSuccess}
+                            />
+                            <RowInfo title="% frete:" info={String(dataResponse?.condicoes_comerciais?.percentual_frete.toFixed(2)).replace('.', ',')} />
+                            <RowInfo title="% desconto:" info={String(dataResponse?.condicoes_comerciais?.percentual_desconto.toFixed(2)).replace('.', ',')} />
+                            {dataResponse?.condicoes_comerciais?.qtd_parcelas > 0 && (
+                                <RowInfo title="Parcelas:" info={String(dataResponse?.condicoes_comerciais?.qtd_parcelas)} />
+                            )}
+                        </div>
                         <DataTable 
                             title="Produtos" 
                             rows={dataResponse!.dados_tabela!} 
