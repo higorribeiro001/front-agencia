@@ -11,7 +11,7 @@ import RowInfo from '../../components/RowInfo';
 import { DataTable } from '../../components/DataTable';
 import { GridColDef } from '@mui/x-data-grid';
 import { ArrowBack } from '@mui/icons-material';
-import OrderAdapt from '@/app/service/adapt/OrderAdapt';
+import ListOrdersAdapt from '@/app/service/adapt/ListOrdersAdapt';
 import Image from 'next/image';
 
 const VisuallyHiddenInput = styled('input')({
@@ -140,6 +140,12 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                     const response = await postOrder(formData);
             
                     if (response.status === 201) {
+                        const orderAdapt = new ListOrdersAdapt(response.data);
+                        
+                        const orderData = orderAdapt.externalListOrdersAdapt;
+                        const orderDataData = orderData;
+                        setDataResponse(orderDataData);
+    
                         setOpenAlert(true);
                         setMessageAlert('Importação realizada com sucesso com sucesso!');
                         setIsSuccess(true);
@@ -170,21 +176,15 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
     }, [fileUpload]);
 
     useEffect(() => {
-        const uploadPdf = async () => {
+        const uploadImage = async () => {
             try {
                 setIsLoading(true);
                 const formData = new FormData();
                 formData.append('foto', imageUpload!);
                 
-                const response = await uploadPhotoItem(data![0].num_pedido, formData);
+                const response = await uploadPhotoItem(dataResponse![currentPage].num_pedido, formData);
         
                 if (response.status === 200) {
-                    const orderAdapt = new OrderAdapt(response.data);
-                    
-                    const orderData = orderAdapt.externalOrderAdapt;
-                    const orderDataData = orderData;
-                    setDataResponse([orderDataData]);
-
                     setOpenAlert(true);
                     setMessageAlert('Importação realizada com sucesso com sucesso!');
                     setIsSuccess(true);
@@ -193,7 +193,9 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                         window.location.reload();
                     }, 3000);
                 }
-            } catch {
+            } catch (e: unknown) {
+                const error = e as ErrorResponse;
+                console.log(error)
                 setOpenAlert(true);
                 setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
                 setIsSuccess(false);
@@ -205,7 +207,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
         }
 
         if (imageUpload !== undefined) {
-            uploadPdf();
+            uploadImage();
         }
     }, [imageUpload]);
 
