@@ -128,6 +128,7 @@ interface OrderInterface {
         conformidade_frete: string;
         percentual_frete: number;
     };
+    registro_fotografico_empreendimento: string;
     observacoes: string;
     tipo_venda: string;
     forma_pagamento: string;
@@ -194,6 +195,7 @@ interface DataOrderInterface {
             conformidade_frete: string;
             percentual_frete: number;
         };
+        registro_fotografico_empreendimento: string;
         observacoes: string;
         tipo_venda: string;
         forma_pagamento: string;

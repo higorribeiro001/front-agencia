@@ -27,13 +27,18 @@ export async function orderItem(num_pedido: string) {
     return response.data;
 }
 
+export async function uploadPhotoItem(num_pedido: string, formData: FormData) {
+    const response: { data: OrderInterface, status: number } = await axios.patch(url+`/v1/pedidos/itens/${num_pedido}/`, formData);
+    return response;
+}
+
 export async function deleteOrder(id: string) {
     const response: { data: OrderInterface, status: number } = await axios.delete(url+`/v1/pedidos/${id}/`);
     return response;
 }
 
 export async function postOrder(formData: FormData) {
-    const response: { data: OrderInterface, status: number } = await axios.post(url+`/v1/pedidos/`, formData);
+    const response: { data: OrderInterface[], status: number } = await axios.post(url+`/v1/pedidos/`, formData);
     return response;
 }
 

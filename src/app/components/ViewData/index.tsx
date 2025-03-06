@@ -1,17 +1,18 @@
 "use client"
 
 import { styled } from '@mui/material/styles';
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Pagination } from "@mui/material";
 import { Base } from "../../components/Base/layout";
 import React, { useEffect, useState } from "react";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { postOrder } from '../../service/api/orders';
+import { postOrder, uploadPhotoItem } from '../../service/api/orders';
 import { Loading } from '../../components/Loading';
-import OrderAdapt from '../../service/adapt/OrderAdapt';
 import RowInfo from '../../components/RowInfo';
 import { DataTable } from '../../components/DataTable';
 import { GridColDef } from '@mui/x-data-grid';
 import { ArrowBack } from '@mui/icons-material';
+import OrderAdapt from '@/app/service/adapt/OrderAdapt';
+import Image from 'next/image';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -25,13 +26,15 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-export default function ViewData({importFile, data, title}: {importFile: boolean; data?: OrderInterface; title: string;}) {
-    const [fileUpload, setFileUpload] = useState<File>()
+export default function ViewData({importFile, data, title}: {importFile: boolean; data?: OrderInterface[]; title: string;}) {
+    const [fileUpload, setFileUpload] = useState<File[]>([])
+    const [imageUpload, setImageUpload] = useState<File>()
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [dataResponse, setDataResponse] = useState<OrderInterface>()
+    const [dataResponse, setDataResponse] = useState<OrderInterface[]>()
+    const [currentPage, setCurrentPage] = useState(0);
 
     useEffect(() => {
         setDataResponse(data!);
@@ -125,38 +128,75 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
     }
 
     useEffect(() => {
+        if (fileUpload.length > 0) {
+            const uploadPdf = async () => {
+                try {
+                    setIsLoading(true);
+                    const formData = new FormData();
+                    fileUpload.forEach((file) => {
+                        formData.append('arquivo_pedido', file);
+                    });
+                    
+                    const response = await postOrder(formData);
+            
+                    if (response.status === 201) {
+                        setOpenAlert(true);
+                        setMessageAlert('Importação realizada com sucesso com sucesso!');
+                        setIsSuccess(true);
+                        closeAlert();
+                    }
+                } catch (e: unknown) {
+                    const error = e as ErrorResponse;
+                    if (error.response.data.erro === "{'num_pedido': [ErrorDetail(string='pedidos com este num pedido já existe.', code='unique')]}") {
+                        setOpenAlert(true);
+                        setMessageAlert('Pedido com este número já existe.');
+                        setIsSuccess(false);
+                    } else {
+                        setOpenAlert(true);
+                        setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
+                        setIsSuccess(false);
+                    }
+                    
+                    closeAlert();
+                } finally {
+                    setIsLoading(false);
+                }
+            }
+    
+            if (fileUpload !== undefined) {
+                uploadPdf();
+            }
+        }
+    }, [fileUpload]);
+
+    useEffect(() => {
         const uploadPdf = async () => {
             try {
                 setIsLoading(true);
                 const formData = new FormData();
-                formData.append('arquivo_pedido', fileUpload!)
-                formData.append('lista_descontos_montagem', '[]')
+                formData.append('foto', imageUpload!);
                 
-                const response = await postOrder(formData);
+                const response = await uploadPhotoItem(data![0].num_pedido, formData);
         
-                if (response.status === 201) {
+                if (response.status === 200) {
                     const orderAdapt = new OrderAdapt(response.data);
                     
                     const orderData = orderAdapt.externalOrderAdapt;
                     const orderDataData = orderData;
-                    setDataResponse(orderDataData);
+                    setDataResponse([orderDataData]);
 
                     setOpenAlert(true);
                     setMessageAlert('Importação realizada com sucesso com sucesso!');
                     setIsSuccess(true);
                     closeAlert();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
                 }
-            } catch (e: unknown) {
-                const error = e as ErrorResponse;
-                if (error.response.data.erro === "{'num_pedido': [ErrorDetail(string='pedidos com este num pedido já existe.', code='unique')]}") {
-                    setOpenAlert(true);
-                    setMessageAlert('Pedido com este número já existe.');
-                    setIsSuccess(false);
-                } else {
-                    setOpenAlert(true);
-                    setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
-                    setIsSuccess(false);
-                }
+            } catch {
+                setOpenAlert(true);
+                setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
+                setIsSuccess(false);
                 
                 closeAlert();
             } finally {
@@ -164,16 +204,20 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
             }
         }
 
-        if (fileUpload !== undefined) {
+        if (imageUpload !== undefined) {
             uploadPdf();
         }
-    }, [fileUpload]);
+    }, [imageUpload]);
 
     const phraseSuccess = 'Está de acordo com a Política de Análise';
     const phraseSuccess2 = 'Está dentro do prazo de 6 meses';
     const phraseExtra = 'Não foi aplicado desconto no total do pedido.';
 
     const convertDate = (isoDate: string) => {
+        if (!isoDate) {
+            return '';
+        }
+        
         const [year, month, day] = isoDate.split('-');
         return `${day}/${month}/${year}`;
     }
@@ -213,7 +257,8 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                 Importar arquivo
                                 <VisuallyHiddenInput
                                     type="file"
-                                    onChange={(event) => setFileUpload(event.target.files![0])}
+                                    accept=".pdf, application/pdf"
+                                    onChange={(event) => setFileUpload(Array.from(event.target.files!))}
                                     multiple
                                 />
                             </Button>
@@ -228,32 +273,32 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                             /> */}
                         </form>
                     )}
-                    {dataResponse && (
+                    {dataResponse && dataResponse.length && (
                         <div className='gap-5 flex flex-col'>
                             <div className='flex flex-col gap-1 rounded-md shadow-md p-4'>
-                                <h2 className='text-primary font-semibold mb-3'>{dataResponse?.cliente}</h2>
-                                <RowInfo title="Número do Pedido:" info={dataResponse?.num_pedido} />
-                                <RowInfo title="Status:" info={dataResponse?.status} />
-                                <RowInfo title="Empresa:" info={dataResponse?.empresa} />
-                                <RowInfo title="Fantasia:" info={dataResponse?.fantasia} />
-                                <RowInfo title="Carga:" info={dataResponse?.carga} />
-                                <RowInfo title="CNPJ/CPF:" info={dataResponse?.cpf_cnpj} />
-                                <RowInfo title="Email:" info={dataResponse?.email} />
-                                <RowInfo title="Telefone:" info={dataResponse?.telefone} />
-                                <RowInfo title="CEP:" info={dataResponse?.cep} />
-                                <RowInfo title="Endereço:" info={dataResponse?.endereco} />
-                                <RowInfo title="Bairro:" info={dataResponse?.bairro} />
-                                <RowInfo title="Cidade:" info={dataResponse?.city} />
-                                <RowInfo title="UF:" info={dataResponse?.uf} />
+                                <h2 className='text-primary font-semibold mb-3'>{dataResponse?.[currentPage]?.cliente}</h2>
+                                <RowInfo title="Número do Pedido:" info={dataResponse?.[currentPage]?.num_pedido} />
+                                <RowInfo title="Status:" info={dataResponse?.[currentPage]?.status} />
+                                <RowInfo title="Empresa:" info={dataResponse?.[currentPage]?.empresa} />
+                                <RowInfo title="Fantasia:" info={dataResponse?.[currentPage]?.fantasia} />
+                                <RowInfo title="Carga:" info={dataResponse?.[currentPage]?.carga} />
+                                <RowInfo title="CNPJ/CPF:" info={dataResponse?.[currentPage]?.cpf_cnpj} />
+                                <RowInfo title="Email:" info={dataResponse?.[currentPage]?.email} />
+                                <RowInfo title="Telefone:" info={dataResponse?.[currentPage]?.telefone} />
+                                <RowInfo title="CEP:" info={dataResponse?.[currentPage]?.cep} />
+                                <RowInfo title="Endereço:" info={dataResponse?.[currentPage]?.endereco} />
+                                <RowInfo title="Bairro:" info={dataResponse?.[currentPage]?.bairro} />
+                                <RowInfo title="Cidade:" info={dataResponse?.[currentPage]?.city} />
+                                <RowInfo title="UF:" info={dataResponse?.[currentPage]?.uf} />
                             </div>
                             <div className='flex flex-col gap-1 rounded-md shadow-md p-4'>
                                 <h2 className='text-primary font-semibold mb-3'>Detalhes:</h2>
-                                <RowInfo title="Endereço de entrega:" info={dataResponse?.endereco_entrega} />
-                                <RowInfo title="Prazo entrega:" info={dataResponse?.prazo_entrega} />
-                                {Object.keys(dataResponse?.info_produto || {}).length > 0 && (
+                                <RowInfo title="Endereço de entrega:" info={dataResponse?.[currentPage]?.endereco_entrega} />
+                                <RowInfo title="Prazo entrega:" info={dataResponse?.[currentPage]?.prazo_entrega} />
+                                {Object.keys(dataResponse?.[currentPage]?.info_produto || {}).length > 0 && (
                                     <div>
                                         <h2 className='text-primary font-semibold mb-3'>Detalhes Extras:</h2>
-                                        {dataResponse?.info_produto.map((value, index) => (
+                                        {dataResponse?.[currentPage]?.info_produto.map((value, index) => (
                                             <p 
                                                 key={index}
                                                 className='text-justify'
@@ -265,55 +310,90 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                         </div>
                     )}
                 </div>
-                {dataResponse && (
+                {dataResponse && dataResponse.length && (
                     <div className='flex sm:w-full lg:w-4/6 h-auto flex-col gap-5 rounded-md shadow-md p-4'>
                         <div className="flex flex-col gap-1">
-                            <h2 className='text-primary font-semibold mb-3'>{dataResponse?.representante}</h2>
-                            <RowInfo title="Tipo Venda:" info={dataResponse?.condicoes_comerciais?.tipo_venda === '' ? '-' : dataResponse?.condicoes_comerciais?.tipo_venda} />
-                            <RowInfo title="Forma de pagamento:" info={dataResponse?.condicoes_comerciais?.forma_pagamento} />
-                            <RowInfo title="Data de validade:" info={convertDate(dataResponse?.data_emissao)} />
-                            <RowInfo title="Data de validade:" info={convertDate(dataResponse?.data_validade)} />
+                            <h2 className='text-primary font-semibold mb-3'>{dataResponse?.[currentPage]?.representante}</h2>
+                            <RowInfo title="Tipo Venda:" info={dataResponse?.[currentPage]?.condicoes_comerciais?.tipo_venda === '' ? '-' : dataResponse?.[currentPage]?.condicoes_comerciais?.tipo_venda} />
+                            <RowInfo title="Forma de pagamento:" info={dataResponse?.[currentPage]?.condicoes_comerciais?.forma_pagamento} />
+                            <RowInfo title="Data de validade:" info={convertDate(dataResponse?.[currentPage]?.data_emissao)} />
+                            <RowInfo title="Data de validade:" info={convertDate(dataResponse?.[currentPage]?.data_validade)} />
                             <RowInfo
                                 title="Análise de desconto:"
-                                info={`${dataResponse?.condicoes_comerciais?.conformidade_desconto}`}
+                                info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_desconto}`}
                                 color={true}
-                                success={dataResponse?.condicoes_comerciais?.conformidade_desconto === phraseSuccess || dataResponse?.condicoes_comerciais?.conformidade_desconto === phraseExtra}
+                                success={dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_desconto === phraseSuccess || dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_desconto === phraseExtra}
                             />
                             <RowInfo
                                 title="Análise de retirada:"
-                                info={`${dataResponse?.condicoes_comerciais?.retirada_pagamento}`}
+                                info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.retirada_pagamento}`}
                                 color={true}
-                                success={dataResponse?.condicoes_comerciais?.retirada_pagamento === phraseSuccess2}
+                                success={dataResponse?.[currentPage]?.condicoes_comerciais?.retirada_pagamento === phraseSuccess2}
                             />
                             <RowInfo
                                 title="Análise de frete:"
-                                info={`${dataResponse?.condicoes_comerciais?.conformidade_frete}`}
+                                info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_frete}`}
                                 color={true}
-                                success={dataResponse?.condicoes_comerciais?.conformidade_frete === phraseSuccess}
+                                success={dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_frete === phraseSuccess}
                             />
                             <RowInfo
                                 title="Pós-faturamento:"
-                                info={`${dataResponse?.condicoes_comerciais?.pos_faturamento}`}
+                                info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.pos_faturamento}`}
                                 color={true}
-                                success={dataResponse?.condicoes_comerciais?.pos_faturamento === phraseSuccess}
+                                success={dataResponse?.[currentPage]?.condicoes_comerciais?.pos_faturamento === phraseSuccess}
                             />
-                            <RowInfo title="% frete:" info={String(dataResponse?.condicoes_comerciais?.percentual_frete.toFixed(2)).replace('.', ',')} />
-                            <RowInfo title="% desconto:" info={String(dataResponse?.condicoes_comerciais?.percentual_desconto.toFixed(2)).replace('.', ',')} />
-                            {dataResponse?.condicoes_comerciais?.qtd_parcelas > 0 && (
-                                <RowInfo title="Parcelas:" info={String(dataResponse?.condicoes_comerciais?.qtd_parcelas)} />
+                            <RowInfo title="% frete:" info={String((dataResponse?.[currentPage]?.condicoes_comerciais?.percentual_frete * 100).toFixed(2)).replace('.', ',')} />
+                            <RowInfo title="% desconto:" info={String((dataResponse?.[currentPage]?.condicoes_comerciais?.percentual_desconto * 100).toFixed(2)).replace('.', ',')} />
+                            {dataResponse?.[currentPage]?.condicoes_comerciais?.qtd_parcelas > 0 && (
+                                <RowInfo title="Parcelas:" info={String(dataResponse?.[currentPage]?.condicoes_comerciais?.qtd_parcelas)} />
+                            )}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <h2 className='text-primary font-semibold mb-3'>Registro fotográfico do empreendimento:</h2>
+                            {dataResponse?.[currentPage]?.registro_fotografico_empreendimento ? (
+                                <Image width={320} height={300} src={dataResponse?.[currentPage]?.registro_fotografico_empreendimento} alt="Descrição da imagem" />
+                            ) : (
+                                <Button
+                                    component="label"
+                                    role={undefined}
+                                    variant="contained"
+                                    tabIndex={-1}
+                                    startIcon={<CloudUploadIcon />}
+                                    className="bg-primary"
+                                >
+                                    Buscar imagem
+                                    <VisuallyHiddenInput
+                                        type="file"
+                                        accept="image/jpeg, image/png, image/jpg"
+                                        onChange={(event) => setImageUpload(event.target.files![0])}
+                                        multiple
+                                    />
+                                </Button>
                             )}
                         </div>
                         <DataTable 
                             title="Produtos" 
-                            rows={dataResponse!.dados_tabela!} 
+                            rows={dataResponse?.[currentPage]?.dados_tabela || []} 
                             columns={columnsOrder} 
                             isLoading={isLoading}   
                         />
                         <DataTable 
                             title="Resultados" 
-                            rows={dataResponse!.resultados!} 
+                            rows={dataResponse?.[currentPage]?.resultados || []} 
                             columns={columnsOrderResults} 
                             isLoading={isLoading}   
+                        />
+                        <Pagination 
+                            count={dataResponse.length} 
+                            variant="outlined" 
+                            sx={{
+                                "& .MuiPaginationItem-root.Mui-selected": {
+                                    backgroundColor: "#02521F", 
+                                    color: "#FFFFFF",
+                                },
+                            }}   
+                            shape="rounded" 
+                            onChange={(_, page) => setCurrentPage!(page-1)}
                         />
                     </div>
                 )}
