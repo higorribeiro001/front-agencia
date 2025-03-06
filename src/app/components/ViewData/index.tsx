@@ -211,7 +211,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
 
     const phraseSuccess = 'Está de acordo com a Política de Análise';
     const phraseSuccess2 = 'Está dentro do prazo';
-    const phraseExtra = 'Não foi aplicado desconto no total do pedido.';
+    const phraseExtra = 'Não foi aplicado desconto';
 
     const convertDate = (isoDate: string) => {
         if (!isoDate) {
