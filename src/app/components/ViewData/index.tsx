@@ -350,26 +350,25 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                         </div>
                         <div className="flex flex-col gap-1">
                             <h2 className='text-primary font-semibold mb-3'>Registro fotográfico do empreendimento:</h2>
-                            {dataResponse?.[currentPage]?.registro_fotografico_empreendimento ? (
-                                <Image width={320} height={300} src={dataResponse?.[currentPage]?.registro_fotografico_empreendimento} alt="Descrição da imagem" />
-                            ) : (
-                                <Button
-                                    component="label"
-                                    role={undefined}
-                                    variant="contained"
-                                    tabIndex={-1}
-                                    startIcon={<CloudUploadIcon />}
-                                    className="bg-primary"
-                                >
-                                    Buscar imagem
-                                    <VisuallyHiddenInput
-                                        type="file"
-                                        accept="image/jpeg, image/png, image/jpg"
-                                        onChange={(event) => setImageUpload(event.target.files![0])}
-                                        multiple
-                                    />
-                                </Button>
+                            {dataResponse?.[currentPage]?.registro_fotografico_empreendimento && (
+                                <Image className='mb-3' width={320} height={300} src={dataResponse?.[currentPage]?.registro_fotografico_empreendimento} alt="Descrição da imagem" />
                             )}
+                            <Button
+                                component="label"
+                                role={undefined}
+                                variant="contained"
+                                tabIndex={-1}
+                                startIcon={<CloudUploadIcon />}
+                                className="bg-primary w-[320px]"
+                            >
+                                Buscar imagem
+                                <VisuallyHiddenInput
+                                    type="file"
+                                    accept="image/jpeg, image/png, image/jpg"
+                                    onChange={(event) => setImageUpload(event.target.files![0])}
+                                    multiple
+                                />
+                            </Button>
                         </div>
                         <DataTable 
                             title="Produtos" 
