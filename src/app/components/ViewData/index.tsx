@@ -195,7 +195,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                 }
             } catch {
                 setOpenAlert(true);
-                setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
+                setMessageAlert('Erro inesperado, por favor aguarde e tente novamente mais tarde.');
                 setIsSuccess(false);
                 
                 closeAlert();
