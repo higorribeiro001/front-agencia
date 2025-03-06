@@ -147,7 +147,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                         setDataResponse(orderDataData);
     
                         setOpenAlert(true);
-                        setMessageAlert('Importação realizada com sucesso com sucesso!');
+                        setMessageAlert('Importação realizada com sucesso!');
                         setIsSuccess(true);
                         closeAlert();
                     }
@@ -186,7 +186,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
         
                 if (response.status === 200) {
                     setOpenAlert(true);
-                    setMessageAlert('Importação realizada com sucesso com sucesso!');
+                    setMessageAlert('Importação realizada com sucesso!');
                     setIsSuccess(true);
                     closeAlert();
                     setTimeout(() => {
