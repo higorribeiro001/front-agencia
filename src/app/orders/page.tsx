@@ -97,7 +97,7 @@ export default function Orders() {
     }
 
     const phraseSuccess = 'Está de acordo com a Política de Análise';
-    const phraseSuccess2 = 'Está dentro do prazo de 6 meses';
+    const phraseSuccess2 = 'Está dentro do prazo';
     const phraseExtra = 'Não foi aplicado desconto no total do pedido.';
 
     const ContentViewOrder = ({dataOrder}: DataOrderInterface) => {
@@ -167,12 +167,12 @@ export default function Orders() {
                     success={dataOrder?.condicoes_comerciais?.conformidade_frete === phraseSuccess}
                 />
                 <RowDrawer
-                    keyRow="Data de validade"
-                    value={ convertDateDrawer(dataOrder?.data_validade ?? '') }
-                />
-                <RowDrawer
                     keyRow="Data de emissão"
                     value={ convertDateDrawer(dataOrder?.data_emissao ?? '') }
+                />
+                <RowDrawer
+                    keyRow="Data de validade"
+                    value={ convertDateDrawer(dataOrder?.data_validade ?? '') }
                 />
             </div>
         );

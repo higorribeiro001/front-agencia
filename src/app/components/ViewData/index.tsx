@@ -193,9 +193,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                         window.location.reload();
                     }, 3000);
                 }
-            } catch (e: unknown) {
-                const error = e as ErrorResponse;
-                console.log(error)
+            } catch {
                 setOpenAlert(true);
                 setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
                 setIsSuccess(false);
@@ -212,7 +210,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
     }, [imageUpload]);
 
     const phraseSuccess = 'Está de acordo com a Política de Análise';
-    const phraseSuccess2 = 'Está dentro do prazo de 6 meses';
+    const phraseSuccess2 = 'Está dentro do prazo';
     const phraseExtra = 'Não foi aplicado desconto no total do pedido.';
 
     const convertDate = (isoDate: string) => {
@@ -318,7 +316,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                             <h2 className='text-primary font-semibold mb-3'>{dataResponse?.[currentPage]?.representante}</h2>
                             <RowInfo title="Tipo Venda:" info={dataResponse?.[currentPage]?.condicoes_comerciais?.tipo_venda === '' ? '-' : dataResponse?.[currentPage]?.condicoes_comerciais?.tipo_venda} />
                             <RowInfo title="Forma de pagamento:" info={dataResponse?.[currentPage]?.condicoes_comerciais?.forma_pagamento} />
-                            <RowInfo title="Data de validade:" info={convertDate(dataResponse?.[currentPage]?.data_emissao)} />
+                            <RowInfo title="Data de emissão:" info={convertDate(dataResponse?.[currentPage]?.data_emissao)} />
                             <RowInfo title="Data de validade:" info={convertDate(dataResponse?.[currentPage]?.data_validade)} />
                             <RowInfo
                                 title="Análise de desconto:"
