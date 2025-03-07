@@ -1,0 +1,18 @@
+{
+    "mensagens_sucesso": [
+        "Está de acordo com a Política de Análise (3 parcelas para engenharia)",
+        "Está de acordo com a Política de Análise (Menos de 3 parcelas)",
+        "Está de acordo com a Política de Análise (4 parcelas para revenda)",
+        "Está de acordo com a Política de Análise (60/90/120 dias para pedido acima de 100 mil)",
+        "Está de acordo com a Política de Análise (Pagamento à vista com desconto de 3%)",
+        "Está de acordo com a Política de Análise (Boleto com desconto de 2%)",
+        "Está de acordo com a Política de Análise (Boleto com desconto de 1%)",
+        "Está de acordo com a Política de Análise (Está no prazo e valor % frete igual a 6,5%)",
+        "Está de acordo com a Política de Análise (Está no prazo e valor % frete maior que 6,5%)",
+        "Está de acordo com a Política de Análise (Está no prazo e valor % frete igual a 6,5%)",
+        "Está de acordo com a Política de Análise (Fora do prazo e valor % frete igual que 7,5%)",
+        "Está de acordo com a Política de Análise (Fora do prazo e valor % frete maior a 7,5%)",
+        "Está dentro do prazo (Previsão de embarque antes do vencimento)",
+        "Não foi aplicado desconto"
+    ]
+}

@@ -11,6 +11,8 @@ import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
 import { deleteOrder, order, orderItem, orders } from "../service/api/orders";
+import politicaAnalise from '../../data/politica_analise.json';
+import ColColor from "../components/ColColor";
 
 export default function Orders() {
     const [rowsOrder, setRowsOrder] = useState<OrderInterface[]>([]);
@@ -18,7 +20,7 @@ export default function Orders() {
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [pages, setPages] = useState(0);
+    const [pages, setPages] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [dataOrder, setDataOrder] = useState<OrderInterface>();
@@ -35,24 +37,22 @@ export default function Orders() {
       
     const columnsOrder: GridColDef[] = [
         { field: 'num_pedido', headerName: 'N° pedido', width: 90 },
-        { field: 'status', headerName: 'Status', width: 100 },
-        { field: 'cliente', headerName: 'Cliente', width: 400 },
-        { field: 'representante', headerName: 'Representante', width: 260, minWidth: 260 },
-        { field: 'resultados', headerName: 'Total pedido venda', width: 160, renderCell: (params) => {
-            const total = params.value?.[0]?.total_pedido_venda;
-            return <div>
-                R$ {total ? String(total.toFixed(2)).replace('.', ',') : ''}
-            </div>
+        { field: 'cliente', headerName: 'Cliente', width: 380 },
+        { field: 'conformidade_desconto', headerName: 'Desconto', width: 200, renderCell: (params) => {
+            const dataCol = params.row.condicoes_comerciais?.conformidade_desconto;
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
         } },
-        { field: 'data_emissao', headerName: 'Data de emissão', width: 140, renderCell: (params) => {
-            return <div>
-                {convertDate(params.value)}
-            </div>
+        { field: 'retirada_pagamento', headerName: 'Retirada', width: 200, renderCell: (params) => {
+            const dataCol = params.row.condicoes_comerciais?.retirada_pagamento;
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
         } },
-        { field: 'data_validade', headerName: 'Data de validade', width: 140, renderCell: (params) => {
-            return <div>
-                {convertDate(params.value)}
-            </div>
+        { field: 'conformidade_frete', headerName: 'Frete', width: 200, renderCell: (params) => {
+            const dataCol = params.row.condicoes_comerciais?.conformidade_frete;
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
+        } },
+        { field: 'pos_faturamento', headerName: 'Pós-faturamento', width: 200, renderCell: (params) => {
+            const dataCol = params.row.condicoes_comerciais?.pos_faturamento;
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
         } },
         { field: 'acao', headerName: 'Ação', width: 60 , renderCell: (data) => (
             <IconButton onClick={() => getOrder(String(data.id))}>
@@ -60,11 +60,6 @@ export default function Orders() {
             </IconButton>
         ), },
     ];
-
-    const convertDate = (isoDate: string) => {
-        const [year, month, day] = isoDate.split('-');
-        return `${day}/${month}/${year}`;
-    }
 
     const convertDateDrawer = (isoDate: string) => {
         const date = new Date(isoDate);
@@ -95,10 +90,6 @@ export default function Orders() {
     const changeValuesSelect = (e: SelectChangeEvent<string>) => {
         setMonthSelected(e.target.value);
     }
-
-    const phraseSuccess = 'Está de acordo com a Política de Análise';
-    const phraseSuccess2 = 'Está dentro do prazo';
-    const phraseExtra = 'Não foi aplicado desconto';
 
     const ContentViewOrder = ({dataOrder}: DataOrderInterface) => {
         return (
@@ -152,19 +143,25 @@ export default function Orders() {
                     keyRow="Análise de desconto"
                     value={`${dataOrder?.condicoes_comerciais?.conformidade_desconto}`}
                     color={true}
-                    success={dataOrder?.condicoes_comerciais?.conformidade_desconto === phraseSuccess || dataOrder?.condicoes_comerciais?.conformidade_desconto === phraseExtra}
+                    success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.conformidade_desconto)}
                 />
                 <RowDrawer
                     keyRow="Análise de retirada"
                     value={`${dataOrder?.condicoes_comerciais?.retirada_pagamento}`}
                     color={true}
-                    success={dataOrder?.condicoes_comerciais?.retirada_pagamento === phraseSuccess2}
+                    success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.retirada_pagamento)}
                 />
                 <RowDrawer
                     keyRow="Análise de frete"
                     value={`${dataOrder?.condicoes_comerciais?.conformidade_frete}`}
                     color={true}
-                    success={dataOrder?.condicoes_comerciais?.conformidade_frete === phraseSuccess}
+                    success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.conformidade_frete)}
+                />
+                <RowDrawer
+                    keyRow="Análise de pós-faturamento"
+                    value={`${dataOrder?.condicoes_comerciais?.pos_faturamento}`}
+                    color={true}
+                    success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.pos_faturamento)}
                 />
                 <RowDrawer
                     keyRow="Data de emissão"
@@ -173,6 +170,10 @@ export default function Orders() {
                 <RowDrawer
                     keyRow="Data de validade"
                     value={ convertDateDrawer(dataOrder?.data_validade ?? '') }
+                />
+                <RowDrawer
+                    keyRow="Previsão de embarque"
+                    value={ convertDateDrawer(dataOrder?.previsao_embarque ?? '') }
                 />
             </div>
         );
@@ -184,7 +185,8 @@ export default function Orders() {
 
         const dataOrder = ordersAdapt.externalOrdersAdapt;
         setRowsOrder(dataOrder.results);
-        setPages(dataOrder?.count/10);
+        const numPages = dataOrder?.count/10;
+        setPages(parseInt(numPages.toFixed(0)));
         setIsLoading(false);
     }
 

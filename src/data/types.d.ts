@@ -29,6 +29,8 @@ interface BaseProps {
     isSuccess?: boolean; 
     messageAlert?: string;
     title: string;
+    uploadFile?: boolean;
+    handleUpload?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface MeAdaptInterface {
@@ -172,6 +174,7 @@ interface DataOrderInterface {
         }[];
         resultados: 
         {
+            id: number;
             total_qtd: number;
             total_qtd_m3: number;
             total_produtos: number;
