@@ -20,7 +20,7 @@ export default function Orders() {
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [pages, setPages] = useState();
+    const [pages, setPages] = useState<number>();
     const [currentPage, setCurrentPage] = useState(1);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [dataOrder, setDataOrder] = useState<OrderInterface>();
@@ -50,7 +50,7 @@ export default function Orders() {
             const dataCol = params.row.condicoes_comerciais?.conformidade_frete;
             return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
         } },
-        { field: 'pos_faturamento', headerName: 'Pós-faturamento', width: 200, renderCell: (params) => {
+        { field: 'pos_faturamento', headerName: 'Forma de pagamento', width: 200, renderCell: (params) => {
             const dataCol = params.row.condicoes_comerciais?.pos_faturamento;
             return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
         } },
@@ -79,7 +79,7 @@ export default function Orders() {
                 const ordersData = orderAdapt.externalOrdersAdapt;
                 const ordersDataData = ordersData;
                 setRowsOrder(ordersDataData.results);
-                setPages(0);
+                setPages(1);
                 setIsLoading(false);
             } else {
                 getOrders();
@@ -158,7 +158,7 @@ export default function Orders() {
                     success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.conformidade_frete)}
                 />
                 <RowDrawer
-                    keyRow="Análise de pós-faturamento"
+                    keyRow="Análise da forma de pagamento"
                     value={`${dataOrder?.condicoes_comerciais?.pos_faturamento}`}
                     color={true}
                     success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.pos_faturamento)}

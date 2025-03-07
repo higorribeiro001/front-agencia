@@ -336,7 +336,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                         success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_frete)}
                                     />
                                     <RowInfo
-                                        title="Pós-faturamento:"
+                                        title="Forma de pagamento:"
                                         info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.pos_faturamento}`}
                                         color={true}
                                         success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.pos_faturamento)}
@@ -349,9 +349,9 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                     {dataResponse?.[currentPage]?.condicoes_comerciais?.qtd_parcelas > 0 && (
                                         <RowInfo title="Parcelas:" info={String(dataResponse?.[currentPage]?.condicoes_comerciais?.qtd_parcelas)} />
                                     )}
-                                    <h2 className='text-primary font-semibold my-3'>Registro fotográfico do empreendimento:</h2>
+                                    <h2 className='text-primary font-semibold my-3 uppercase'>Registro fotográfico do empreendimento:</h2>
                                     {dataResponse?.[currentPage]?.registro_fotografico_empreendimento && (
-                                        <Image className='mb-3' width={320} height={300} src={dataResponse?.[currentPage]?.registro_fotografico_empreendimento} alt="Descrição da imagem" />
+                                        <Image className='mb-3' width={400} height={380} src={dataResponse?.[currentPage]?.registro_fotografico_empreendimento} alt="Descrição da imagem" />
                                     )}
                                     <Button
                                         component="label"
@@ -359,7 +359,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                         variant="contained"
                                         tabIndex={-1}
                                         startIcon={<CloudUploadIcon />}
-                                        className="bg-primary w-[320px]"
+                                        className="bg-primary w-[400px]"
                                     >
                                         Buscar imagem
                                         <VisuallyHiddenInput
