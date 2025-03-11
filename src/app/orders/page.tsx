@@ -3,16 +3,17 @@
 import { Drawer, IconButton, SelectChangeEvent, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Visibility } from "@mui/icons-material";
+import { Visibility, CheckCircle, CancelRounded } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import OrdersAdapt from "../service/adapt/OrdersAdapt";
 import OrderAdapt from "../service/adapt/OrderAdapt";
 import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
-import { deleteOrder, order, orderItem, orders } from "../service/api/orders";
+import { deleteOrder, order, orderAccordingItem, orderApproved, orderItem, orders } from "../service/api/orders";
 import politicaAnalise from '../../data/politica_analise.json';
 import ColColor from "../components/ColColor";
+import { getCookie } from "cookies-next";
 
 export default function Orders() {
     const [rowsOrder, setRowsOrder] = useState<OrderInterface[]>([]);
@@ -26,6 +27,8 @@ export default function Orders() {
     const [dataOrder, setDataOrder] = useState<OrderInterface>();
     const [openDialog, setOpenDialog] = useState(false);
     const [monthSelected, setMonthSelected] = useState('');
+    const [according, setAccording] = useState<{"label": string; "value": boolean}>({"label": "Todos", "value": true});
+    const role = getCookie("role");
 
     const getOrder = async (id: string) => {
         const dataOrder = await order(id);
@@ -34,25 +37,45 @@ export default function Orders() {
         setOpenDrawer(true);
         setDataOrder(orderAdapt.externalOrderAdapt)
     }
+
+    useEffect(() => {
+        getOrders();
+        const handleAccording = async () => {
+            if (according.label !== 'Todos') {
+                setIsLoading(true);
+                const dataOrders = await orderAccordingItem(according.value!);
+                const orderAdapt = new OrdersAdapt(dataOrders);
+
+                const ordersData = orderAdapt.externalOrdersAdapt;
+                const ordersDataData = ordersData;
+                setRowsOrder(ordersDataData.results);
+                const numPages = ordersDataData?.count/10;
+                setPages(parseInt(numPages.toFixed(0)));
+                setIsLoading(false);
+            }
+        }
+
+        handleAccording();
+    }, [according])
       
     const columnsOrder: GridColDef[] = [
         { field: 'num_pedido', headerName: 'N° pedido', width: 90 },
         { field: 'cliente', headerName: 'Cliente', width: 380 },
         { field: 'conformidade_desconto', headerName: 'Desconto', width: 200, renderCell: (params) => {
             const dataCol = params.row.condicoes_comerciais?.conformidade_desconto;
-            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.aprovado} />
         } },
         { field: 'retirada_pagamento', headerName: 'Retirada', width: 200, renderCell: (params) => {
             const dataCol = params.row.condicoes_comerciais?.retirada_pagamento;
-            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.aprovado} />
         } },
         { field: 'conformidade_frete', headerName: 'Frete', width: 200, renderCell: (params) => {
             const dataCol = params.row.condicoes_comerciais?.conformidade_frete;
-            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.aprovado} />
         } },
         { field: 'pos_faturamento', headerName: 'Forma de pagamento', width: 200, renderCell: (params) => {
             const dataCol = params.row.condicoes_comerciais?.pos_faturamento;
-            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} />
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.aprovado} />
         } },
         { field: 'acao', headerName: 'Ação', width: 60 , renderCell: (data) => (
             <IconButton onClick={() => getOrder(String(data.id))}>
@@ -144,24 +167,28 @@ export default function Orders() {
                     value={`${dataOrder?.condicoes_comerciais?.conformidade_desconto}`}
                     color={true}
                     success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.conformidade_desconto)}
+                    approved={dataOrder?.aprovado}
                 />
                 <RowDrawer
                     keyRow="Análise de retirada"
                     value={`${dataOrder?.condicoes_comerciais?.retirada_pagamento}`}
                     color={true}
                     success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.retirada_pagamento)}
+                    approved={dataOrder?.aprovado}
                 />
                 <RowDrawer
                     keyRow="Análise de frete"
                     value={`${dataOrder?.condicoes_comerciais?.conformidade_frete}`}
                     color={true}
                     success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.conformidade_frete)}
+                    approved={dataOrder?.aprovado}
                 />
                 <RowDrawer
                     keyRow="Análise da forma de pagamento"
                     value={`${dataOrder?.condicoes_comerciais?.pos_faturamento}`}
                     color={true}
                     success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.pos_faturamento)}
+                    approved={dataOrder?.aprovado}
                 />
                 <RowDrawer
                     keyRow="Data de emissão"
@@ -207,6 +234,20 @@ export default function Orders() {
         if (response.status === 200) {
             setOpenAlert(true);
             setMessageAlert('Excluído com sucesso!');
+            setIsSuccess(true);
+
+            setOpenDrawer(false);
+            setOpenDialog(false);
+            closeAlert();
+            getOrders();
+        }
+    }
+
+    const approveOrder = async (num: string, value: boolean) => {
+        const response = await orderApproved(num, value);
+        if (response.status === 200) {
+            setOpenAlert(true);
+            setMessageAlert('Alteração realizada com sucesso!');
             setIsSuccess(true);
 
             setOpenDrawer(false);
@@ -274,6 +315,41 @@ export default function Orders() {
                                 Ver mais
                             </Typography>
                         </IconButton>
+                        {role === 'admin' && (
+                            dataOrder?.aprovado ? (
+                                <IconButton 
+                                    className="gap-2"
+                                    onClick={() => approveOrder(dataOrder?.num_pedido, !dataOrder?.aprovado)}
+                                >
+                                    <CancelRounded 
+                                        fontSize="small"
+                                        color="error" 
+                                    /> 
+                                    <Typography 
+                                        className="font-semibold text-[16px]"
+                                        color="error"
+                                    >
+                                        Reprovar
+                                    </Typography>
+                                </IconButton>
+                            ) : (
+                                <IconButton 
+                                    className="gap-2"
+                                    onClick={() => approveOrder(dataOrder!.num_pedido, !dataOrder?.aprovado)}
+                                >
+                                    <CheckCircle 
+                                        fontSize="small"
+                                        color="success" 
+                                    /> 
+                                    <Typography 
+                                        className="font-semibold text-[16px]"
+                                        color="success"
+                                    >
+                                        Aprovar
+                                    </Typography>
+                                </IconButton>
+                            )
+                        )}
                     </footer>
                 </div>
             </Drawer>
@@ -291,6 +367,8 @@ export default function Orders() {
                         monthFilter={true} 
                         valueMonthFilter={monthSelected}
                         funcMonthFilter={changeValuesSelect}
+                        according={according}
+                        setAccording={setAccording}
                     />
                 </div>
             </div>

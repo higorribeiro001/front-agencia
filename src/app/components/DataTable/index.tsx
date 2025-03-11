@@ -1,9 +1,9 @@
 import { Search } from "@mui/icons-material";
-import { Box, IconButton, InputAdornment, Pagination, TextField } from "@mui/material";
+import { Autocomplete, Box, IconButton, InputAdornment, Pagination, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ChangeEvent } from "react";
 
-export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handleCurrentPage, title}: DataTableInterface) => { 
+export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handleCurrentPage, title, according, setAccording}: DataTableInterface) => { 
     
     const CustomNoRowsOverlay = () => (
         <div style={{ textAlign: 'center', padding: '20px' }}>
@@ -32,6 +32,25 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                         placeholder="pesquise pelo n° do pedido..."
                         onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch!(e)}
                     /> 
+                    <Autocomplete
+                        disablePortal
+                        options={[{"label": "Todos", "value": true}, {"label": "Conforme", "value": true}, {"label": "Não Conforme", "value": false}]}
+                        sx={{ width: 300 }}
+                        className="w-[49%]"
+                        value={according} 
+                        onChange={(event, newValue) => {
+                            if (newValue) {
+                                setAccording!(newValue);
+                            }
+                        }}
+                        renderInput={(params) => 
+                            <TextField 
+                                {...params} 
+                                label="Conformidade"
+                                value={according}
+                            />
+                        }
+                    />
                 </div>
             )}
             <Box sx={{ width: 1 }}>

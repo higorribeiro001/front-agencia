@@ -12,7 +12,6 @@ import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
 import { useState } from "react";
 import { logout } from "@/app/service/api/auth";
-import { useRouter } from "next/navigation";
 import AlertApp from "../AlertApp";
 import { DialogApp } from "../DialogApp";
 import { usePathname } from "next/navigation";
@@ -50,7 +49,6 @@ export default function Sidebar() {
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const router = useRouter();
     
     const closeAlert = () => {
         setTimeout(() => {
@@ -74,7 +72,7 @@ export default function Sidebar() {
             setIsSuccess(true);
             
             closeAlert();
-            router.replace('/');
+            window.location.href = '/';
         }
     }
 

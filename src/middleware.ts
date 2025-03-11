@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// const protectedPageRoutes = [
-//     '/home',
-//     '/products'
-// ];
+const protectedPageRoutes = [
+    '/home',
+    '/orders'
+];
 
 // const adminPageRoutes = [
 //     '/edit-mdf'
@@ -12,18 +12,18 @@ import { NextRequest, NextResponse } from "next/server";
 export default async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
-    // const token = req.cookies.get('access')?.value;
-    // const status = req.cookies.get('statusMe')?.value;
+    const token = req.cookies.get('access')?.value;
+    const status = req.cookies.get('statusMe')?.value;
     // const role = req.cookies.get('role')?.value;
 
-    // const isProtectedPageRoute = protectedPageRoutes.some((route) => pathname.startsWith(route));
+    const isProtectedPageRoute = protectedPageRoutes.some((route) => pathname.startsWith(route));
     // const isAdminPageRoute = adminPageRoutes.some((route) => pathname.startsWith(route));
 
-    // if (isProtectedPageRoute) {
-    //     if (!token || parseInt(status!) === 401) {
-    //         return NextResponse.redirect(new URL('/', req.url));
-    //     }
-    // }
+    if (isProtectedPageRoute) {
+        if (!token || parseInt(status!) === 401) {
+            return NextResponse.redirect(new URL('/', req.url));
+        }
+    }
 
     // if (isAdminPageRoute) {
     //     if (role !== 'admin') {
@@ -32,7 +32,7 @@ export default async function middleware(req: NextRequest) {
     // }
 
     if (pathname === '/') {
-        return NextResponse.redirect(new URL('/home', req.url));
+        return NextResponse.redirect(new URL('/login', req.url));
     }
 
     return NextResponse.next();

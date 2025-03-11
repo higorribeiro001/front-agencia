@@ -136,7 +136,8 @@ interface OrderInterface {
     forma_pagamento: string;
     endereco_entrega: string;
     prazo_entrega: string;
-    info_produto: Array<string>
+    info_produto: Array<string>;
+    aprovado: boolean;
 }
 
 interface DataOrderInterface {
@@ -204,7 +205,8 @@ interface DataOrderInterface {
         forma_pagamento: string;
         endereco_entrega: string;
         prazo_entrega: string;
-        info_produto: Array<string>
+        info_produto: Array<string>;
+        aprovado: boolean;
     }
 }
 
@@ -213,6 +215,7 @@ interface RowDrawerInterface {
     value: string | number;
     color?: boolean;
     success?: boolean;
+    approved?: boolean;
 }
 
 interface DataTableInterface {
@@ -231,6 +234,14 @@ interface DataTableInterface {
         label: string;
         value: string;
     }
+    according?: {
+        label: string;
+        value: boolean;
+    };
+    setAccording?: (value: {
+        label: string;
+        value: boolean;
+    }) => void;
 }
 
 interface RowInfo {
@@ -238,4 +249,5 @@ interface RowInfo {
     info: string;
     color?: boolean;
     success?: boolean;
+    approved?: boolean;
 }
