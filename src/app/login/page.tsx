@@ -134,7 +134,7 @@ export default function Login() {
         isSuccess={isSuccess}
         message={messageAlert}
       />
-      <div className="w-[100%] bg-background py-12 px-16 flex flex-col justify-between animate-fade-up">
+      <div className="w-2/5 bg-background py-12 px-16 flex flex-col justify-between animate-fade-up">
         <div className="flex flex-row justify-between">
             <Image 
                 className="w-[60px] h-[40px] mt-2"
@@ -184,7 +184,7 @@ export default function Login() {
         <span className="text-gray-600 text-center text-[14px]">© concrem | 2025</span>
       </div>
       <Image 
-        className="h-[100vh]"
+        className="w-3/5"
         src={concrem} 
         alt="concrem"     
       />

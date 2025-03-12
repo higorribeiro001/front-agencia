@@ -3,7 +3,7 @@
 import { Drawer, IconButton, SelectChangeEvent, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Visibility, CheckCircle, CancelRounded } from "@mui/icons-material";
+import { Visibility, CheckCircle } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import OrdersAdapt from "../service/adapt/OrdersAdapt";
 import OrderAdapt from "../service/adapt/OrderAdapt";
@@ -59,25 +59,25 @@ export default function Orders() {
     }, [according])
       
     const columnsOrder: GridColDef[] = [
-        { field: 'num_pedido', headerName: 'N° pedido', width: 90 },
-        { field: 'cliente', headerName: 'Cliente', width: 380 },
-        { field: 'conformidade_desconto', headerName: 'Desconto', width: 200, renderCell: (params) => {
-            const dataCol = params.row.condicoes_comerciais?.conformidade_desconto;
-            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.aprovado} />
+        { field: 'num_pedido', headerName: 'N° pedido', flex: 1 },
+        { field: 'cliente', headerName: 'Cliente', flex: 3 },
+        { field: 'conformidade_desconto', headerName: 'Desconto', flex: 3, renderCell: (params) => {
+            const dataCol = params.row.condicoes_comerciais?.analise[1].valor;
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.condicoes_comerciais?.analise[1].aprovado} />
         } },
-        { field: 'retirada_pagamento', headerName: 'Retirada', width: 200, renderCell: (params) => {
-            const dataCol = params.row.condicoes_comerciais?.retirada_pagamento;
-            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.aprovado} />
+        { field: 'retirada_pagamento', headerName: 'Retirada', flex: 3, renderCell: (params) => {
+            const dataCol = params.row.condicoes_comerciais?.analise[2].valor;
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.condicoes_comerciais?.analise[2].aprovado} />
         } },
-        { field: 'conformidade_frete', headerName: 'Frete', width: 200, renderCell: (params) => {
-            const dataCol = params.row.condicoes_comerciais?.conformidade_frete;
-            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.aprovado} />
+        { field: 'conformidade_frete', headerName: 'Frete', flex: 3, renderCell: (params) => {
+            const dataCol = params.row.condicoes_comerciais?.analise[3].valor;
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.condicoes_comerciais?.analise[3].aprovado} />
         } },
-        { field: 'pos_faturamento', headerName: 'Forma de pagamento', width: 200, renderCell: (params) => {
-            const dataCol = params.row.condicoes_comerciais?.pos_faturamento;
-            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.aprovado} />
+        { field: 'pos_faturamento', headerName: 'Forma de pagamento', flex: 3, renderCell: (params) => {
+            const dataCol = params.row.condicoes_comerciais?.analise[0].valor;
+            return <ColColor success={politicaAnalise.mensagens_sucesso.includes(dataCol)} approved={params.row.condicoes_comerciais?.analise[0].aprovado} />
         } },
-        { field: 'acao', headerName: 'Ação', width: 60 , renderCell: (data) => (
+        { field: 'acao', headerName: 'Ação', flex: 1 , renderCell: (data) => (
             <IconButton onClick={() => getOrder(String(data.id))}>
               <Visibility />
             </IconButton>
@@ -162,34 +162,110 @@ export default function Orders() {
                     keyRow="% frete"
                     value={`${String((dataOrder?.condicoes_comerciais?.percentual_frete * 100).toFixed(2)).replace('.', ',')}`}
                 />
-                <RowDrawer
-                    keyRow="Análise de desconto"
-                    value={`${dataOrder?.condicoes_comerciais?.conformidade_desconto}`}
-                    color={true}
-                    success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.conformidade_desconto)}
-                    approved={dataOrder?.aprovado}
-                />
-                <RowDrawer
-                    keyRow="Análise de retirada"
-                    value={`${dataOrder?.condicoes_comerciais?.retirada_pagamento}`}
-                    color={true}
-                    success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.retirada_pagamento)}
-                    approved={dataOrder?.aprovado}
-                />
-                <RowDrawer
-                    keyRow="Análise de frete"
-                    value={`${dataOrder?.condicoes_comerciais?.conformidade_frete}`}
-                    color={true}
-                    success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.conformidade_frete)}
-                    approved={dataOrder?.aprovado}
-                />
-                <RowDrawer
-                    keyRow="Análise da forma de pagamento"
-                    value={`${dataOrder?.condicoes_comerciais?.pos_faturamento}`}
-                    color={true}
-                    success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.pos_faturamento)}
-                    approved={dataOrder?.aprovado}
-                />
+                <div className="flex flex-row gap-3 max-h-[24px]">
+                    <RowDrawer
+                        keyRow="Análise de desconto"
+                        value={`${dataOrder?.condicoes_comerciais?.analise[1].valor}`}
+                        color={true}
+                        success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.analise[1].valor)}
+                        approved={dataOrder?.condicoes_comerciais?.analise[1].aprovado}
+                    />
+                    {role === 'admin' && !dataOrder?.condicoes_comerciais?.analise[1].aprovado && (
+                        <IconButton 
+                            className="gap-2"
+                            onClick={() => approveOrder(dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[1].id, !dataOrder?.condicoes_comerciais?.analise[1].aprovado)}
+                        >
+                            <CheckCircle 
+                                fontSize="small"
+                                color="success" 
+                            /> 
+                            <Typography 
+                                className="font-semibold text-[16px]"
+                                color="success"
+                            >
+                                Aprovar
+                            </Typography>
+                        </IconButton>
+                    )}
+                </div>
+                <div className="flex flex-row gap-3 max-h-[24px]">
+                    <RowDrawer
+                        keyRow="Análise de retirada"
+                        value={`${dataOrder?.condicoes_comerciais?.analise[2].valor}`}
+                        color={true}
+                        success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.analise[2].valor)}
+                        approved={dataOrder?.condicoes_comerciais?.analise[2].aprovado}
+                    />
+                    {role === 'admin' && !dataOrder?.condicoes_comerciais?.analise[2].aprovado && (
+                        <IconButton 
+                            className="gap-2"
+                            onClick={() => approveOrder(dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[2].id, !dataOrder?.condicoes_comerciais?.analise[2].aprovado)}
+                        >
+                            <CheckCircle 
+                                fontSize="small"
+                                color="success" 
+                            /> 
+                            <Typography 
+                                className="font-semibold text-[16px]"
+                                color="success"
+                            >
+                                Aprovar
+                            </Typography>
+                        </IconButton>
+                    )}
+                </div>
+                <div className="flex flex-row gap-3 max-h-[24px]">
+                    <RowDrawer
+                        keyRow="Análise de frete"
+                        value={`${dataOrder?.condicoes_comerciais?.analise[3].valor}`}
+                        color={true}
+                        success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.analise[3].valor)}
+                        approved={dataOrder?.condicoes_comerciais?.analise[3].aprovado}
+                    />
+                    {role === 'admin' && !dataOrder?.condicoes_comerciais?.analise[3].aprovado && (
+                        <IconButton 
+                            className="gap-2"
+                            onClick={() => approveOrder(dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[3].id, !dataOrder?.condicoes_comerciais?.analise[3].aprovado)}
+                        >
+                            <CheckCircle 
+                                fontSize="small"
+                                color="success" 
+                            /> 
+                            <Typography 
+                                className="font-semibold text-[16px]"
+                                color="success"
+                            >
+                                Aprovar
+                            </Typography>
+                        </IconButton>
+                    )}
+                </div>
+                <div className="flex flex-row gap-3 max-h-[24px]">
+                    <RowDrawer
+                        keyRow="Análise da forma de pagamento"
+                        value={`${dataOrder?.condicoes_comerciais?.analise[0].valor}`}
+                        color={true}
+                        success={politicaAnalise.mensagens_sucesso.includes(dataOrder?.condicoes_comerciais?.analise[0].valor)}
+                        approved={dataOrder?.condicoes_comerciais?.analise[0].aprovado}
+                    />
+                    {role === 'admin' && !dataOrder?.condicoes_comerciais?.analise[0].aprovado && (
+                        <IconButton 
+                            className="gap-2"
+                            onClick={() => approveOrder(dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[0].id, !dataOrder?.condicoes_comerciais?.analise[0].aprovado)}
+                        >
+                            <CheckCircle 
+                                fontSize="small"
+                                color="success" 
+                            /> 
+                            <Typography 
+                                className="font-semibold text-[16px]"
+                                color="success"
+                            >
+                                Aprovar
+                            </Typography>
+                        </IconButton>
+                    )}
+                </div>
                 <RowDrawer
                     keyRow="Data de emissão"
                     value={ convertDateDrawer(dataOrder?.data_emissao ?? '') }
@@ -243,8 +319,8 @@ export default function Orders() {
         }
     }
 
-    const approveOrder = async (num: string, value: boolean) => {
-        const response = await orderApproved(num, value);
+    const approveOrder = async (num: string, id_analise: number, value: boolean) => {
+        const response = await orderApproved(num, id_analise, value);
         if (response.status === 200) {
             setOpenAlert(true);
             setMessageAlert('Alteração realizada com sucesso!');
@@ -315,41 +391,6 @@ export default function Orders() {
                                 Ver mais
                             </Typography>
                         </IconButton>
-                        {role === 'admin' && (
-                            dataOrder?.aprovado ? (
-                                <IconButton 
-                                    className="gap-2"
-                                    onClick={() => approveOrder(dataOrder?.num_pedido, !dataOrder?.aprovado)}
-                                >
-                                    <CancelRounded 
-                                        fontSize="small"
-                                        color="error" 
-                                    /> 
-                                    <Typography 
-                                        className="font-semibold text-[16px]"
-                                        color="error"
-                                    >
-                                        Reprovar
-                                    </Typography>
-                                </IconButton>
-                            ) : (
-                                <IconButton 
-                                    className="gap-2"
-                                    onClick={() => approveOrder(dataOrder!.num_pedido, !dataOrder?.aprovado)}
-                                >
-                                    <CheckCircle 
-                                        fontSize="small"
-                                        color="success" 
-                                    /> 
-                                    <Typography 
-                                        className="font-semibold text-[16px]"
-                                        color="success"
-                                    >
-                                        Aprovar
-                                    </Typography>
-                                </IconButton>
-                            )
-                        )}
                     </footer>
                 </div>
             </Drawer>

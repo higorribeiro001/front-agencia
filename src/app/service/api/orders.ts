@@ -38,8 +38,8 @@ export async function uploadPhotoItem(num_pedido: string, formData: FormData) {
     return response;
 }
 
-export async function orderApproved(num_pedido: string, aprovado: boolean) {
-    const response: { data: OrderInterface, status: number } = await axios.patch(url+`/v1/pedidos/itens/${num_pedido}/`, {aprovado}, configAuth());
+export async function orderApproved(num_pedido: string, id_analise: number, aprovado: boolean) {
+    const response: { data: OrderInterface, status: number } = await axios.patch(url+`/v1/pedidos/itens/${num_pedido}/`, {id_analise, aprovado}, configAuth());
     return response;
 }
 

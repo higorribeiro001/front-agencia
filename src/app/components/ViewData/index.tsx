@@ -319,31 +319,31 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                     <RowInfo title="Forma de pagamento:" info={dataResponse?.[currentPage]?.condicoes_comerciais?.forma_pagamento} />
                                     <RowInfo
                                         title="Análise de desconto:"
-                                        info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_desconto}`}
+                                        info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.analise[1].valor}`}
                                         color={true}
-                                        success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_desconto)}
-                                        approved={dataResponse?.[currentPage]?.aprovado}
+                                        success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.analise[1].valor)}
+                                        approved={dataResponse?.[currentPage]?.condicoes_comerciais?.analise[1].aprovado}
                                     />
                                     <RowInfo
                                         title="Análise de retirada:"
-                                        info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.retirada_pagamento}`}
+                                        info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.analise[2].valor}`}
                                         color={true}
-                                        success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.retirada_pagamento)}
-                                        approved={dataResponse?.[currentPage]?.aprovado}
+                                        success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.analise[2].valor)}
+                                        approved={dataResponse?.[currentPage]?.condicoes_comerciais?.analise[2].aprovado}
                                     />
                                     <RowInfo
                                         title="Análise de frete:"
-                                        info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_frete}`}
+                                        info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.analise[3].valor}`}
                                         color={true}
-                                        success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.conformidade_frete)}
-                                        approved={dataResponse?.[currentPage]?.aprovado}
+                                        success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.analise[3].valor)}
+                                        approved={dataResponse?.[currentPage]?.condicoes_comerciais?.analise[3].aprovado}
                                     />
                                     <RowInfo
                                         title="Forma de pagamento:"
-                                        info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.pos_faturamento}`}
+                                        info={`${dataResponse?.[currentPage]?.condicoes_comerciais?.analise[0].valor}`}
                                         color={true}
-                                        success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.pos_faturamento)}
-                                        approved={dataResponse?.[currentPage]?.aprovado}
+                                        success={politicaAnalise.mensagens_sucesso.includes(dataResponse?.[currentPage]?.condicoes_comerciais?.analise[0].valor)}
+                                        approved={dataResponse?.[currentPage]?.condicoes_comerciais?.analise[0].aprovado}
                                     />
                                     <RowInfo title="Data de emissão:" info={convertDate(dataResponse?.[currentPage]?.data_emissao)} />
                                     <RowInfo title="Data de validade:" info={convertDate(dataResponse?.[currentPage]?.data_validade)} />

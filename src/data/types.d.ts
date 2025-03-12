@@ -123,11 +123,13 @@ interface OrderInterface {
         conforme: string;
         forma_pagamento: string;
         qtd_parcelas: number;
-        pos_faturamento: string;
         percentual_desconto: number;
-        conformidade_desconto: string;
-        retirada_pagamento: string;
-        conformidade_frete: string;
+        analise: {
+            id: number;
+            titulo: string;
+            valor: string;
+            aprovado: boolean;
+        }[],
         percentual_frete: number;
     };
     registro_fotografico_empreendimento: string;
@@ -192,11 +194,13 @@ interface DataOrderInterface {
             conforme: string;
             forma_pagamento: string;
             qtd_parcelas: number;
-            pos_faturamento: string;
             percentual_desconto: number;
-            conformidade_desconto: string;
-            retirada_pagamento: string;
-            conformidade_frete: string;
+            analise: {
+                id: number;
+                titulo: string;
+                valor: string;
+                aprovado: boolean;
+            }[],
             percentual_frete: number;
         };
         registro_fotografico_empreendimento: string;
