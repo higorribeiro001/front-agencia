@@ -1,8 +1,8 @@
 "use client"
 
-import { Drawer, IconButton, SelectChangeEvent, Typography } from "@mui/material";
+import { Button, Drawer, IconButton, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Visibility, CheckCircle } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import OrdersAdapt from "../service/adapt/OrdersAdapt";
@@ -10,7 +10,7 @@ import OrderAdapt from "../service/adapt/OrderAdapt";
 import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
-import { deleteOrder, order, orderAccordingItem, orderApproved, orderItem, orders } from "../service/api/orders";
+import { deleteOrder, order, orderAccordingItem, orderApproved, orderItem, orderObservation, orders } from "../service/api/orders";
 import politicaAnalise from '../../data/politica_analise.json';
 import ColColor from "../components/ColColor";
 import { getCookie } from "cookies-next";
@@ -29,6 +29,7 @@ export default function Orders() {
     const [monthSelected, setMonthSelected] = useState('');
     const [according, setAccording] = useState<{"label": string; "value": boolean}>({"label": "Todos", "value": true});
     const role = getCookie("role");
+    const [observation, setObservation] = useState('');
 
     const getOrder = async (id: string) => {
         const dataOrder = await order(id);
@@ -114,6 +115,18 @@ export default function Orders() {
         setMonthSelected(e.target.value);
     }
 
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setObservation(e.target.value);
+    };
+
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        if (openDrawer && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [openDrawer]);
+
     const ContentViewOrder = ({dataOrder}: DataOrderInterface) => {
         return (
             <div className="flex flex-col gap-1">
@@ -173,7 +186,7 @@ export default function Orders() {
                     {role === 'admin' && !dataOrder?.condicoes_comerciais?.analise[1].aprovado && (
                         <IconButton 
                             className="gap-2"
-                            onClick={() => approveOrder(dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[1].id, !dataOrder?.condicoes_comerciais?.analise[1].aprovado)}
+                            onClick={() => approveOrder(dataOrder!.id, dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[1].id, !dataOrder?.condicoes_comerciais?.analise[1].aprovado)}
                         >
                             <CheckCircle 
                                 fontSize="small"
@@ -199,7 +212,7 @@ export default function Orders() {
                     {role === 'admin' && !dataOrder?.condicoes_comerciais?.analise[2].aprovado && (
                         <IconButton 
                             className="gap-2"
-                            onClick={() => approveOrder(dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[2].id, !dataOrder?.condicoes_comerciais?.analise[2].aprovado)}
+                            onClick={() => approveOrder(dataOrder!.id, dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[2].id, !dataOrder?.condicoes_comerciais?.analise[2].aprovado)}
                         >
                             <CheckCircle 
                                 fontSize="small"
@@ -225,7 +238,7 @@ export default function Orders() {
                     {role === 'admin' && !dataOrder?.condicoes_comerciais?.analise[3].aprovado && (
                         <IconButton 
                             className="gap-2"
-                            onClick={() => approveOrder(dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[3].id, !dataOrder?.condicoes_comerciais?.analise[3].aprovado)}
+                            onClick={() => approveOrder(dataOrder!.id, dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[3].id, !dataOrder?.condicoes_comerciais?.analise[3].aprovado)}
                         >
                             <CheckCircle 
                                 fontSize="small"
@@ -251,7 +264,7 @@ export default function Orders() {
                     {role === 'admin' && !dataOrder?.condicoes_comerciais?.analise[0].aprovado && (
                         <IconButton 
                             className="gap-2"
-                            onClick={() => approveOrder(dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[0].id, !dataOrder?.condicoes_comerciais?.analise[0].aprovado)}
+                            onClick={() => approveOrder(dataOrder!.id, dataOrder!.num_pedido, dataOrder?.condicoes_comerciais?.analise[0].id, !dataOrder?.condicoes_comerciais?.analise[0].aprovado)}
                         >
                             <CheckCircle 
                                 fontSize="small"
@@ -278,6 +291,12 @@ export default function Orders() {
                     keyRow="Previsão de embarque"
                     value={ convertDateDrawer(dataOrder?.previsao_embarque ?? '') }
                 />
+                {dataOrder?.observacao && (
+                    <RowDrawer
+                        keyRow="Observação"
+                        value={ dataOrder?.observacao }
+                    />
+                )}
             </div>
         );
     }
@@ -319,17 +338,31 @@ export default function Orders() {
         }
     }
 
-    const approveOrder = async (num: string, id_analise: number, value: boolean) => {
+    const approveOrder = async (id: string, num: string, id_analise: number, value: boolean) => {
         const response = await orderApproved(num, id_analise, value);
         if (response.status === 200) {
             setOpenAlert(true);
             setMessageAlert('Alteração realizada com sucesso!');
             setIsSuccess(true);
+            getOrder(id)
 
-            setOpenDrawer(false);
             setOpenDialog(false);
             closeAlert();
             getOrders();
+        }
+    }
+
+    const observationOrder = async (id: string, num: string, observacao: string) => {
+        const response = await orderObservation(num, observacao);
+        if (response.status === 200) {
+            setOpenAlert(true);
+            setMessageAlert('Observação salva com sucesso!');
+            setIsSuccess(true);
+            getOrder(id)
+            setOpenDialog(false);
+            closeAlert();
+            getOrders();
+            setObservation('');
         }
     }
 
@@ -348,6 +381,8 @@ export default function Orders() {
                 anchor="right"
                 open={openDrawer}
                 onClose={() => setOpenDrawer(false)}
+                disableAutoFocus
+                disableEnforceFocus
             >
                 <div className="flex flex-col justify-between gap-4 px-10 py-5 h-full">
                     <DialogApp 
@@ -360,6 +395,27 @@ export default function Orders() {
                     <ContentViewOrder 
                         dataOrder={dataOrder!}
                     />
+                    {role === 'admin' && dataOrder && !dataOrder?.observacao && (
+                        <div className="flex flex-col gap-2 justify-start">
+                            <TextField
+                                className="w-full"
+                                label="Observação" 
+                                variant="outlined"
+                                type="text"
+                                onChange={handleChange}
+                                value={observation}
+                                inputRef={inputRef}
+                            />
+                            <Button 
+                                className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                                variant="contained"
+                                type="button"
+                                onClick={() => observationOrder(dataOrder.id, dataOrder.num_pedido, observation)}
+                            >
+                                Enviar
+                            </Button>
+                        </div>
+                    )}
                     <footer className="flex flex-row justify-between gap-3">
                         {/* <IconButton 
                             className="gap-2"

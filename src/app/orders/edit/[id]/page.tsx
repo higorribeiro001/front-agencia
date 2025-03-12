@@ -366,49 +366,49 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
                     <div className="w-full flex flex-wrap gap-5 mb-10">
                       {formFields.map((value: {type: string; label: string;}, index: number) => (
                             value.type === 'select' ? (
-                              <Autocomplete
-                                  key={index}
-                                  disablePortal
-                                  options={status}
-                                  sx={{ width: 300 }}
-                                  className="w-[49%]"
-                                  value={model[index]} 
-                                  onChange={(event, newValue) => {
-                                    if (newValue) {
-                                      setModel((prevModel) => {
-                                        const updateModel = [...prevModel];
-                                        updateModel[index] = { 
-                                          label: newValue.label,
-                                          name: updateModel[index].name,
-                                          value: newValue.value, 
-                                          error: newValue.error ?? ''
-                                        };
-                                        return updateModel;
-                                      });
+                                <Autocomplete
+                                    key={index}
+                                    disablePortal
+                                    options={status}
+                                    sx={{ width: 300 }}
+                                    className="w-[49%]"
+                                    value={model[index]} 
+                                    onChange={(event, newValue) => {
+                                      if (newValue) {
+                                        setModel((prevModel) => {
+                                          const updateModel = [...prevModel];
+                                          updateModel[index] = { 
+                                            label: newValue.label,
+                                            name: updateModel[index].name,
+                                            value: newValue.value, 
+                                            error: newValue.error ?? ''
+                                          };
+                                          return updateModel;
+                                        });
+                                      }
+                                    }}
+                                    isOptionEqualToValue={(option, value) => option?.value === value?.value}
+                                    renderInput={(params) => 
+                                      <TextField 
+                                        {...params} 
+                                        label={value.label} 
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
+                                        value={model[index].value}
+                                      />
                                     }
-                                  }}
-                                  isOptionEqualToValue={(option, value) => option?.value === value?.value}
-                                  renderInput={(params) => 
-                                    <TextField 
-                                      {...params} 
-                                      label={value.label} 
-                                      onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
-                                      value={model[index].value}
-                                    />
-                                  }
-                                />
+                                  />
                                 ) : (
                                   <TextField
-                                  key={index}
-                                  className="w-[49%]"
-                                  label={value.label} 
-                                  variant="outlined"
-                                  type={value.type}
-                                  error={model[index].error !== '' ? true : false}
-                                  helperText={model[index].error}
-                                  onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
-                                  value={model[index].value}
-                              />
+                                    key={index}
+                                    className="w-[49%]"
+                                    label={value.label} 
+                                    variant="outlined"
+                                    type={value.type}
+                                    error={model[index].error !== '' ? true : false}
+                                    helperText={model[index].error}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
+                                    value={model[index].value}
+                                  />
                             )
                         ))}
                     </div>

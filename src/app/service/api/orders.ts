@@ -43,6 +43,11 @@ export async function orderApproved(num_pedido: string, id_analise: number, apro
     return response;
 }
 
+export async function orderObservation(num_pedido: string, observacao: string) {
+    const response: { data: OrderInterface, status: number } = await axios.post(url+`/v1/pedidos/itens/observacao/${num_pedido}/`, {observacao}, configAuth());
+    return response;
+}
+
 export async function deleteOrder(id: string) {
     const response: { data: OrderInterface, status: number } = await axios.delete(url+`/v1/pedidos/${id}/`, configAuth());
     return response;

@@ -140,6 +140,7 @@ interface OrderInterface {
     prazo_entrega: string;
     info_produto: Array<string>;
     aprovado: boolean;
+    observacao: string;
 }
 
 interface DataOrderInterface {
@@ -211,6 +212,7 @@ interface DataOrderInterface {
         prazo_entrega: string;
         info_produto: Array<string>;
         aprovado: boolean;
+        observacao: string;
     }
 }
 
