@@ -364,7 +364,7 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
                     onSubmit={submitForm}
                 >
                     <div className="w-full flex flex-wrap gap-5 mb-10">
-                      {formFields.map((value: {type: string; label: string;}, index: number) => (
+                      {formFields.map((value, index: number) => (
                             value.type === 'select' ? (
                                 <Autocomplete
                                     key={index}
@@ -425,6 +425,7 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
                               className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
                               variant="contained"
                               type="submit"
+                              sx={{bgcolor: "#055226"}}
                           >
                               Enviar
                           </Button>

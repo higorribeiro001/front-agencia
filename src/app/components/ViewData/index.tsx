@@ -254,6 +254,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                 tabIndex={-1}
                                 startIcon={<CloudUploadIcon />}
                                 className="bg-primary"
+                                sx={{bgcolor: "#055226"}}
                             >
                                 Importar arquivo
                                 <VisuallyHiddenInput
@@ -364,6 +365,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                         tabIndex={-1}
                                         startIcon={<CloudUploadIcon />}
                                         className="bg-primary w-[400px]"
+                                        sx={{bgcolor: "#055226"}}
                                     >
                                         Buscar imagem
                                         <VisuallyHiddenInput

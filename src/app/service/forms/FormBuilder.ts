@@ -1,5 +1,3 @@
-import { FormBuilderInterface } from "@/data/types";
-
 class FormBuilder {
     formBuilder: FormBuilderInterface;
 

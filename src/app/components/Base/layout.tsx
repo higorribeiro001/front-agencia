@@ -36,6 +36,7 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
                                 tabIndex={-1}
                                 startIcon={<CloudUploadIcon />}
                                 className="bg-primary"
+                                sx={{bgcolor: "#055226"}}
                             >
                                 Importar arquivo
                                 <VisuallyHiddenInput

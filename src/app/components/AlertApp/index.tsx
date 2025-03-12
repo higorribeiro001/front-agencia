@@ -1,4 +1,3 @@
-import { AlertAppInterface } from "@/data/types";
 import { Alert, Stack } from "@mui/material";
 
 export default function AlertApp({isOpen, isSuccess, message}: AlertAppInterface) {

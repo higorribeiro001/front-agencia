@@ -1,4 +1,3 @@
-import { BreadcrumbsInterface } from "@/data/types";
 import { Breadcrumbs, Link, Typography } from "@mui/material";
 
 export const Breadcrumb = ({options}: BreadcrumbsInterface) => {

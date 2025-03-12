@@ -149,7 +149,7 @@ export default function Login() {
             className="flex flex-col gap-10" 
             onSubmit={submitForm}
           >
-            {formFields.map((value: {value: string; type: string; label: string;}, index: number) => (
+            {formFields.map((value, index: number) => (
               <TextField
                 key={index}
                 label={value.label} 
@@ -176,6 +176,7 @@ export default function Login() {
               variant="contained"
               type="submit"
               loading={isLoading}
+              sx={{bgcolor: "#055226"}}
             >
               Entrar
             </Button>

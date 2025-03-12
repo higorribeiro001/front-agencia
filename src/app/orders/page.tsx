@@ -411,6 +411,7 @@ export default function Orders() {
                                 variant="contained"
                                 type="button"
                                 onClick={() => observationOrder(dataOrder.id, dataOrder.num_pedido, observation)}
+                                sx={{bgcolor: "#055226"}}
                             >
                                 Enviar
                             </Button>

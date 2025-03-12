@@ -1,4 +1,3 @@
-import { DialogInterface } from "@/data/types";
 import { CircularProgress, Dialog, DialogContent } from "@mui/material";
 
 export const Loading = ({isOpen}: DialogInterface) => {
