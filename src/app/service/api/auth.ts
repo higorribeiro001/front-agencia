@@ -9,7 +9,7 @@ const configAuth = () => {
 }
 
 export async function login(email: string, password: string) {
-    const response: { data: { access: string, refresh: string }, status: number } = await axios.post(url+'/v1/auth/login/', { email, password }, config);
+    const response: { data: { access: string, refresh: string }, status: number } = await axios.post(url+'/auth/api/v1/login/', { email, password }, config);
 
     if (response.status === 200) {
         deleteCookie('statusMe');
@@ -22,7 +22,7 @@ export async function login(email: string, password: string) {
 
 export async function me() {
     try {
-        const response: { data: { name: string, role: string }, status: number } = await axios.get(url+'/v1/auth/profile/', configAuth());
+        const response: { data: { name: string, role: string }, status: number } = await axios.get(url+'/auth/api/v1/profile/', configAuth());
     
         if (response.status === 200) {
             setCookie('role', response.data.role);
@@ -36,7 +36,7 @@ export async function me() {
 
 export async function logout() {
     const refresh = getCookie('refresh');
-    const response: { status: number } = await axios.post(url+'/v1/auth/logout/', {refresh}, configAuth());
+    const response: { status: number } = await axios.post(url+'/auth/api/v1/logout/', {refresh}, configAuth());
 
     if (response.status === 200) {
         deleteCookie('access');
