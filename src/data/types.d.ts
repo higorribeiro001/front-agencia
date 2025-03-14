@@ -140,6 +140,7 @@ interface OrderInterface {
     prazo_entrega: string;
     info_produto: Array<string>;
     aprovado: boolean;
+    responsavel_aprovacao: string;
     observacao: string;
 }
 
@@ -213,6 +214,7 @@ interface DataOrderInterface {
         info_produto: Array<string>;
         aprovado: boolean;
         observacao: string;
+        responsavel_aprovacao: string;
     }
 }
 
@@ -242,11 +244,11 @@ interface DataTableInterface {
     }
     according?: {
         label: string;
-        value: boolean;
+        value: string;
     };
     setAccording?: (value: {
         label: string;
-        value: boolean;
+        value: string;
     }) => void;
 }
 

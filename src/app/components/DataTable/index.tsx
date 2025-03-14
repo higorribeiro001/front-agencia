@@ -34,7 +34,7 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                     /> 
                     <Autocomplete
                         disablePortal
-                        options={[{"label": "Todos", "value": true}, {"label": "Conforme", "value": true}, {"label": "Não Conforme", "value": false}]}
+                        options={[{"label": "Todos", "value": ""}, {"label": "Conforme", "value": "conforme"}, {"label": "Não Conforme", "value": "não conforme"}, {"label": "Aprovado", "value": "aprovado"}]}
                         sx={{ width: 300 }}
                         className="w-[49%]"
                         value={according} 

@@ -234,13 +234,27 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                 <Loading 
                     isOpen={isLoading}
                 />
-                {!importFile && (
-                    <div className="flex flex-row w-full justify-between">
+                <div className="flex flex-row w-full justify-between">
+                    {!importFile && (
                         <IconButton href="/orders">
                             <ArrowBack color="inherit" />
                         </IconButton>
-                    </div>
-                )}
+                    )}
+                    {dataResponse && (
+                        <Pagination 
+                            count={dataResponse.length} 
+                            variant="outlined" 
+                            sx={{
+                                "& .MuiPaginationItem-root.Mui-selected": {
+                                    backgroundColor: "#02521F", 
+                                    color: "#FFFFFF",
+                                },
+                            }}   
+                            shape="rounded" 
+                            onChange={(_, page) => setCurrentPage!(page-1)}
+                        />
+                    )}
+                </div>
                 <div className="w-full flex flex-col gap-5">
                     {importFile && !isSuccess && (
                         <form 
@@ -354,6 +368,12 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                     {dataResponse?.[currentPage]?.condicoes_comerciais?.qtd_parcelas > 0 && (
                                         <RowInfo title="Parcelas:" info={String(dataResponse?.[currentPage]?.condicoes_comerciais?.qtd_parcelas)} />
                                     )}
+                                    {dataResponse?.[currentPage]?.observacao && (
+                                        <RowInfo title="Observação:" info={String(dataResponse?.[currentPage]?.observacao)} />
+                                    )}
+                                    {dataResponse?.[currentPage]?.responsavel_aprovacao && (
+                                        <RowInfo title="Responsável pela aprovação:" info={String(dataResponse?.[currentPage]?.responsavel_aprovacao)} />
+                                    )}
                                     <h2 className='text-primary font-semibold my-3 uppercase'>Registro fotográfico do empreendimento:</h2>
                                     {dataResponse?.[currentPage]?.registro_fotografico_empreendimento && (
                                         <Image className='mb-3' width={400} height={380} src={dataResponse?.[currentPage]?.registro_fotografico_empreendimento} alt="Descrição da imagem" />
@@ -397,18 +417,6 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                 isLoading={isLoading}   
                             />
                         </div>
-                        <Pagination 
-                            count={dataResponse?.length} 
-                            variant="outlined" 
-                            sx={{
-                                "& .MuiPaginationItem-root.Mui-selected": {
-                                    backgroundColor: "#02521F", 
-                                    color: "#FFFFFF",
-                                },
-                            }}   
-                            shape="rounded" 
-                            onChange={(_, page) => setCurrentPage!(page-1)}
-                        />
                     </div>
                 )}
             </div>

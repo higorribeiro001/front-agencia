@@ -28,8 +28,8 @@ export async function orderItem(num_pedido: string) {
     return response.data;
 }
 
-export async function orderAccordingItem(conforme: boolean) {
-    const response: { data: OrdersInterface, status: number } = await axios.get(url+`/v1/pedidos/itens/filtro/conforme/?conforme=${conforme}`, configAuth());
+export async function orderAccordingItem(status_analise: string) {
+    const response: { data: OrdersInterface, status: number } = await axios.get(url+`/v1/pedidos/itens/filtro/conforme/?status_analise=${status_analise}`, configAuth());
     return response.data;
 }
 

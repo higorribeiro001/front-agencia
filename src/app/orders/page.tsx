@@ -27,7 +27,7 @@ export default function Orders() {
     const [dataOrder, setDataOrder] = useState<OrderInterface>();
     const [openDialog, setOpenDialog] = useState(false);
     const [monthSelected, setMonthSelected] = useState('');
-    const [according, setAccording] = useState<{"label": string; "value": boolean}>({"label": "Todos", "value": true});
+    const [according, setAccording] = useState<{"label": string; "value": string}>({"label": "Todos", "value": ""});
     const role = getCookie("role");
     const [observation, setObservation] = useState('');
 
@@ -40,9 +40,8 @@ export default function Orders() {
     }
 
     useEffect(() => {
-        getOrders();
         const handleAccording = async () => {
-            if (according.label !== 'Todos') {
+            if (according.value !== '') {
                 setIsLoading(true);
                 const dataOrders = await orderAccordingItem(according.value!);
                 const orderAdapt = new OrdersAdapt(dataOrders);
@@ -53,6 +52,8 @@ export default function Orders() {
                 const numPages = ordersDataData?.count/10;
                 setPages(parseInt(numPages.toFixed(0)));
                 setIsLoading(false);
+            } else {
+                getOrders();
             }
         }
 
@@ -295,6 +296,12 @@ export default function Orders() {
                     <RowDrawer
                         keyRow="Observação"
                         value={ dataOrder?.observacao }
+                    />
+                )}
+                {dataOrder?.responsavel_aprovacao && (
+                    <RowDrawer
+                        keyRow="Responsável pela aprovação"
+                        value={ dataOrder?.responsavel_aprovacao }
                     />
                 )}
             </div>
