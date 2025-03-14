@@ -390,6 +390,7 @@ export default function Orders() {
                 onClose={() => setOpenDrawer(false)}
                 disableAutoFocus
                 disableEnforceFocus
+                className="z-[998]"
             >
                 <div className="flex flex-col justify-between gap-4 px-10 py-5 h-full">
                     <DialogApp 
