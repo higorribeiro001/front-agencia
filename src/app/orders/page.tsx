@@ -10,7 +10,7 @@ import OrderAdapt from "../service/adapt/OrderAdapt";
 import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
-import { deleteOrder, order, orderAccordingItem, orderApproved, orderItem, orderObservation, orders } from "../service/api/orders";
+import { deleteOrder, order, orderAccordingItem, orderApproved, orderItem, orderObservation, orders } from "../service/api/unity";
 import politicaAnalise from '../../data/politica_analise.json';
 import ColColor from "../components/ColColor";
 import { getCookie } from "cookies-next";
@@ -419,28 +419,13 @@ export default function Orders() {
                                 variant="contained"
                                 type="button"
                                 onClick={() => observationOrder(dataOrder.id, dataOrder.num_pedido, observation)}
-                                sx={{bgcolor: "#055226"}}
+                                sx={{bgcolor: "#FB3A04"}}
                             >
                                 Enviar
                             </Button>
                         </div>
                     )}
                     <footer className="flex flex-row justify-between gap-3">
-                        {/* <IconButton 
-                            className="gap-2"
-                            href={"/orders/edit/"+dataOrder?.id}
-                        >
-                            <Edit 
-                                fontSize="small"
-                                color="success" 
-                            /> 
-                            <Typography 
-                                className="font-semibold text-[16px]"
-                                color="success"
-                            >
-                                Editar
-                            </Typography>
-                        </IconButton> */}
                         <IconButton 
                             className="gap-2"
                             href={"/orders/view/"+dataOrder?.id}

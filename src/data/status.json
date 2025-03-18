@@ -1,12 +1,18 @@
 [
     {
-        "label": "Sim",
-        "value": "Sim",
-        "error": ""
+        "label": "CARREGANDO",
+        "value": "carregando"
     },
     {
-        "label": "Não",
-        "value": "Não",
-        "error": ""
+        "label": "ROTA EM ABERTO",
+        "value": "rota em aberto"
+    },
+    {
+        "label": "FINALIZADO",
+        "value": "finalizado"
+    },
+    {
+        "label": "EM TRANSITO",
+        "value": "em transito"
     }
 ]

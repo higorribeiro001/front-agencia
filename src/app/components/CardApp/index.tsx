@@ -14,7 +14,7 @@ export const CardApp = ({image, title, subtitle, to}: Card) => {
             <Image 
                 className="rounded-t-md"
                 src={image} 
-                alt="concrem"     
+                alt="logo"     
             />
             <div className="px-2 py-[3px] gap-1">
                 <h3>

@@ -1,26 +1,19 @@
 "use client"
 
 import Image from "next/image";
-import concrem from "../../../public/assets/img_concrem.svg"
-import logo from "../../../public/assets/logo-verde-pequeno.png"
+import logo from "../../../public/assets/logo.png"
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import FormBuilder from "../service/forms/FormBuilder";
 import { login } from "../service/api/auth";
 import AlertApp from "../components/AlertApp";
-import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  useEffect(() => {
-    deleteCookie('access');
-    deleteCookie('refresh');
-    deleteCookie('role');
-  }, []);
-
   const [showPassword, setShowPassword] = React.useState(false);
   const formFields = new FormBuilder()
     .addTextField('email', 'E-mail', 'email')
@@ -31,6 +24,7 @@ export default function Login() {
   const [openAlert, setOpenAlert] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [messageAlert, setMessageAlert] = useState('');
+  const router = useRouter();
 
   const [model, setModel] = useState([
     {
@@ -105,11 +99,11 @@ export default function Login() {
         setIsSuccess(true);
         
         closeAlert();
-        window.location.href = '/home';
+        router.replace('/home');
       }
     } catch (e: unknown) {
       const error = e as StatusResponse;
-      if (error.response.status === 401) {
+      if (error.response.status === 403) {
         setOpenAlert(true);
         setMessageAlert('E-mail e/ou senha inválido(s)!');
         setIsSuccess(false);
@@ -128,25 +122,22 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-row overflow-hidden justify-between w-full h-full m-0 p-0">
+    <div className="flex flex-row overflow-hidden justify-center w-full h-full m-0 p-0 bg-primary">
       <AlertApp 
         isOpen={openAlert}
         isSuccess={isSuccess}
         message={messageAlert}
       />
-      <div className="w-2/5 bg-background py-12 px-16 flex flex-col justify-between animate-fade-up">
-        <div className="flex flex-row justify-between">
-            <Image 
-                className="w-[60px] h-[40px] mt-2"
-                src={logo} 
-                alt="logo"     
-            />
-            <h1 className="text-center text-primary text-[34px] font-medium">SISTEMA DE PEDIDOS</h1>
-        </div>
-        <div className="flex flex-col gap-10">
+      <div className="w-[100%] h-full bg-background py-12 px-16 flex flex-col justify-between items-center animate-fade-up bg-primary">
+        <div className="lg:w-[600px] w-[350px] p-10 flex flex-col items-center gap-10 rounded shadow-lg bg-white">
+          <Image 
+            className="w-[250px]"
+            src={logo} 
+            alt="logo"     
+          />
           <h2 className="text-center text-primary text-[28px] font-medium">LOGIN</h2>
           <form 
-            className="flex flex-col gap-10" 
+            className="flex flex-col gap-10 w-full" 
             onSubmit={submitForm}
           >
             {formFields.map((value, index: number) => (
@@ -176,19 +167,14 @@ export default function Login() {
               variant="contained"
               type="submit"
               loading={isLoading}
-              sx={{bgcolor: "#055226"}}
+              sx={{bgcolor: "#FB3A04"}}
             >
               Entrar
             </Button>
           </form>
         </div>
-        <span className="text-gray-600 text-center text-[14px]">© concrem | 2025</span>
+        <span className="text-white text-center text-[14px]">© arcelor mittal | 2025</span>
       </div>
-      <Image 
-        className="w-3/5"
-        src={concrem} 
-        alt="concrem"     
-      />
     </div>
   );
 }

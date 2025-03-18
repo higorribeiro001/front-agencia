@@ -1,12 +1,11 @@
 "use client"
 
 import Image from "next/image";
-import logoP from "../../../../public/assets/logo_pequeno.svg"
-import logoG from "../../../../public/assets/logo_concrem_grande.png";
+import logoP from "../../../../public/assets/logo.png"
 import arrow from "../../../../public/assets/close-menu.png";
 import Link from "next/link";
 import home from "../../../../public/assets/home.png";
-import pedidos from "../../../../public/assets/pedidos.png";
+import pedidos from "../../../../public/assets/home.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
@@ -24,17 +23,8 @@ export default function Sidebar() {
                 src={home} 
                 alt="logo"     
             />,
-            title: 'Principal',
-            to: '/home'
-        },
-        {
-            icon: <Image
-                className="w-[25px] h-[25px]" 
-                src={pedidos} 
-                alt="logo"     
-            />,
-            title: 'Pedidos',
-            to: '/orders'
+            title: 'Petrolina',
+            to: '/petrolina'
         }
     ];
 
@@ -87,8 +77,8 @@ export default function Sidebar() {
             />
             <div className="flex flex-row justify-between mb-16">
                 <Image 
-                    className={isExpanded ? "max-w-[180px] transition-all" : "w-[120px] transition-all cursor-pointer"}
-                    src={isExpanded ? logoG : logoP} 
+                    className={isExpanded ? "lg:max-w-[180px] max-w-[100px] transition-all" : "w-[120px] transition-all cursor-pointer"}
+                    src={logoP} 
                     alt="logo" 
                     onClick={handleExpandedMenu}    
                 />

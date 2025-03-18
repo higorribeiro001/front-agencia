@@ -218,12 +218,193 @@ interface DataOrderInterface {
     }
 }
 
+interface UnityInterface {
+    id: string;
+    nome: string;
+}
+
+interface UnitiesInterface {
+    current_page: number;
+    data: UnityInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface SellerInterface {
+    id: string;
+    nome: string;
+}
+
+interface SellersInterface {
+    current_page: number;
+    data: SellerInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface ClientInterface {
+    id: string;
+    nome: string;
+}
+
+interface ClientsInterface {
+    current_page: number;
+    data: ClientInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface CategoryInterface {
+    id: string;
+    nome: string;
+}
+
+interface CategorysInterface {
+    current_page: number;
+    data: CategoryInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface RouteInterface {
+    id: string;
+    nome: string;
+}
+
+interface RoutesInterface {
+    current_page: number;
+    data: RouteInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface NumTransportInterface {
+    id: string;
+    nome: string;
+}
+
+interface NumTransportsInterface {
+    current_page: number;
+    data: NumTransportInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface PlateInterface {
+    id: string;
+    nome: string;
+}
+
+interface PlatesInterface {
+    current_page: number;
+    data: PlateInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface TypeVehicleInterface {
+    id: string;
+    nome: string;
+}
+
+interface TypeVehiclesInterface {
+    current_page: number;
+    data: TypeVehicleInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface DriverInterface {
+    id: string;
+    nome: string;
+}
+
+interface DriversInterface {
+    current_page: number;
+    data: DriverInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface LogisticRegisterInterface {
+    data: string;
+    unidade_id: string;
+    ov: string;
+    nf: string;
+    valor: number;
+    vendedor_id: string;
+    cliente_id: string;
+    peso_kg: number;
+    cidade: string;
+    bairro: string;
+    categoria_id: string;
+    detalhamento: string;
+    rota_id?: string;
+    ordem_entrada?: number;
+    num_transporte_id?: string;
+    previsao_saida_carga?: string;
+    placa_id?: string;
+    tipo_veiculo_id?: string;
+    status?: string;
+    ocorrencia?: string;
+    detalhamento_ocorrencia?: string;
+    data_retorno_carga?: string;
+    motorista_id?: string;
+}
+
+interface LogisticInterface {
+    id: string;
+    data: string;
+    unidade_id: string;
+    ov: string;
+    nf: string;
+    valor: number;
+    vendedor_id: string;
+    cliente_id: string;
+    peso_kg: number;
+    cidade: string;
+    bairro: string;
+    categoria_id: string;
+    detalhamento: string;
+    rota_id: string;
+    ordem_entrada: number;
+    num_transporte_id: string;
+    previsao_saida_carga: string;
+    placa_id: string;
+    tipo_veiculo_id: string;
+    status: string;
+    ocorrencia: string;
+    detalhamento_ocorrencia: string;
+    data_retorno_carga: string;
+    motorista_id: string;
+    unidade: UnityInterface;
+    vendedor: SellerInterface;
+    cliente: ClientInterface;
+    categoria: CategoryInterface;
+    rota: RouteInterface;
+    num_transporte: NumTransportInterface;
+    placa: PlateInterface;
+    tipo_veiculo: TypeVehicleInterface;
+    motorista: DriverInterface;
+}
+
+interface LogisticsInterface {
+    current_page: number;
+    data: LogisticInterface[];
+    last_page: number;
+    total: string;
+}
+
 interface RowDrawerInterface {
     keyRow: string;
     value: string | number;
     color?: boolean;
     success?: boolean;
     approved?: boolean;
+}
+
+interface DataLogisticInterface {
+    dataLogistic: LogisticInterface;
 }
 
 interface DataTableInterface {

@@ -8,7 +8,7 @@ import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
 import status from "@/data/status.json";
 import OrderAdapt from "@/app/service/adapt/OrderAdapt";
-import { order, putOrder } from "@/app/service/api/orders";
+import { order, putOrder } from "@/app/service/api/unity";
 
 export default function EditOrder({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = React.use(params);
@@ -425,7 +425,7 @@ export default function EditOrder({ params }: { params: Promise<{ id: string }> 
                               className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
                               variant="contained"
                               type="submit"
-                              sx={{bgcolor: "#055226"}}
+                              sx={{bgcolor: "#FB3A04"}}
                           >
                               Enviar
                           </Button>

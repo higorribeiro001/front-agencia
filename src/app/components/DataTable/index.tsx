@@ -1,9 +1,9 @@
 import { Search } from "@mui/icons-material";
-import { Autocomplete, Box, IconButton, InputAdornment, Pagination, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, IconButton, InputAdornment, Pagination, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ChangeEvent } from "react";
 
-export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handleCurrentPage, title, according, setAccording}: DataTableInterface) => { 
+export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handleCurrentPage, title, according, setAccording, hrefRegister}: DataTableInterface) => { 
     
     const CustomNoRowsOverlay = () => (
         <div style={{ textAlign: 'center', padding: '20px' }}>
@@ -32,7 +32,16 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                         placeholder="pesquise pelo n° do pedido..."
                         onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch!(e)}
                     /> 
-                    <Autocomplete
+                    <Button 
+                        className="bg-primary font-semibold w-[200px] h-[56px]"
+                        variant="contained"
+                        type="button"
+                        href={hrefRegister}
+                        style={{background: "#FB3A04"}}
+                    >
+                        Cadastrar
+                    </Button>
+                    {/* <Autocomplete
                         disablePortal
                         options={[{"label": "Todos", "value": ""}, {"label": "Conforme", "value": "conforme"}, {"label": "Não Conforme", "value": "não conforme"}, {"label": "Aprovado", "value": "aprovado"}]}
                         sx={{ width: 300 }}
@@ -50,7 +59,7 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                                 value={according}
                             />
                         }
-                    />
+                    /> */}
                 </div>
             )}
             <Box sx={{ width: 1 }}>
@@ -76,7 +85,7 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                             variant="outlined" 
                             sx={{
                                 "& .MuiPaginationItem-root.Mui-selected": {
-                                    backgroundColor: "#02521F", 
+                                    backgroundColor: "#FB3A04", 
                                     color: "#FFFFFF",
                                 },
                             }}   

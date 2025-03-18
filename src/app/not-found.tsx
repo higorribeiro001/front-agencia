@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import logo from "../../public/assets/logo_concrem_grande.png";
+import logo from "../../public/assets/logo.png";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 
@@ -22,11 +22,12 @@ export default function NotFound() {
                     variant="contained"
                     type="button"
                     onClick={() => router.back()}
+                    style={{background: "white"}}
                 >
                     página anterior
                 </Button>
             </div>
-            <span className="text-background text-center text-[14px]">© concrem | 2025</span>
+            <span className="text-background text-center text-[14px]">© arcelor mittal | 2025</span>
         </div>
     );
 }

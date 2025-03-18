@@ -36,7 +36,7 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
                                 tabIndex={-1}
                                 startIcon={<CloudUploadIcon />}
                                 className="bg-primary"
-                                sx={{bgcolor: "#055226"}}
+                                sx={{bgcolor: "#FB3A04"}}
                             >
                                 Importar arquivo
                                 <VisuallyHiddenInput
@@ -55,7 +55,7 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
                     {children}
                 </div>
                 <footer className="flex justify-center mt-12 w-full">
-                    <span className="text-gray-600 text-center text-[14px]">© concrem | 2025</span>
+                    <span className="text-gray-600 text-center text-[14px]">© arcelor mittal | 2025</span>
                 </footer>
             </div>
         </div>

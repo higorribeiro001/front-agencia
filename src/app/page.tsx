@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image";
-import concrem from "../../public/assets/img_concrem.svg"
 import logo from "../../public/assets/logo.png"
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
@@ -123,7 +122,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-row overflow-hidden justify-between w-full h-full m-0 p-0">
+    <div className="flex flex-row overflow-hidden justify-center w-full h-full m-0 p-0">
       <AlertApp 
         isOpen={openAlert}
         isSuccess={isSuccess}
@@ -168,19 +167,14 @@ export default function Login() {
               variant="contained"
               type="submit"
               loading={isLoading}
-              sx={{bgcolor: "#055226"}}
+              sx={{bgcolor: "#FB3A04"}}
             >
               Entrar
             </Button>
           </form>
         </div>
-        <span className="text-gray-600 text-center text-[14px]">© concrem | 2025</span>
+        <span className="text-gray-600 text-center text-[14px]">© arcelor mittal | 2025</span>
       </div>
-      <Image 
-        className="h-[100vh]"
-        src={concrem} 
-        alt="concrem"     
-      />
     </div>
   );
 }

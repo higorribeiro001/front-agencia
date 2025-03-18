@@ -5,7 +5,7 @@ import { Button, IconButton, Pagination } from "@mui/material";
 import { Base } from "../../components/Base/layout";
 import React, { useEffect, useState } from "react";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { postOrder, uploadPhotoItem } from '../../service/api/orders';
+import { postOrder, uploadPhotoItem } from '../../service/api/unity';
 import { Loading } from '../../components/Loading';
 import RowInfo from '../../components/RowInfo';
 import { DataTable } from '../../components/DataTable';
@@ -246,7 +246,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                             variant="outlined" 
                             sx={{
                                 "& .MuiPaginationItem-root.Mui-selected": {
-                                    backgroundColor: "#02521F", 
+                                    backgroundColor: "#FB3A04", 
                                     color: "#FFFFFF",
                                 },
                             }}   
@@ -268,7 +268,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                 tabIndex={-1}
                                 startIcon={<CloudUploadIcon />}
                                 className="bg-primary"
-                                sx={{bgcolor: "#055226"}}
+                                sx={{bgcolor: "#FB3A04"}}
                             >
                                 Importar arquivo
                                 <VisuallyHiddenInput
@@ -385,7 +385,7 @@ export default function ViewData({importFile, data, title}: {importFile: boolean
                                         tabIndex={-1}
                                         startIcon={<CloudUploadIcon />}
                                         className="bg-primary w-[400px]"
-                                        sx={{bgcolor: "#055226"}}
+                                        sx={{bgcolor: "#FB3A04"}}
                                     >
                                         Buscar imagem
                                         <VisuallyHiddenInput

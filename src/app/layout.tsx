@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CONCREM: Sistema de Pedidos",
-  description: "Sistema de Gerenciamento de pedidos produtos da CONCREM.",
+  title: "Arcelor Mittal: Logística",
+  description: "Sistema de Logística da Arcelor Mittal.",
 };
 
 export default function RootLayout({
