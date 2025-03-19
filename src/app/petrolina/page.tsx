@@ -3,12 +3,11 @@
 import { Drawer, IconButton, SelectChangeEvent, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Visibility } from "@mui/icons-material";
+import { Edit, Visibility } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
-import politicaAnalise from '../../data/politica_analise.json';
 import ColColor from "../components/ColColor";
 import { getCookie } from "cookies-next";
 import LogisticAdapt from "../service/adapt/LogisticAdapt";
@@ -300,9 +299,9 @@ export default function Orders() {
                     <footer className="flex flex-row justify-between gap-3">
                         <IconButton 
                             className="gap-2"
-                            href={"/orders/view/"+dataLogistic?.id}
+                            href={"/orders/edit/"+dataLogistic?.id}
                         >
-                            <Visibility 
+                            <Edit 
                                 fontSize="small"
                                 color="success" 
                             /> 
@@ -310,7 +309,7 @@ export default function Orders() {
                                 className="font-semibold text-[16px]"
                                 color="success"
                             >
-                                Ver mais
+                                Editar
                             </Typography>
                         </IconButton>
                     </footer>

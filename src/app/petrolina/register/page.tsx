@@ -16,6 +16,9 @@ import { driverItems } from "@/app/service/api/driver";
 import { plateItems } from "@/app/service/api/plate";
 import { typeVehicleItems } from "@/app/service/api/typeVehicle";
 import status from '../../../data/status.json';
+import { getStates } from "@/app/service/api/states";
+import { getCities } from "@/app/service/api/cities";
+import { categoryItems } from "@/app/service/api/category";
 
 export default function RegisterPetrolina() {
 
@@ -30,8 +33,8 @@ export default function RegisterPetrolina() {
         .addTextField('peso_kg', '* Peso (Kg)', 'text')
         .addTextField('estado', '* Estado', 'select')
         .addTextField('cidade', '* Cidade', 'select')
-        .addTextField('bairro', '* Bairro', 'select')
-        .addTextField('categoria', '* Categoria', 'text')
+        .addTextField('bairro', '* Bairro', 'text')
+        .addTextField('categoria_id', '* Categoria', 'select')
         .addTextField('detalhamento', '* Detalhamento', 'text')
         .addTextField('rota_id', '* Rota', 'select')
         .addTextField('ordem_entrada', 'Ordem de Entrada', 'text')
@@ -47,6 +50,7 @@ export default function RegisterPetrolina() {
         .build();
 
     const [unity, setUnity] = useState<Model[]>();
+    const [category, setCategory] = useState<Model[]>();
     const [seller, setSeller] = useState<Model[]>();
     const [client, setClient] = useState<Model[]>();
     const [route, setRoute] = useState<Model[]>();
@@ -54,10 +58,42 @@ export default function RegisterPetrolina() {
     const [driver, setDriver] = useState<Model[]>();
     const [plate, setPlate] = useState<Model[]>();
     const [typeVehicle, setTypeVehicle] = useState<Model[]>();
+    const [states, setStates] = useState<Model[]>([]);
+    const [cities, setCities] = useState<Model[]>([]);
+
+    const getStatesData = async () => {
+      const ufs = await getStates() as { sigla: string; nome: string; }[];
+
+      for (let i=0; i<ufs.length; i++) {
+        states.push({
+          label: ufs[i].sigla,
+          value: ufs[i].sigla,
+          name: '',
+          error: ''
+        })
+      }
+    }
+
+    const getCitiesData = async () => {
+      const citiesData = await getCities(model[8].value) as { nome: string; }[];
+      for (let i=0; i<citiesData.length; i++) {
+        cities.push({
+          label: citiesData[i].nome,
+          value: citiesData[i].nome,
+          name: '',
+          error: ''
+        })
+      }
+    }
 
     const getUnities = async () => {
       const unityData = await unityItems();
       setUnity(unityData);
+    }
+
+    const getCategories = async () => {
+      const categoryData = await categoryItems();
+      setCategory(categoryData);
     }
 
     const getSellers = async () => {
@@ -96,6 +132,7 @@ export default function RegisterPetrolina() {
     }
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingInit, setIsLoadingInit] = useState(true);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
@@ -168,7 +205,7 @@ export default function RegisterPetrolina() {
         },
         {
             label: '',
-            name: 'categoria',
+            name: 'categoria_id',
             value: '',
             error: '',
         },
@@ -249,23 +286,30 @@ export default function RegisterPetrolina() {
     const [model, setModel] = useState(initModel);
 
     useEffect(() => {
-      setIsLoading(true);
+      setIsLoadingInit(true);
       getUnities();
       getSellers();
       getClients();
+      getCategories();
       getRoutes();
       getNumTransports();
       getDrivers();
       getPlate();
       getTypeVehicle();
-      setIsLoading(false);
+      getStatesData();
+      setIsLoadingInit(false);
     }, []);
+
+    useEffect(() => {
+      getCitiesData();
+    }, [model[8].value]);
 
     const cleanFields = () => {
       setModel(initModel);
     }
 
     const changeValues = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        e.preventDefault()
         setModel((prevModel) => {
           const updateModel = [...prevModel];
           updateModel[index].value = e.target.value;
@@ -297,11 +341,13 @@ export default function RegisterPetrolina() {
     }
 
     const validator = (message: string, index: number) => {
-        setModel((prevModel) => {
-          const updateModel = [...prevModel];
-          updateModel[index].error = message;
-          return updateModel;
-        });
+        if(index < 14) {
+          setModel((prevModel) => {
+            const updateModel = [...prevModel];
+            updateModel[index].error = message;
+            return updateModel;
+          });
+        }
     }
 
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -394,101 +440,105 @@ export default function RegisterPetrolina() {
           isSuccess={isSuccess}
           messageAlert={messageAlert}
         >
-            <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
-                <Loading 
-                  isOpen={isLoading}
-                />
-                <div className="flex flex-row w-full justify-between z-10 relative">
-                    <IconButton href="/petrolina">
-                      <ArrowBack color="inherit" />
-                    </IconButton>
-                    <Button 
-                        className="font-semibold w-[200px] h-[56px] z-10 relative"
-                        variant="contained"
-                        type="button"
-                        color="error"
-                        onClick={cleanFields}
-                    >
-                        Limpar campos
-                    </Button>
-                </div>
-                <span className="font-semibold">
-                    * Campos obrigatórios.
-                </span>
-                <form 
-                    className="flex flex-col gap-10 w-full" 
-                    onSubmit={submitForm}
-                >
-                    <div className="w-full flex flex-wrap justify-center gap-5 mb-10">
-                        {formFields.map((value, index: number) => (
-                            value.type === 'select' ? (
-                              <Autocomplete
-                                  key={index}
-                                  disablePortal
-                                  options={value.name === 'unidade_id' && unity ? unity : value.name === 'vendedor_id' && seller ? seller : value.name === 'cliente_id' && client ? client : value.name === 'rota_id' && route ? route : value.name === 'num_transporte_id' && numTransport ? numTransport : value.name === 'motorista_id' && driver ? driver : value.name === 'placa_id' && plate ? plate : value.name === 'tipo_veiculo_id' && typeVehicle ? typeVehicle : value.name === 'status' ? status : [{ label: 'Aguarde...', value: '' }]}
-                                  sx={{ width: 300 }}
-                                  className="w-full lg:w-[49%]"
-                                  value={model[index]} 
-                                  onChange={(event, newValue) => {
-                                    if (newValue) {
-                                      setModel((prevModel) => {
-                                        const updateModel = [...prevModel];
-                                        updateModel[index] = { 
-                                          label: newValue.label,
-                                          name: updateModel[index].name,
-                                          value: newValue.label, 
-                                          error: ''
-                                        };
-                                        return updateModel;
-                                      });
-                                    }
-                                  }}
-                                  isOptionEqualToValue={(option, value) => option?.value === value?.value}
-                                  renderInput={(params) => 
-                                    <TextField 
-                                      {...params} 
-                                      label={value.label} 
-                                      onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
-                                      value={model[index].value}
-                                    />
-                                  }
-                                />
-                                ) : (
-                                  <TextField
+            {!isLoadingInit && (
+                <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
+                  <Loading 
+                    isOpen={isLoading}
+                  />
+                  <div className="flex flex-row w-full justify-between z-10 relative">
+                      <IconButton href="/petrolina">
+                        <ArrowBack color="inherit" />
+                      </IconButton>
+                      <Button 
+                          className="font-semibold w-[200px] h-[56px] z-10 relative"
+                          variant="contained"
+                          type="button"
+                          color="error"
+                          onClick={cleanFields}
+                      >
+                          Limpar campos
+                      </Button>
+                  </div>
+                  <span className="font-semibold">
+                      * Campos obrigatórios.
+                  </span>
+                  <form 
+                      className="flex flex-col gap-10 w-full" 
+                      onSubmit={submitForm}
+                  >
+                      <div className="w-full flex flex-wrap justify-center gap-5 mb-10">
+                          {formFields.map((value, index: number) => (
+                              value.type === 'select' ? (
+                                <Autocomplete
                                     key={index}
+                                    disablePortal
+                                    options={value.name === 'categoria_id' && category ? category : value.name === 'unidade_id' && unity ? unity : value.name === 'vendedor_id' && seller ? seller : value.name === 'cliente_id' && client ? client : value.name === 'categoria_id' && category ? category : value.name === 'rota_id' && route ? route : value.name === 'num_transporte_id' && numTransport ? numTransport : value.name === 'motorista_id' && driver ? driver : value.name === 'placa_id' && plate ? plate : value.name === 'tipo_veiculo_id' && typeVehicle ? typeVehicle : value.name === 'status' ? status : value.name === 'estado' ? states : value.name === 'cidade' ? cities : [{ label: 'Aguarde...', value: '' }]}
+                                    sx={{ width: 300 }}
                                     className="w-full lg:w-[49%]"
-                                    label={value.label} 
-                                    variant="outlined"
-                                    type={value.type}
-                                    error={model[index].error !== '' ? true : false}
-                                    helperText={model[index].error}
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
-                                    value={model[index].value}
-                              />
-                            )
-                        ))}
-                    </div>
-                    <div className="flex flex-row justify-between gap-2">
-                        <Button 
-                            className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
-                            variant="contained"
-                            type="button"
-                            href="/petrolina"
-                            style={{background: "white"}}
-                        >
-                            Cancelar
-                        </Button>
-                        <Button 
-                            className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                            variant="contained"
-                            type="submit"
-                            style={{background: "#FB3A04"}}
-                        >
-                            Enviar
-                        </Button>
-                    </div>
-                </form>
-            </div>
+                                    value={model[index]} 
+                                    onChange={(event, newValue) => {
+                                      if (newValue) {
+                                        setModel((prevModel) => {
+                                          const updateModel = [...prevModel];
+                                          updateModel[index] = { 
+                                            label: newValue.label,
+                                            name: updateModel[index].name,
+                                            value: newValue.value, 
+                                            error: ''
+                                          };
+                                          return updateModel;
+                                        });
+                                      }
+                                    }}
+                                    isOptionEqualToValue={(option, value) => option?.value === value?.value}
+                                    renderInput={(params) => 
+                                      <TextField 
+                                        {...params} 
+                                        label={value.label} 
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
+                                        value={model[index].value}
+                                        error={model[index].error !== '' ? true : false}
+                                        helperText={model[index].error}
+                                      />
+                                    }
+                                  />
+                                  ) : (
+                                    <TextField
+                                      key={index}
+                                      className="w-full lg:w-[49%]"
+                                      label={value.label} 
+                                      variant="outlined"
+                                      type={value.type}
+                                      error={model[index].error !== '' ? true : false}
+                                      helperText={model[index].error}
+                                      onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
+                                      value={model[index].value}
+                                />
+                              )
+                          ))}
+                      </div>
+                      <div className="flex flex-row justify-between gap-2">
+                          <Button 
+                              className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
+                              variant="contained"
+                              type="button"
+                              href="/petrolina"
+                              style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
+                          >
+                              Cancelar
+                          </Button>
+                          <Button 
+                              className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                              variant="contained"
+                              type="submit"
+                              style={{background: "#FB3A04"}}
+                          >
+                              Enviar
+                          </Button>
+                      </div>
+                  </form>
+              </div>
+            )}
         </Base>
     );
 }

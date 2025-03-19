@@ -99,7 +99,7 @@ export default function Login() {
         setIsSuccess(true);
         
         closeAlert();
-        router.replace('/home');
+        router.replace('/petrolina');
       }
     } catch (e: unknown) {
       const error = e as StatusResponse;

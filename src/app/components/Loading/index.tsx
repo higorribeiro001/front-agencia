@@ -8,7 +8,7 @@ export const Loading = ({isOpen}: DialogInterface) => {
             aria-describedby="alert-dialog-description"
         >
             <DialogContent className="px-12 py-6">
-                <CircularProgress className="mx-8" color="success" />
+                <CircularProgress className="mx-8" color="warning" />
                 <p className="text-center">Carregando...</p>
             </DialogContent>
         </Dialog>
