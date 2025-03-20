@@ -20,7 +20,7 @@ import { getStates } from "@/app/service/api/states";
 import { getCities } from "@/app/service/api/cities";
 import { categoryItems } from "@/app/service/api/category";
 
-export default function RegisterPetrolina() {
+export default function RegisterJuazeiro() {
 
     const formFields = new FormBuilder()
         .addTextField('data', '* Data', 'date')
@@ -93,7 +93,7 @@ export default function RegisterPetrolina() {
     }
 
     const getUnitySelected = async () => {
-      const unityData = await unity('petrolina');
+      const unityData = await unity('juazeiro');
       setModel((prevModel) => {
           const updateModel = [...prevModel];
           updateModel[1].label = unityData[0].nome;
@@ -441,7 +441,7 @@ export default function RegisterPetrolina() {
                     isOpen={isLoading}
                   />
                   <div className="flex flex-row w-full justify-between z-10 relative">
-                      <IconButton href="/petrolina">
+                      <IconButton href="/juazeiro">
                         <ArrowBack color="inherit" />
                       </IconButton>
                       <Button 
@@ -518,7 +518,7 @@ export default function RegisterPetrolina() {
                               className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                               variant="contained"
                               type="button"
-                              href="/petrolina"
+                              href="/juazeiro"
                               style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                           >
                               Cancelar

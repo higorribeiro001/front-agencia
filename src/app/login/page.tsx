@@ -99,7 +99,7 @@ export default function Login() {
         setIsSuccess(true);
         
         closeAlert();
-        router.replace('/petrolina');
+        router.replace('/cariri');
       }
     } catch (e: unknown) {
       const error = e as StatusResponse;

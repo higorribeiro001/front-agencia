@@ -4,8 +4,9 @@ import Image from "next/image";
 import logoP from "../../../../public/assets/logo.png"
 import arrow from "../../../../public/assets/close-menu.png";
 import Link from "next/link";
-import home from "../../../../public/assets/home.png";
-import pedidos from "../../../../public/assets/home.png";
+import cariri from "../../../../public/assets/cariri.png";
+import juazeiro from "../../../../public/assets/juazeiro.png";
+import petrolina from "../../../../public/assets/petrolina.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
@@ -20,7 +21,25 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={cariri} 
+                alt="logo"     
+            />,
+            title: 'Cariri',
+            to: '/cariri'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={juazeiro} 
+                alt="logo"     
+            />,
+            title: 'Juazeiro',
+            to: '/juazeiro'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={petrolina} 
                 alt="logo"     
             />,
             title: 'Petrolina',

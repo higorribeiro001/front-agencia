@@ -352,6 +352,33 @@ interface LogisticRegisterInterface {
     motorista_id?: string;
 }
 
+interface LogisticEditInterface {
+    id: string;
+    data: string;
+    unidade_id: string;
+    ov: string;
+    nf: string;
+    valor: number;
+    vendedor_id: string;
+    cliente_id: string;
+    peso_kg: number;
+    cidade: string;
+    bairro: string;
+    categoria_id: string;
+    detalhamento: string;
+    rota_id?: string;
+    ordem_entrada?: number;
+    num_transporte_id?: string;
+    previsao_saida_carga?: string;
+    placa_id?: string;
+    tipo_veiculo_id?: string;
+    status?: string;
+    ocorrencia?: string;
+    detalhamento_ocorrencia?: string;
+    data_retorno_carga?: string;
+    motorista_id?: string;
+}
+
 interface LogisticInterface {
     id: string;
     data: string;

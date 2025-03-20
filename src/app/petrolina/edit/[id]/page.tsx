@@ -1,13 +1,18 @@
 "use client"
 
 import { Autocomplete, Button, IconButton, TextField } from "@mui/material";
-import { Base } from "../../components/Base/layout";
+import { Base } from "../../../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postLogistic } from "@/app/service/api/logistic";
+import status from "@/data/status.json";
+import { logistic, putLogistic } from "@/app/service/api/logistic";
+import LogisticAdapt from "@/app/service/adapt/LogisticAdapt";
+import { getStates } from "@/app/service/api/states";
+import { getCities } from "@/app/service/api/cities";
 import { unity, unityItems } from "@/app/service/api/unity";
+import { categoryItems } from "@/app/service/api/category";
 import { sellerItems } from "@/app/service/api/seller";
 import { clientItems } from "@/app/service/api/client";
 import { routeItems } from "@/app/service/api/route";
@@ -15,13 +20,10 @@ import { numTransportItems } from "@/app/service/api/numTransport";
 import { driverItems } from "@/app/service/api/driver";
 import { plateItems } from "@/app/service/api/plate";
 import { typeVehicleItems } from "@/app/service/api/typeVehicle";
-import status from '../../../data/status.json';
-import { getStates } from "@/app/service/api/states";
-import { getCities } from "@/app/service/api/cities";
-import { categoryItems } from "@/app/service/api/category";
 
-export default function RegisterPetrolina() {
-
+export default function EditLogistic({ params }: { params: Promise<{ id: string }> }) {
+    const resolvedParams = React.use(params);
+    
     const formFields = new FormBuilder()
         .addTextField('data', '* Data', 'date')
         .addTextField('unidade_id', '* Unidade', 'select')
@@ -31,8 +33,7 @@ export default function RegisterPetrolina() {
         .addTextField('vendedor_id', '* Vendedor', 'select')
         .addTextField('cliente_id', '* Cliente', 'select')
         .addTextField('peso_kg', '* Peso (Kg)', 'text')
-        .addTextField('estado', '* Estado', 'select')
-        .addTextField('cidade', '* Cidade', 'select')
+        .addTextField('cidade', '* Cidade', 'text')
         .addTextField('bairro', '* Bairro', 'text')
         .addTextField('categoria_id', '* Categoria', 'select')
         .addTextField('detalhamento', '* Detalhamento', 'text')
@@ -61,31 +62,12 @@ export default function RegisterPetrolina() {
     const [states, setStates] = useState<Model[]>([]);
     const [cities, setCities] = useState<Model[]>([]);
     const [unitySelected, setUnitySelected] = useState<Model>();
-
-    const getStatesData = async () => {
-      const ufs = await getStates() as { sigla: string; nome: string; }[];
-
-      for (let i=0; i<ufs.length; i++) {
-        states.push({
-          label: ufs[i].sigla,
-          value: ufs[i].sigla,
-          name: '',
-          error: ''
-        })
-      }
-    }
-
-    const getCitiesData = async () => {
-      const citiesData = await getCities(model[8]?.value!) as { nome: string; }[];
-      for (let i=0; i<citiesData.length; i++) {
-        cities.push({
-          label: citiesData[i].nome,
-          value: citiesData[i].nome,
-          name: '',
-          error: ''
-        })
-      }
-    }
+  
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingInit, setIsLoadingInit] = useState(true);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [messageAlert, setMessageAlert] = useState('');
 
     const getUnities = async () => {
       const unityData = await unityItems();
@@ -143,11 +125,76 @@ export default function RegisterPetrolina() {
       setTypeVehicle(typeVehicleData);
     }
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [isLoadingInit, setIsLoadingInit] = useState(true);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
+    useEffect(() => {
+      setIsLoadingInit(true);
+      getUnities();
+      getSellers();
+      getClients();
+      getCategories();
+      getRoutes();
+      getNumTransports();
+      getDrivers();
+      getPlate();
+      getTypeVehicle();
+      getUnitySelected();
+      setIsLoadingInit(false);
+    }, []);
+
+    useEffect(() => {
+      setIsLoading(true);
+      
+      const getLogistic = async () => {
+        const dataLogistic: LogisticInterface = await logistic(resolvedParams.id);
+        const orderAdapt = new LogisticAdapt(dataLogistic);
+
+        const orderData = orderAdapt.externalLogisticAdapt;
+
+        setModel((prevModel) => {
+          const updateModel = [...prevModel];
+
+          updateModel[0].value = orderData!.data;
+          updateModel[1].label = orderData!.unidade.nome;
+          updateModel[1].value = orderData!.unidade_id;
+          updateModel[2].value = orderData!.ov;
+          updateModel[3].value = orderData!.nf;
+          updateModel[4].value = String(orderData!.valor);
+          updateModel[5].label = orderData!.vendedor.nome;
+          updateModel[5].value = orderData!.vendedor_id;
+          updateModel[6].label = orderData!.cliente.nome;
+          updateModel[6].value = orderData!.cliente_id;
+          updateModel[7].value = String(orderData!.peso_kg);
+          updateModel[8].value = orderData!.cidade;
+          updateModel[9].value = orderData!.bairro;
+          updateModel[10].label = orderData!.categoria.nome;
+          updateModel[10].value = orderData!.categoria_id;
+          updateModel[11].value = orderData!.detalhamento;
+          updateModel[12].label = orderData!.rota.nome;
+          updateModel[12].value = orderData!.rota_id;
+          updateModel[13].value = String(orderData!.ordem_entrada);
+          updateModel[14].label = orderData!.num_transporte.nome;
+          updateModel[14].value = orderData!.num_transporte_id;
+          updateModel[15].label = orderData!.motorista.nome;
+          updateModel[15].value = orderData!.motorista_id;
+          updateModel[16].value = orderData!.previsao_saida_carga ?? '2025-01-01';
+          updateModel[17].label = orderData!.placa.nome;
+          updateModel[17].value = orderData!.placa_id;
+          updateModel[18].label = orderData!.tipo_veiculo.nome;
+          updateModel[18].value = orderData!.tipo_veiculo_id;
+          updateModel[19].label = orderData!.status;
+          updateModel[19].value = orderData!.status;
+          updateModel[20].value = orderData!.ocorrencia;
+          updateModel[21].value = orderData!.detalhamento_ocorrencia;
+          updateModel[22].value = orderData!.data_retorno_carga ?? '2025-01-01';
+
+          return updateModel;
+        });
+
+        setIsLoading(false);
+      }
+
+      getLogistic();
+    }, [params]);
+
     const initModel = [
         {
             label: '',
@@ -297,32 +344,11 @@ export default function RegisterPetrolina() {
 
     const [model, setModel] = useState(initModel);
 
-    useEffect(() => {
-      setIsLoadingInit(true);
-      getUnities();
-      getSellers();
-      getClients();
-      getCategories();
-      getRoutes();
-      getNumTransports();
-      getDrivers();
-      getPlate();
-      getTypeVehicle();
-      getStatesData();
-      getUnitySelected();
-      setIsLoadingInit(false);
-    }, []);
-
-    useEffect(() => {
-      getCitiesData();
-    }, [model[8].value]);
-
     const cleanFields = () => {
       setModel(initModel);
     }
 
     const changeValues = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        e.preventDefault()
         setModel((prevModel) => {
           const updateModel = [...prevModel];
           updateModel[index].value = e.target.value;
@@ -336,13 +362,11 @@ export default function RegisterPetrolina() {
     }
 
     const validator = (message: string, index: number) => {
-        if(index < 14) {
-          setModel((prevModel) => {
-            const updateModel = [...prevModel];
-            updateModel[index].error = message;
-            return updateModel;
-          });
-        }
+        setModel((prevModel) => {
+          const updateModel = [...prevModel];
+          updateModel[index].error = message;
+          return updateModel;
+        });
     }
 
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -362,8 +386,7 @@ export default function RegisterPetrolina() {
     
         setIsLoading(true);
     
-        registerLogistic();
-    
+        editLogistic();
       }
     
       const closeAlert = () => {
@@ -372,10 +395,11 @@ export default function RegisterPetrolina() {
         }, 6000);
       }
     
-      const registerLogistic = async () => {
+      const editLogistic = async () => {
         try {
-          const response = await postLogistic(
+          const response = await putLogistic(
             { 
+              id: resolvedParams.id,
               data: model[0].value, 
               unidade_id: model[1].value, 
               ov: model[2].value, 
@@ -384,33 +408,32 @@ export default function RegisterPetrolina() {
               vendedor_id: model[5].value, 
               cliente_id: model[6].value, 
               peso_kg: parseFloat(model[7].value.replace(',', '.')), 
-              cidade: model[9].value, 
-              bairro: model[10].value, 
-              categoria_id: model[11].value, 
-              detalhamento: model[12].value,
-              rota_id: model[13].value,
-              ordem_entrada: parseInt(model[14].value),
-              num_transporte_id: model[15].value,
-              motorista_id: model[16].value,
-              previsao_saida_carga: model[17].value,
-              placa_id: model[18].value,
-              tipo_veiculo_id: model[19].value,
-              status: model[20].value,
-              ocorrencia: model[21].value,
-              detalhamento_ocorrencia: model[22].value,
-              data_retorno_carga: model[23].value,
-            });
+              cidade: model[8].value, 
+              bairro: model[9].value, 
+              categoria_id: model[10].value, 
+              detalhamento: model[11].value,
+              rota_id: model[12].value,
+              ordem_entrada: parseInt(model[13].value),
+              num_transporte_id: model[14].value,
+              motorista_id: model[15].value,
+              previsao_saida_carga: model[16].value,
+              placa_id: model[17].value,
+              tipo_veiculo_id: model[18].value,
+              status: model[19].value,
+              ocorrencia: model[20].value,
+              detalhamento_ocorrencia: model[21].value,
+              data_retorno_carga: model[22].value,
+          });
     
-          if (response.status === 201) {
+          if (response.status === 200) {
             setOpenAlert(true);
-            setMessageAlert('Registrado com sucesso!');
+            setMessageAlert('Editado com sucesso!');
             setIsSuccess(true);
-            cleanFields();
             closeAlert();
           }
         } catch (e: unknown) {
           const error = e as StatusResponse;
-          if (error.response.status === 422) {
+          if (error.response && error.response.status === 422) {
             setOpenAlert(true);
             setMessageAlert('Preencha todos os campos obrigatórios.');
             setIsSuccess(false);
@@ -420,6 +443,7 @@ export default function RegisterPetrolina() {
             setOpenAlert(true);
             setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
             setIsSuccess(false);
+            console.log(e)
     
             closeAlert();
           }
@@ -430,13 +454,13 @@ export default function RegisterPetrolina() {
 
     return (
         <Base 
-          title="Cadastro de setor"
+          title="Edição de Pedidos"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
         >
             {!isLoadingInit && (
-                <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
+              <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
                   <Loading 
                     isOpen={isLoading}
                   />
@@ -462,75 +486,74 @@ export default function RegisterPetrolina() {
                       onSubmit={submitForm}
                   >
                       <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                          {formFields.map((value, index: number) => (
-                              value.type === 'select' ? (
-                                <Autocomplete
-                                    key={index}
-                                    disablePortal
-                                    disabled={value.name === 'unidade_id'}
-                                    options={value.name === 'categoria_id' && category ? category : value.name === 'unidade_id' && dataUnity ? dataUnity : value.name === 'vendedor_id' && seller ? seller : value.name === 'cliente_id' && client ? client : value.name === 'categoria_id' && category ? category : value.name === 'rota_id' && route ? route : value.name === 'num_transporte_id' && numTransport ? numTransport : value.name === 'motorista_id' && driver ? driver : value.name === 'placa_id' && plate ? plate : value.name === 'tipo_veiculo_id' && typeVehicle ? typeVehicle : value.name === 'status' ? status : value.name === 'estado' ? states : value.name === 'cidade' ? cities : [{ label: 'Aguarde...', value: '' }]}
-                                    sx={{ width: 300 }}
-                                    className="w-full lg:w-[49%]"
-                                    value={model[index]} 
-                                    onChange={(event, newValue) => {
-                                      if (newValue) {
-                                        setModel((prevModel) => {
-                                          const updateModel = [...prevModel];
-                                          updateModel[index] = { 
-                                            label: newValue.label,
-                                            name: updateModel[index].name,
-                                            value: newValue.value, 
-                                            error: ''
-                                          };
-                                          return updateModel;
-                                        });
-                                      }
-                                    }}
-                                    isOptionEqualToValue={(option, value) => option?.value === value?.value}
-                                    renderInput={(params) => 
-                                      <TextField 
-                                        {...params} 
-                                        label={value.label} 
-                                        onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
-                                        value={model[index].value}
-                                        error={model[index].error !== '' ? true : false}
-                                        helperText={model[index].error}
-                                      />
+                        {formFields.map((value, index: number) => (
+                            value.type === 'select' ? (
+                              <Autocomplete
+                                  key={index}
+                                  disablePortal
+                                  disabled={value.name === 'unidade_id'}
+                                  options={value.name === 'categoria_id' && category ? category : value.name === 'unidade_id' && dataUnity ? dataUnity : value.name === 'vendedor_id' && seller ? seller : value.name === 'cliente_id' && client ? client : value.name === 'categoria_id' && category ? category : value.name === 'rota_id' && route ? route : value.name === 'num_transporte_id' && numTransport ? numTransport : value.name === 'motorista_id' && driver ? driver : value.name === 'placa_id' && plate ? plate : value.name === 'tipo_veiculo_id' && typeVehicle ? typeVehicle : value.name === 'status' ? status : value.name === 'estado' ? states : value.name === 'cidade' ? cities : [{ label: 'Aguarde...', value: '' }]}
+                                  sx={{ width: 300 }}
+                                  className="w-full lg:w-[49%]"
+                                  value={model[index]} 
+                                  onChange={(event, newValue) => {
+                                    if (newValue) {
+                                      setModel((prevModel) => {
+                                        const updateModel = [...prevModel];
+                                        updateModel[index] = { 
+                                          label: newValue.label,
+                                          name: updateModel[index].name,
+                                          value: newValue.value, 
+                                          error: ''
+                                        };
+                                        return updateModel;
+                                      });
                                     }
-                                  />
-                                  ) : (
-                                    <TextField
-                                      key={index}
-                                      className="w-full lg:w-[49%]"
+                                  }}
+                                  isOptionEqualToValue={(option, value) => option?.value === value?.value}
+                                  renderInput={(params) => 
+                                    <TextField 
+                                      {...params} 
                                       label={value.label} 
-                                      variant="outlined"
-                                      type={value.type}
+                                      onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
+                                      value={model[index].value}
                                       error={model[index].error !== '' ? true : false}
                                       helperText={model[index].error}
-                                      onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
-                                      value={model[index].value}
+                                    />
+                                  }
                                 />
-                              )
-                          ))}
+                                ) : (
+                                  <TextField
+                                    key={index}
+                                    className="w-full lg:w-[49%]"
+                                    label={value.label} 
+                                    variant="outlined"
+                                    type={value.type}
+                                    error={model[index].error !== '' ? true : false}
+                                    helperText={model[index].error}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
+                                    value={model[index].value}
+                              />
+                            )
+                        ))}
                       </div>
-                      <div className="flex flex-row justify-between gap-2">
-                          <Button 
+                      <div className="flex flex-row justify-between">
+                            <Button 
                               className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                               variant="contained"
                               type="button"
                               href="/petrolina"
-                              style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
-                          >
-                              Cancelar
-                          </Button>
-                          <Button 
-                              className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                              variant="contained"
-                              type="submit"
-                              style={{background: "#FB3A04"}}
-                          >
-                              Enviar
-                          </Button>
+                            >
+                                Cancelar
+                            </Button>
+                            <Button 
+                                className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                                variant="contained"
+                                type="submit"
+                                sx={{bgcolor: "#FB3A04"}}
+                            >
+                                Enviar
+                            </Button>
                       </div>
                   </form>
               </div>

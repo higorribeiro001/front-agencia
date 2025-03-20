@@ -16,8 +16,8 @@ import LogisticsAdapt from "../service/adapt/LogisticsAdapt";
 import { unity } from "../service/api/unity";
 import UnityAdapt from "../service/adapt/UnityAdapt";
 
-export default function Petrolina() {
-    const [rowsPetrolina, setRowsPetrolina] = useState<LogisticInterface[]>([]);
+export default function Cariri() {
+    const [rowsCariri, setRowsCariri] = useState<LogisticInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -45,7 +45,7 @@ export default function Petrolina() {
         return `${day}/${month}/${year}`;
     }
       
-    const columnsPetrolina: GridColDef[] = [
+    const columnsCariri: GridColDef[] = [
         { field: 'data', headerName: 'Data', flex: 1, renderCell: (params) => {
             const dataCol = params.row.data;
             return convertDate(dataCol);
@@ -89,7 +89,7 @@ export default function Petrolina() {
 
                 const logisticData = logisticAdapt.externalLogisticAdapt;
                 const logisticDataData = logisticData;
-                setRowsPetrolina([logisticDataData]);
+                setRowsCariri([logisticDataData]);
                 setPages(1);
                 setIsLoading(false);
             } else {
@@ -203,7 +203,7 @@ export default function Petrolina() {
     }
 
     const getLogistics = async () => {
-        const dataUnity = await unity('PETROLINA');
+        const dataUnity = await unity('CARIRI');
         const unityAdapt = new UnityAdapt(dataUnity[0]);
 
         const dataUnityAdapt = unityAdapt.externalUnityAdapt;
@@ -212,7 +212,7 @@ export default function Petrolina() {
         const logisticsAdapt = new LogisticsAdapt(dataLogistics!);
 
         const dataLogistic = logisticsAdapt.externalLogisticsAdapt;
-        setRowsPetrolina(dataLogistic.data);
+        setRowsCariri(dataLogistic.data);
         const numPages = dataLogistic?.last_page;
         setPages(numPages);
         setIsLoading(false);
@@ -253,7 +253,7 @@ export default function Petrolina() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="petrolina"
+            title="cariri"
         >
             <Drawer
                 anchor="right"
@@ -299,7 +299,7 @@ export default function Petrolina() {
                     <footer className="flex flex-row justify-between gap-3">
                         <IconButton 
                             className="gap-2"
-                            href={"/petrolina/edit/"+dataLogistic?.id}
+                            href={"/cariri/edit/"+dataLogistic?.id}
                         >
                             <Edit 
                                 fontSize="small"
@@ -320,11 +320,11 @@ export default function Petrolina() {
                     <DataTable 
                         title="Logística"
                         handleSearch={handleSearch} 
-                        rows={rowsPetrolina} 
-                        columns={columnsPetrolina} 
+                        rows={rowsCariri} 
+                        columns={columnsCariri} 
                         isLoading={isLoading} 
                         pages={pages}     
-                        hrefRegister="/petrolina/register" 
+                        hrefRegister="/cariri/register" 
                         handleCurrentPage={setCurrentPage}  
                         monthFilter={true} 
                         valueMonthFilter={monthSelected}
