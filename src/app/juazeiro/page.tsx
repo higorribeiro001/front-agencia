@@ -9,7 +9,7 @@ import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
 import ColColor from "../components/ColColor";
-import { getCookie } from "cookies-next";
+// import { getCookie } from "cookies-next";
 import LogisticAdapt from "../service/adapt/LogisticAdapt";
 import { deleteLogistic, logistic, logistics } from "../service/api/logistic";
 import LogisticsAdapt from "../service/adapt/LogisticsAdapt";
@@ -29,8 +29,8 @@ export default function Juazeiro() {
     const [openDialog, setOpenDialog] = useState(false);
     const [monthSelected, setMonthSelected] = useState('');
     const [according, setAccording] = useState<{"label": string; "value": string}>({"label": "Todos", "value": ""});
-    const role = getCookie("role");
-    const [unityId, setUnityId] = useState('');
+    // const role = getCookie("role");
+    // const [unityId, setUnityId] = useState('');
 
     const getLogistic = async (id: string) => {
         const dataUnity = await logistic(id);

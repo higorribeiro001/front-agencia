@@ -9,8 +9,6 @@ import { ArrowBack } from "@mui/icons-material";
 import status from "@/data/status.json";
 import { logistic, putLogistic } from "@/app/service/api/logistic";
 import LogisticAdapt from "@/app/service/adapt/LogisticAdapt";
-import { getStates } from "@/app/service/api/states";
-import { getCities } from "@/app/service/api/cities";
 import { unity, unityItems } from "@/app/service/api/unity";
 import { categoryItems } from "@/app/service/api/category";
 import { sellerItems } from "@/app/service/api/seller";
@@ -59,9 +57,6 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
     const [driver, setDriver] = useState<Model[]>();
     const [plate, setPlate] = useState<Model[]>();
     const [typeVehicle, setTypeVehicle] = useState<Model[]>();
-    const [states, setStates] = useState<Model[]>([]);
-    const [cities, setCities] = useState<Model[]>([]);
-    const [unitySelected, setUnitySelected] = useState<Model>();
   
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingInit, setIsLoadingInit] = useState(true);
@@ -152,39 +147,39 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
         setModel((prevModel) => {
           const updateModel = [...prevModel];
 
-          updateModel[0].value = orderData!.data;
-          updateModel[1].label = orderData!.unidade.nome;
-          updateModel[1].value = orderData!.unidade_id;
-          updateModel[2].value = orderData!.ov;
-          updateModel[3].value = orderData!.nf;
-          updateModel[4].value = String(orderData!.valor);
-          updateModel[5].label = orderData!.vendedor.nome;
-          updateModel[5].value = orderData!.vendedor_id;
-          updateModel[6].label = orderData!.cliente.nome;
-          updateModel[6].value = orderData!.cliente_id;
-          updateModel[7].value = String(orderData!.peso_kg);
-          updateModel[8].value = orderData!.cidade;
-          updateModel[9].value = orderData!.bairro;
-          updateModel[10].label = orderData!.categoria.nome;
-          updateModel[10].value = orderData!.categoria_id;
-          updateModel[11].value = orderData!.detalhamento;
-          updateModel[12].label = orderData!.rota.nome;
-          updateModel[12].value = orderData!.rota_id;
-          updateModel[13].value = String(orderData!.ordem_entrada);
-          updateModel[14].label = orderData!.num_transporte.nome;
-          updateModel[14].value = orderData!.num_transporte_id;
-          updateModel[15].label = orderData!.motorista.nome;
-          updateModel[15].value = orderData!.motorista_id;
-          updateModel[16].value = orderData!.previsao_saida_carga ?? '2025-01-01';
-          updateModel[17].label = orderData!.placa.nome;
-          updateModel[17].value = orderData!.placa_id;
-          updateModel[18].label = orderData!.tipo_veiculo.nome;
-          updateModel[18].value = orderData!.tipo_veiculo_id;
-          updateModel[19].label = orderData!.status;
-          updateModel[19].value = orderData!.status;
-          updateModel[20].value = orderData!.ocorrencia;
-          updateModel[21].value = orderData!.detalhamento_ocorrencia;
-          updateModel[22].value = orderData!.data_retorno_carga ?? '2025-01-01';
+          updateModel[0].value = orderData?.data;
+          updateModel[1].label = orderData?.unidade.nome;
+          updateModel[1].value = orderData?.unidade_id;
+          updateModel[2].value = orderData?.ov;
+          updateModel[3].value = orderData?.nf;
+          updateModel[4].value = String(orderData?.valor);
+          updateModel[5].label = orderData?.vendedor.nome;
+          updateModel[5].value = orderData?.vendedor_id;
+          updateModel[6].label = orderData?.cliente.nome;
+          updateModel[6].value = orderData?.cliente_id;
+          updateModel[7].value = String(orderData?.peso_kg);
+          updateModel[8].value = orderData?.cidade;
+          updateModel[9].value = orderData?.bairro;
+          updateModel[10].label = orderData?.categoria.nome;
+          updateModel[10].value = orderData?.categoria_id;
+          updateModel[11].value = orderData?.detalhamento;
+          updateModel[12].label = orderData?.rota.nome;
+          updateModel[12].value = orderData?.rota_id;
+          updateModel[13].value = String(orderData?.ordem_entrada ?? '');
+          updateModel[14].label = orderData?.num_transporte?.nome ?? '';
+          updateModel[14].value = orderData?.num_transporte_id ?? '';
+          updateModel[15].label = orderData?.motorista?.nome ?? '';
+          updateModel[15].value = orderData?.motorista_id ?? '';
+          updateModel[16].value = orderData?.previsao_saida_carga ?? '2025-01-01';
+          updateModel[17].label = orderData?.placa?.nome ?? '';
+          updateModel[17].value = orderData?.placa_id ?? '';
+          updateModel[18].label = orderData?.tipo_veiculo?.nome ?? '';
+          updateModel[18].value = orderData?.tipo_veiculo_id ?? '';
+          updateModel[19].label = orderData?.status ?? '';
+          updateModel[19].value = orderData?.status ?? '';
+          updateModel[20].value = orderData?.ocorrencia ?? '';
+          updateModel[21].value = orderData?.detalhamento_ocorrencia ?? '';
+          updateModel[22].value = orderData?.data_retorno_carga ?? '2025-01-01';
 
           return updateModel;
         });
@@ -362,11 +357,13 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
     }
 
     const validator = (message: string, index: number) => {
+      if(index < 13) {
         setModel((prevModel) => {
           const updateModel = [...prevModel];
           updateModel[index].error = message;
           return updateModel;
         });
+      }
     }
 
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -454,7 +451,7 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
 
     return (
         <Base 
-          title="Edição de Pedidos"
+          title="Edição de Petrolina"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
@@ -492,7 +489,7 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
                                   key={index}
                                   disablePortal
                                   disabled={value.name === 'unidade_id'}
-                                  options={value.name === 'categoria_id' && category ? category : value.name === 'unidade_id' && dataUnity ? dataUnity : value.name === 'vendedor_id' && seller ? seller : value.name === 'cliente_id' && client ? client : value.name === 'categoria_id' && category ? category : value.name === 'rota_id' && route ? route : value.name === 'num_transporte_id' && numTransport ? numTransport : value.name === 'motorista_id' && driver ? driver : value.name === 'placa_id' && plate ? plate : value.name === 'tipo_veiculo_id' && typeVehicle ? typeVehicle : value.name === 'status' ? status : value.name === 'estado' ? states : value.name === 'cidade' ? cities : [{ label: 'Aguarde...', value: '' }]}
+                                  options={value.name === 'categoria_id' && category ? category : value.name === 'unidade_id' && dataUnity ? dataUnity : value.name === 'vendedor_id' && seller ? seller : value.name === 'cliente_id' && client ? client : value.name === 'categoria_id' && category ? category : value.name === 'rota_id' && route ? route : value.name === 'num_transporte_id' && numTransport ? numTransport : value.name === 'motorista_id' && driver ? driver : value.name === 'placa_id' && plate ? plate : value.name === 'tipo_veiculo_id' && typeVehicle ? typeVehicle : value.name === 'status' ? status : [{ label: 'Aguarde...', value: '' }]}
                                   sx={{ width: 300 }}
                                   className="w-full lg:w-[49%]"
                                   value={model[index]} 

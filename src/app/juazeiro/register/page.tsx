@@ -60,7 +60,7 @@ export default function RegisterJuazeiro() {
     const [typeVehicle, setTypeVehicle] = useState<Model[]>();
     const [states, setStates] = useState<Model[]>([]);
     const [cities, setCities] = useState<Model[]>([]);
-    const [unitySelected, setUnitySelected] = useState<Model>();
+    const [part, setPart] = useState(1);
 
     const getStatesData = async () => {
       const ufs = await getStates() as { sigla: string; nome: string; }[];
@@ -76,7 +76,7 @@ export default function RegisterJuazeiro() {
     }
 
     const getCitiesData = async () => {
-      const citiesData = await getCities(model[8]?.value!) as { nome: string; }[];
+      const citiesData = await getCities(model[8]?.value) as { nome: string; }[];
       for (let i=0; i<citiesData.length; i++) {
         cities.push({
           label: citiesData[i].nome,
@@ -144,7 +144,6 @@ export default function RegisterJuazeiro() {
     }
 
     const [isLoading, setIsLoading] = useState(false);
-    const [isLoadingInit, setIsLoadingInit] = useState(true);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
@@ -407,6 +406,7 @@ export default function RegisterJuazeiro() {
             setIsSuccess(true);
             cleanFields();
             closeAlert();
+            setPart(1);
           }
         } catch (e: unknown) {
           const error = e as StatusResponse;
@@ -428,113 +428,142 @@ export default function RegisterJuazeiro() {
         }
     }
 
+    const changePart = (e: React.MouseEvent<HTMLButtonElement>, value: number) => {
+      e.preventDefault();
+      setPart(value);
+    }
+
     return (
         <Base 
-          title="Cadastro de setor"
+          title="Cadastro de juazeiro"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
         >
-            {!isLoadingInit && (
-                <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
-                  <Loading 
-                    isOpen={isLoading}
-                  />
-                  <div className="flex flex-row w-full justify-between z-10 relative">
-                      <IconButton href="/juazeiro">
-                        <ArrowBack color="inherit" />
-                      </IconButton>
-                      <Button 
-                          className="font-semibold w-[200px] h-[56px] z-10 relative"
-                          variant="contained"
-                          type="button"
-                          color="error"
-                          onClick={cleanFields}
-                      >
-                          Limpar campos
-                      </Button>
-                  </div>
-                  <span className="font-semibold">
-                      * Campos obrigatórios.
-                  </span>
-                  <form 
-                      className="flex flex-col gap-10 w-full" 
-                      onSubmit={submitForm}
+            <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
+              <Loading 
+                isOpen={isLoading}
+              />
+              <div className="flex flex-row w-full justify-between z-10 relative">
+                  <IconButton href="/juazeiro">
+                    <ArrowBack color="inherit" />
+                  </IconButton>
+                  <Button 
+                      className="font-semibold w-[200px] h-[56px] z-10 relative"
+                      variant="contained"
+                      type="button"
+                      color="error"
+                      onClick={cleanFields}
                   >
-                      <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                          {formFields.map((value, index: number) => (
-                              value.type === 'select' ? (
-                                <Autocomplete
-                                    key={index}
-                                    disablePortal
-                                    disabled={value.name === 'unidade_id'}
-                                    options={value.name === 'categoria_id' && category ? category : value.name === 'unidade_id' && dataUnity ? dataUnity : value.name === 'vendedor_id' && seller ? seller : value.name === 'cliente_id' && client ? client : value.name === 'categoria_id' && category ? category : value.name === 'rota_id' && route ? route : value.name === 'num_transporte_id' && numTransport ? numTransport : value.name === 'motorista_id' && driver ? driver : value.name === 'placa_id' && plate ? plate : value.name === 'tipo_veiculo_id' && typeVehicle ? typeVehicle : value.name === 'status' ? status : value.name === 'estado' ? states : value.name === 'cidade' ? cities : [{ label: 'Aguarde...', value: '' }]}
-                                    sx={{ width: 300 }}
-                                    className="w-full lg:w-[49%]"
-                                    value={model[index]} 
-                                    onChange={(event, newValue) => {
-                                      if (newValue) {
-                                        setModel((prevModel) => {
-                                          const updateModel = [...prevModel];
-                                          updateModel[index] = { 
-                                            label: newValue.label,
-                                            name: updateModel[index].name,
-                                            value: newValue.value, 
-                                            error: ''
-                                          };
-                                          return updateModel;
-                                        });
-                                      }
-                                    }}
-                                    isOptionEqualToValue={(option, value) => option?.value === value?.value}
-                                    renderInput={(params) => 
-                                      <TextField 
-                                        {...params} 
-                                        label={value.label} 
-                                        onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
-                                        value={model[index].value}
-                                        error={model[index].error !== '' ? true : false}
-                                        helperText={model[index].error}
-                                      />
-                                    }
-                                  />
-                                  ) : (
-                                    <TextField
-                                      key={index}
-                                      className="w-full lg:w-[49%]"
-                                      label={value.label} 
-                                      variant="outlined"
-                                      type={value.type}
-                                      error={model[index].error !== '' ? true : false}
-                                      helperText={model[index].error}
-                                      onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
-                                      value={model[index].value}
-                                />
-                              )
-                          ))}
-                      </div>
-                      <div className="flex flex-row justify-between gap-2">
-                          <Button 
-                              className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
-                              variant="contained"
-                              type="button"
-                              href="/juazeiro"
-                              style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
-                          >
-                              Cancelar
-                          </Button>
-                          <Button 
-                              className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                              variant="contained"
-                              type="submit"
-                              style={{background: "#FB3A04"}}
-                          >
-                              Enviar
-                          </Button>
-                      </div>
-                  </form>
+                      Limpar campos
+                  </Button>
               </div>
-            )}
+              <span className="font-semibold">
+                  * Campos obrigatórios.
+              </span>
+              <form 
+                  className="flex flex-col gap-10 w-full" 
+                  onSubmit={submitForm}
+              >
+                  <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
+                      {formFields
+                        .map((value, index) => ({ ...value, originalIndex: index }))
+                        .slice(part === 1 ? 0 : 14, part === 1 ? 14 : 24)
+                        .map((value) => ( 
+                          value.type === 'select' ? (
+                            <Autocomplete
+                                key={value.originalIndex}
+                                disablePortal
+                                disabled={value.name === 'unidade_id'}
+                                options={value.name === 'categoria_id' && category ? category : value.name === 'unidade_id' && dataUnity ? dataUnity : value.name === 'vendedor_id' && seller ? seller : value.name === 'cliente_id' && client ? client : value.name === 'categoria_id' && category ? category : value.name === 'rota_id' && route ? route : value.name === 'num_transporte_id' && numTransport ? numTransport : value.name === 'motorista_id' && driver ? driver : value.name === 'placa_id' && plate ? plate : value.name === 'tipo_veiculo_id' && typeVehicle ? typeVehicle : value.name === 'status' ? status : value.name === 'estado' ? states : value.name === 'cidade' ? cities : [{ label: 'Aguarde...', value: '' }]}
+                                className="w-full lg:w-[49%]"
+                                value={model[value.originalIndex]} 
+                                onChange={(event, newValue) => {
+                                  if (newValue) {
+                                    setModel((prevModel) => {
+                                      const updateModel = [...prevModel];
+                                      updateModel[value.originalIndex] = { 
+                                        label: newValue.label,
+                                        name: updateModel[value.originalIndex].name,
+                                        value: newValue.value, 
+                                        error: ''
+                                      };
+                                      return updateModel;
+                                    });
+                                  }
+                                }}
+                                isOptionEqualToValue={(option, value) => option?.value === value?.value}
+                                renderInput={(params) => 
+                                  <TextField 
+                                    {...params} 
+                                    label={value.label} 
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, value.originalIndex)} 
+                                    value={model[value.originalIndex].value}
+                                    error={model[value.originalIndex].error !== '' ? true : false}
+                                    helperText={model[value.originalIndex].error}
+                                  />
+                                }
+                              />
+                              ) : (
+                                <TextField
+                                  key={value.originalIndex}
+                                  className="w-full lg:w-[49%]"
+                                  label={value.label} 
+                                  variant="outlined"
+                                  type={value.type}
+                                  error={model[value.originalIndex].error !== '' ? true : false}
+                                  helperText={model[value.originalIndex].error}
+                                  onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, value.originalIndex)}
+                                  value={model[value.originalIndex].value}
+                            />
+                          )
+                      ))}
+                  </div>
+                  <div className="flex flex-row justify-between gap-2">
+                      {part === 1 ? (
+                        <Button 
+                            className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
+                            variant="contained"
+                            type="button"
+                            href="/juazeiro"
+                            style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
+                        >
+                            Cancelar
+                        </Button>
+                      ) : (
+                        <Button 
+                            className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
+                            variant="contained"
+                            type="button"
+                            style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
+                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => changePart(e, 1)}
+                        >
+                            Voltar
+                        </Button>
+                      )}
+                      {part === 1 ? (
+                        <Button 
+                            className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                            variant="contained"
+                            type="button"
+                            style={{background: "#FB3A04"}}
+                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => changePart(e, 2)}
+                        >
+                            Próximo
+                        </Button>
+                      ) : (
+                        <Button 
+                            className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                            variant="contained"
+                            type="submit"
+                            style={{background: "#FB3A04"}}
+                        >
+                            Enviar
+                        </Button>
+                      )}
+                  </div>
+              </form>
+          </div>
         </Base>
     );
 }

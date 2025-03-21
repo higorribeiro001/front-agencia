@@ -173,7 +173,7 @@ export default function Login() {
             </Button>
           </form>
         </div>
-        <span className="text-white text-center text-[14px]">© arcelor mittal | 2025</span>
+        <span className="text-white text-center text-[14px]">© vale metalicos | 2025</span>
       </div>
     </div>
   );
