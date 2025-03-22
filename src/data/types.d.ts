@@ -49,7 +49,12 @@ interface DialogInterface {
     title?: string;
     content?: string;
     func?: () => void;
+    funcInput?: (e: ChangeEvent<HTMLInputElement>) => void;
+    funcRegister?: (e: ChangeEvent<HTMLInputElement>, id?: string) => void;
+    valueInput?: string;
+    errorInput?: string;
     handleClose?: () => void;
+    isLoading?: boolean;
 }
 
 interface BreadcrumbsInterface {
@@ -221,6 +226,8 @@ interface DataOrderInterface {
 interface UnityInterface {
     id: string;
     nome: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface UnitiesInterface {
@@ -233,6 +240,39 @@ interface UnitiesInterface {
 interface SellerInterface {
     id: string;
     nome: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface DataInterface {
+    id: string;
+    nome: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface DataDataInterface {
+    dataData: DataInterface;
+}
+
+interface DatasInterface {
+    current_page: number;
+    data: DataInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface RegisterInterface {
+    nome: string;
+}
+
+interface EditInterface {
+    id: string;
+    nome: string;
+}
+
+interface DataSellerInterface {
+    dataSeller: SellerInterface;
 }
 
 interface SellersInterface {
@@ -245,6 +285,8 @@ interface SellersInterface {
 interface ClientInterface {
     id: string;
     nome: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface ClientsInterface {
@@ -257,9 +299,11 @@ interface ClientsInterface {
 interface CategoryInterface {
     id: string;
     nome: string;
+    created_at: string;
+    updated_at: string;
 }
 
-interface CategorysInterface {
+interface CategoriesInterface {
     current_page: number;
     data: CategoryInterface[];
     last_page: number;
@@ -269,6 +313,8 @@ interface CategorysInterface {
 interface RouteInterface {
     id: string;
     nome: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface RoutesInterface {
@@ -281,6 +327,8 @@ interface RoutesInterface {
 interface NumTransportInterface {
     id: string;
     nome: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface NumTransportsInterface {
@@ -293,6 +341,8 @@ interface NumTransportsInterface {
 interface PlateInterface {
     id: string;
     nome: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface PlatesInterface {
@@ -305,6 +355,8 @@ interface PlatesInterface {
 interface TypeVehicleInterface {
     id: string;
     nome: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface TypeVehiclesInterface {
@@ -317,6 +369,8 @@ interface TypeVehiclesInterface {
 interface DriverInterface {
     id: string;
     nome: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface DriversInterface {
@@ -458,6 +512,7 @@ interface DataTableInterface {
         label: string;
         value: string;
     }) => void;
+    funcOpenDialog?: () => void;
 }
 
 interface RowInfo {

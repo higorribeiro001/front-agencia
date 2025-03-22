@@ -23,6 +23,11 @@ export async function logistic(id: string) {
     return response.data;
 }
 
+export async function logisticFindByName(unity: string, name: string) {
+    const response: { data: LogisticsInterface, status: number } = await axios.get(url+`/logistics/${unity}/${name}`, configAuth());
+    return response.data;
+}
+
 export async function deleteLogistic(id: string) {
     const response: { data: LogisticInterface, status: number } = await axios.delete(url+`/logistics/${id}/`, configAuth());
     return response;

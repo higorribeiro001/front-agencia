@@ -1,6 +1,6 @@
 import { Alert, Stack } from "@mui/material";
 
-export default function AlertApp({isOpen, isSuccess, message}: AlertAppInterface) {
+export default function AlertRegister({isOpen, isSuccess, message}: AlertAppInterface) {
     return (
         isOpen ? (
             <div className="flex fixed w-full p-12 z-[999]">

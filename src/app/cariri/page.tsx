@@ -11,7 +11,7 @@ import { DialogApp } from "../components/DialogApp";
 import ColColor from "../components/ColColor";
 import { getCookie } from "cookies-next";
 import LogisticAdapt from "../service/adapt/LogisticAdapt";
-import { deleteLogistic, logistic, logistics } from "../service/api/logistic";
+import { deleteLogistic, logistic, logisticFindByName, logistics } from "../service/api/logistic";
 import LogisticsAdapt from "../service/adapt/LogisticsAdapt";
 import { unity } from "../service/api/unity";
 import UnityAdapt from "../service/adapt/UnityAdapt";
@@ -84,12 +84,10 @@ export default function Cariri() {
         setIsLoading(true);
         timeout = setTimeout(async () => {
             if (e.target.value !== "") {
-                const dataLogistics = await logistic(e.target.value);
-                const logisticAdapt = new LogisticAdapt(dataLogistics);
+                const dataLogistics = await logisticFindByName(unityId, e.target.value);
 
-                const logisticData = logisticAdapt.externalLogisticAdapt;
-                const logisticDataData = logisticData;
-                setRowsCariri([logisticDataData]);
+                const logisticData = dataLogistics;
+                setRowsCariri(logisticData.data);
                 setPages(1);
                 setIsLoading(false);
             } else {
@@ -204,6 +202,7 @@ export default function Cariri() {
 
     const getLogistics = async () => {
         const dataUnity = await unity('CARIRI');
+        setUnityId(dataUnity[0].id);
         const unityAdapt = new UnityAdapt(dataUnity[0]);
 
         const dataUnityAdapt = unityAdapt.externalUnityAdapt;
@@ -212,7 +211,7 @@ export default function Cariri() {
         const logisticsAdapt = new LogisticsAdapt(dataLogistics!);
 
         const dataLogistic = logisticsAdapt.externalLogisticsAdapt;
-        setRowsCariri(dataLogistic.data);
+        setRowsCariri(dataLogistic?.data);
         const numPages = dataLogistic?.last_page;
         setPages(numPages);
         setIsLoading(false);

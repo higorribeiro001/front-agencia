@@ -11,7 +11,7 @@ import { DialogApp } from "../components/DialogApp";
 import ColColor from "../components/ColColor";
 import { getCookie } from "cookies-next";
 import LogisticAdapt from "../service/adapt/LogisticAdapt";
-import { deleteLogistic, logistic, logistics } from "../service/api/logistic";
+import { deleteLogistic, logistic, logisticFindByName, logistics } from "../service/api/logistic";
 import LogisticsAdapt from "../service/adapt/LogisticsAdapt";
 import { unity } from "../service/api/unity";
 import UnityAdapt from "../service/adapt/UnityAdapt";
@@ -84,12 +84,10 @@ export default function Petrolina() {
         setIsLoading(true);
         timeout = setTimeout(async () => {
             if (e.target.value !== "") {
-                const dataLogistics = await logistic(e.target.value);
-                const logisticAdapt = new LogisticAdapt(dataLogistics);
+                const dataLogistics = await logisticFindByName(unityId, e.target.value);
 
-                const logisticData = logisticAdapt.externalLogisticAdapt;
-                const logisticDataData = logisticData;
-                setRowsPetrolina([logisticDataData]);
+                const logisticData = dataLogistics;
+                setRowsPetrolina(logisticData.data);
                 setPages(1);
                 setIsLoading(false);
             } else {
@@ -204,6 +202,7 @@ export default function Petrolina() {
 
     const getLogistics = async () => {
         const dataUnity = await unity('PETROLINA');
+        setUnityId(dataUnity[0].id);
         const unityAdapt = new UnityAdapt(dataUnity[0]);
 
         const dataUnityAdapt = unityAdapt.externalUnityAdapt;

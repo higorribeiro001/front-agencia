@@ -7,6 +7,7 @@ import Link from "next/link";
 import cariri from "../../../../public/assets/cariri.png";
 import juazeiro from "../../../../public/assets/juazeiro.png";
 import petrolina from "../../../../public/assets/petrolina.png";
+import vendedor from "../../../../public/assets/vendedor.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
@@ -44,6 +45,15 @@ export default function Sidebar() {
             />,
             title: 'Petrolina',
             to: '/petrolina'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={vendedor} 
+                alt="logo"     
+            />,
+            title: 'Vendedor',
+            to: '/seller'
         }
     ];
 

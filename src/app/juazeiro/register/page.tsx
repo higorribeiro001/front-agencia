@@ -297,7 +297,6 @@ export default function RegisterJuazeiro() {
     const [model, setModel] = useState(initModel);
 
     useEffect(() => {
-      setIsLoadingInit(true);
       getUnities();
       getSellers();
       getClients();
@@ -309,7 +308,6 @@ export default function RegisterJuazeiro() {
       getTypeVehicle();
       getStatesData();
       getUnitySelected();
-      setIsLoadingInit(false);
     }, []);
 
     useEffect(() => {
