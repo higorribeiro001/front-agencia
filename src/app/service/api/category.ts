@@ -29,7 +29,7 @@ export async function category(id: string) {
 }
 
 export async function categoryFindByName(name: string) {
-    const response: { data: CategoryInterface, status: number } = await axios.get(url+`/category/${name}`, configAuth());
+    const response: { data: CategoryInterface[], status: number } = await axios.get(url+`/category/${name}`, configAuth());
     return response.data;
 }
 

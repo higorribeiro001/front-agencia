@@ -10,13 +10,13 @@ import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
 // import { getCookie } from "cookies-next";
 import { deleteLogistic } from "../service/api/logistic";
-import { postSeller, putSeller, seller, sellerFindByName, sellers } from "../service/api/seller";
 import DataAdapt from "../service/adapt/DataAdapt";
 import { DialogRegister } from "../components/DialogRegister";
 import DataAdapts from "../service/adapt/DataAdapts";
+import { postRoute, putRoute, route, routeFindByName, routes } from "../service/api/route";
 
-export default function Seller() {
-    const [rowsSeller, setRowsSeller] = useState<DataInterface[]>([]);
+export default function Route() {
+    const [rowsSeller, setRowsDrawer] = useState<DataInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingRegister, setIsLoadingRegister] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
@@ -25,7 +25,7 @@ export default function Seller() {
     const [pages, setPages] = useState<number>();
     const [currentPage, setCurrentPage] = useState(1);
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [dataSeller, setDataLogistic] = useState<SellerInterface>();
+    const [dataSeller, setDataRouteDrawer] = useState<DataInterface>();
     const [openDialog, setOpenDialog] = useState(false);
     const [openDialogRegister, setOpenDialogRegister] = useState(false);
     const [openDialogEdit, setOpenDialogEdit] = useState(false);
@@ -34,12 +34,12 @@ export default function Seller() {
     // const role = getCookie("role");
     const [idName, setIdName] = useState('');
 
-    const getLogistic = async (id: string) => {
-        const dataSeller = await seller(id);
-        const sellerAdapt = new DataAdapt(dataSeller);
+    const getRouteDrawer = async (id: string) => {
+        const dataRoute = await route(id);
+        const routeAdapt = new DataAdapt(dataRoute);
 
         setOpenDrawer(true);
-        setDataLogistic(sellerAdapt.externalDataAdapt)
+        setDataRouteDrawer(routeAdapt.externalDataAdapt)
     }
 
     const initModel = {
@@ -51,7 +51,7 @@ export default function Seller() {
 
     const [model, setModel] = useState(initModel);
       
-    const columnsSeller: GridColDef[] = [
+    const columnsRoute: GridColDef[] = [
         { field: 'nome', headerName: 'Nome', flex: 5 },
         { field: 'created_at', headerName: 'Data de criação', flex: 2, renderCell: (params) => {
             const dataCol = params.value;
@@ -62,7 +62,7 @@ export default function Seller() {
             return dataCol ? convertDateDrawer(dataCol) : '-';
         } },
         { field: 'acao', headerName: 'Ação', flex: 1 , renderCell: (data) => (
-            <IconButton onClick={() => getLogistic(String(data.id))}>
+            <IconButton onClick={() => getRouteDrawer(String(data.id))}>
               <Visibility />
             </IconButton>
         ), },
@@ -80,14 +80,14 @@ export default function Seller() {
         setIsLoading(true);
         timeout = setTimeout(async () => {
             if (e.target.value !== "") {
-                const dataSeller = await sellerFindByName(e.target.value);
+                const dataDrawer = await routeFindByName(e.target.value);
 
-                const sellerData = dataSeller;
-                setRowsSeller(sellerData);
+                const drawerData = dataDrawer;
+                setRowsDrawer(drawerData);
                 setPages(1);
                 setIsLoading(false);
             } else {
-                getSeller();
+                getDrawer();
             }
         }, 3000);
     }
@@ -104,33 +104,33 @@ export default function Seller() {
         }
     }, [openDrawer]);
 
-    const ContentViewSeller = ({dataSeller}: DataSellerInterface) => {
+    const ContentViewRoute = ({dataData}: DataDataInterface) => {
         return (
             <div className="flex flex-col gap-1">
-                <h2 className="text-primary text-[25px] font-semibold mb-2">VENDEDOR</h2>
+                <h2 className="text-primary text-[25px] font-semibold mb-2">ROTA</h2>
                 <RowDrawer
                     keyRow="Nome"
-                    value={dataSeller?.nome ?? ''}
+                    value={dataData?.nome ?? ''}
                 />
                 <RowDrawer
                     keyRow="Data de criação"
-                    value={convertDateDrawer(dataSeller?.created_at)}
+                    value={convertDateDrawer(dataData?.created_at)}
                 />
                 <RowDrawer
                     keyRow="Data de edição"
-                    value={convertDateDrawer(dataSeller?.updated_at)}
+                    value={convertDateDrawer(dataData?.updated_at)}
                 />
             </div>
         );
     }
 
-    const getSeller = async () => {
-        const dataSellers = await sellers(currentPage);
-        const sellersData = new DataAdapts(dataSellers!);
+    const getDrawer = async () => {
+        const dataRoutes = await routes(currentPage);
+        const categoriesData = new DataAdapts(dataRoutes!);
 
-        const dataSellersAdapt = sellersData.externalDataAdapts;
-        setRowsSeller(dataSellersAdapt?.data);
-        const numPages = dataSellersAdapt?.last_page;
+        const dataRoutesAdapt = categoriesData.externalDataAdapts;
+        setRowsDrawer(dataRoutesAdapt?.data);
+        const numPages = dataRoutesAdapt?.last_page;
         setPages(numPages);
         setIsLoading(false);
     }
@@ -138,7 +138,7 @@ export default function Seller() {
     useEffect(() => {
         setIsLoading(true);
 
-        getSeller();
+        getDrawer();
     }, [currentPage]);
 
     const closeAlert = () => {
@@ -157,7 +157,7 @@ export default function Seller() {
             setOpenDrawer(false);
             setOpenDialog(false);
             closeAlert();
-            getSeller();
+            getDrawer();
         }
     }
 
@@ -173,11 +173,11 @@ export default function Seller() {
         setOpenDialogEdit(true);
         setIdName(id);
         const getName = async () => {
-            const name = await seller(id);
-            const sellerAdapt = new DataAdapt(name);
+            const name = await route(id);
+            const routeAdapt = new DataAdapt(name);
             setModel((prevModel) => ({
                 ...prevModel, 
-                value: sellerAdapt.externalDataAdapt.nome
+                value: routeAdapt.externalDataAdapt.nome
             }));
         }
 
@@ -215,7 +215,7 @@ export default function Seller() {
         });
     }
 
-    const submitRegisterSeller = async (e: React.FormEvent<HTMLFormElement>) => {
+    const submitRegisterRoute = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     
         if (model.value === '') {
@@ -233,16 +233,17 @@ export default function Seller() {
     
         setIsLoadingRegister(true);
     
-        registerSeller();
+        registerRoute();
     
     }
     
-    const registerSeller = async () => {
+    const registerRoute = async () => {
         try {
-            const response = await postSeller(
-            { 
-                nome: model.value
-            });
+            const response = await postRoute(
+                { 
+                    nome: model.value
+                }
+            );
     
             if (response.status === 201) {
                 setOpenAlert(true);
@@ -251,7 +252,7 @@ export default function Seller() {
                 model.value = '';
                 model.error = '';
                 closeAlert();
-                getSeller();
+                getDrawer();
                 handleCloseRegister();
             }
         } catch (e: unknown) {
@@ -274,7 +275,7 @@ export default function Seller() {
         }
     }
 
-    const submitEditSeller = async (e: React.FormEvent<HTMLFormElement>) => {
+    const submitEditRoute = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     
         if (model.value === '') {
@@ -292,13 +293,13 @@ export default function Seller() {
     
         setIsLoadingRegister(true);
     
-        editSeller();
+        editRoute();
     
     }
     
-    const editSeller = async () => {
+    const editRoute = async () => {
         try {
-            const response = await putSeller(
+            const response = await putRoute(
             { 
                 id: idName,
                 nome: model.value
@@ -311,7 +312,7 @@ export default function Seller() {
                 model.value = '';
                 model.error = '';
                 closeAlert();
-                getSeller();
+                getDrawer();
                 setOpenDrawer(false);
                 handleCloseEdit();
             }
@@ -340,7 +341,7 @@ export default function Seller() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="vendedores"
+            title="Rotas"
         >
             <DialogApp 
                 isOpen={openDialog}
@@ -351,21 +352,21 @@ export default function Seller() {
             />
             <DialogRegister 
                 isOpen={openDialogRegister}
-                title="Cadastro de Vendedor"
+                title="Cadastro de Rota"
                 valueInput={model.value}
                 errorInput={model.error}
                 funcInput={changeValues}
-                funcRegister={submitRegisterSeller}
+                funcRegister={submitRegisterRoute}
                 handleClose={handleCloseRegister}
                 isLoading={isLoadingRegister}
             />
             <DialogRegister 
                 isOpen={openDialogEdit}
-                title="Edição de Vendedor"
+                title="Edição de Rota"
                 valueInput={model.value}
                 errorInput={model.error}
                 funcInput={changeValues}
-                funcRegister={submitEditSeller}
+                funcRegister={submitEditRoute}
                 handleClose={handleCloseEdit}
                 isLoading={isLoadingRegister}
             />
@@ -378,8 +379,8 @@ export default function Seller() {
                 className="z-[998]"
             >
                 <div className="flex flex-col justify-between gap-4 px-10 py-5 h-full">
-                    <ContentViewSeller 
-                        dataSeller={dataSeller!}
+                    <ContentViewRoute 
+                        dataData={dataSeller!}
                     />
                     {/* {role === 'admin' && dataSeller && !dataSeller?.observacao && (
                         <div className="flex flex-col gap-2 justify-start">
@@ -425,10 +426,10 @@ export default function Seller() {
             <div className="transition-all h-full">
                 <div className="animate-fade-up">
                     <DataTable 
-                        title="Lista de vendedores"
+                        title="Lista de rotas"
                         handleSearch={handleSearch} 
                         rows={rowsSeller} 
-                        columns={columnsSeller} 
+                        columns={columnsRoute} 
                         isLoading={isLoading} 
                         pages={pages}     
                         funcOpenDialog={handleOpenRegister}

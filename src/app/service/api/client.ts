@@ -29,7 +29,7 @@ export async function client(id: string) {
 }
 
 export async function clientFindByName(name: string) {
-    const response: { data: ClientInterface, status: number } = await axios.get(url+`/client/${name}`, configAuth());
+    const response: { data: DataInterface[], status: number } = await axios.get(url+`/client/${name}`, configAuth());
     return response.data;
 }
 

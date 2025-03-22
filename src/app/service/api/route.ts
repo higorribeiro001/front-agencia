@@ -29,7 +29,7 @@ export async function route(id: string) {
 }
 
 export async function routeFindByName(name: string) {
-    const response: { data: RouteInterface, status: number } = await axios.get(url+`/route/${name}`, configAuth());
+    const response: { data: RouteInterface[], status: number } = await axios.get(url+`/route/${name}`, configAuth());
     return response.data;
 }
 

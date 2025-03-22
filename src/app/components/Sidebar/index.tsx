@@ -52,8 +52,35 @@ export default function Sidebar() {
                 src={vendedor} 
                 alt="logo"     
             />,
-            title: 'Vendedor',
+            title: 'Vendedores',
             to: '/seller'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={vendedor} 
+                alt="logo"     
+            />,
+            title: 'Clientes',
+            to: '/client'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={vendedor} 
+                alt="logo"     
+            />,
+            title: 'Categorias',
+            to: '/category'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={vendedor} 
+                alt="logo"     
+            />,
+            title: 'Rotas',
+            to: '/route'
         }
     ];
 
