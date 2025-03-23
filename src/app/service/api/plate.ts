@@ -29,7 +29,7 @@ export async function plate(id: string) {
 }
 
 export async function plateFindByName(name: string) {
-    const response: { data: PlateInterface, status: number } = await axios.get(url+`/plate/${name}`, configAuth());
+    const response: { data: PlateInterface[], status: number } = await axios.get(url+`/plate/${name}`, configAuth());
     return response.data;
 }
 

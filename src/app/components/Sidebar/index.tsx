@@ -8,6 +8,13 @@ import cariri from "../../../../public/assets/cariri.png";
 import juazeiro from "../../../../public/assets/juazeiro.png";
 import petrolina from "../../../../public/assets/petrolina.png";
 import vendedor from "../../../../public/assets/vendedor.png";
+import cliente from "../../../../public/assets/cliente.png";
+import categoria from "../../../../public/assets/categoria.png";
+import rota from "../../../../public/assets/rota.png";
+import transporte from "../../../../public/assets/transporte.png";
+import placa from "../../../../public/assets/placa.png";
+import veiculo from "../../../../public/assets/veiculo.png";
+import motorista from "../../../../public/assets/motorista.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
@@ -58,7 +65,7 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={vendedor} 
+                src={cliente} 
                 alt="logo"     
             />,
             title: 'Clientes',
@@ -67,7 +74,7 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={vendedor} 
+                src={categoria} 
                 alt="logo"     
             />,
             title: 'Categorias',
@@ -76,11 +83,47 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={vendedor} 
+                src={rota} 
                 alt="logo"     
             />,
             title: 'Rotas',
             to: '/route'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={transporte} 
+                alt="logo"     
+            />,
+            title: 'Nº Transportes',
+            to: '/transport'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={placa} 
+                alt="logo"     
+            />,
+            title: 'Placas',
+            to: '/plate'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={veiculo} 
+                alt="logo"     
+            />,
+            title: 'Tipos de veículos',
+            to: '/vehicle'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={motorista} 
+                alt="logo"     
+            />,
+            title: 'Motoristas',
+            to: '/driver'
         }
     ];
 
@@ -131,9 +174,9 @@ export default function Sidebar() {
                 func={handleLogout}
                 handleClose={handleClose}
             />
-            <div className="flex flex-row justify-between mb-16">
+            <div className="flex flex-row justify-between">
                 <Image 
-                    className={isExpanded ? "lg:max-w-[180px] max-w-[100px] transition-all" : "w-[120px] transition-all cursor-pointer"}
+                    className={isExpanded ? "lg:max-w-[150px] max-w-[100px] transition-all" : "w-[120px] transition-all cursor-pointer"}
                     src={logoP} 
                     alt="logo" 
                     onClick={handleExpandedMenu}    
@@ -148,7 +191,7 @@ export default function Sidebar() {
                     />
                 </button>
             </div>
-            <div className="h-[380px]">
+            <div className="h-[500px]">
                 {optionsMenu.map((value, index) => (
                     <div
                         className={isExpanded ? "w-full transition-all" : "w-[30px] transition-all overflow-hidden"}

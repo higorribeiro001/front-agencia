@@ -29,7 +29,7 @@ export async function driver(id: string) {
 }
 
 export async function driverFindByName(name: string) {
-    const response: { data: DriverInterface, status: number } = await axios.get(url+`/driver/${name}`, configAuth());
+    const response: { data: DriverInterface[], status: number } = await axios.get(url+`/driver/${name}`, configAuth());
     return response.data;
 }
 

@@ -29,7 +29,7 @@ export async function typeVehicle(id: string) {
 }
 
 export async function typeVehicleFindByName(name: string) {
-    const response: { data: TypeVehicleInterface, status: number } = await axios.get(url+`/type-vehicle/${name}`, configAuth());
+    const response: { data: TypeVehicleInterface[], status: number } = await axios.get(url+`/type-vehicle/${name}`, configAuth());
     return response.data;
 }
 

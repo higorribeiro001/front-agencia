@@ -29,7 +29,7 @@ export async function numTransport(id: string) {
 }
 
 export async function numTransportFindByName(name: string) {
-    const response: { data: NumTransportInterface, status: number } = await axios.get(url+`/num-transport/${name}`, configAuth());
+    const response: { data: NumTransportInterface[], status: number } = await axios.get(url+`/num-transport/${name}`, configAuth());
     return response.data;
 }
 
