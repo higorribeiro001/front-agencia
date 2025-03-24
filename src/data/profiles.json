@@ -1,0 +1,22 @@
+[
+    {
+        "label": "Admin",
+        "value": "admin",
+        "error": ""
+    },
+    {
+        "label": "Cariri",
+        "value": "cariri",
+        "error": ""
+    },
+    {
+        "label": "Juazeiro",
+        "value": "juazeiro",
+        "error": ""
+    },
+    {
+        "label": "petrolina",
+        "value": "Petrolina",
+        "error": ""
+    }
+]

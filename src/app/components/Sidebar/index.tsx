@@ -15,6 +15,7 @@ import transporte from "../../../../public/assets/transporte.png";
 import placa from "../../../../public/assets/placa.png";
 import veiculo from "../../../../public/assets/veiculo.png";
 import motorista from "../../../../public/assets/motorista.png";
+import usuarios from "../../../../public/assets/usuarios.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
@@ -124,6 +125,15 @@ export default function Sidebar() {
             />,
             title: 'Motoristas',
             to: '/driver'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={usuarios} 
+                alt="logo"     
+            />,
+            title: 'Usuários',
+            to: '/users'
         }
     ];
 
@@ -174,9 +184,9 @@ export default function Sidebar() {
                 func={handleLogout}
                 handleClose={handleClose}
             />
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-between mb-2">
                 <Image 
-                    className={isExpanded ? "lg:max-w-[150px] max-w-[100px] transition-all" : "w-[120px] transition-all cursor-pointer"}
+                    className={isExpanded ? "max-w-[80px] transition-all" : "w-[80px] transition-all cursor-pointer"}
                     src={logoP} 
                     alt="logo" 
                     onClick={handleExpandedMenu}    
@@ -198,7 +208,7 @@ export default function Sidebar() {
                         key={index}
                     >
                         <div
-                            className={String(pathname).includes(value.to) ? "uppercase p-1 rounded-md bg-secondary mb-4" : "uppercase p-1 mb-4"}
+                            className={String(pathname).includes(value.to) ? "uppercase p-1 rounded-md bg-secondary mb-2" : "uppercase p-1 mb-2"}
                         >
                             <Link 
                                 href={value.to}
@@ -223,7 +233,7 @@ export default function Sidebar() {
                     className={isExpanded ? "w-full transition-all" : "w-[30px] transition-all overflow-hidden"}
                 >
                     <div
-                        className={ pathname === '/profile' ? "uppercase p-1 rounded-md bg-secondary mt-6 mb-4" : "uppercase p-1 mt-6 mb-4"}
+                        className={ pathname === '/profile' ? "uppercase p-1 rounded-md bg-secondary mt-6 mb-2" : "uppercase p-1 mt-6 mb-2"}
                     >
                         <Link 
                             href={'/profile'}

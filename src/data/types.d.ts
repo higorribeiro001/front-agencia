@@ -488,6 +488,51 @@ interface DataLogisticInterface {
     dataLogistic: LogisticInterface;
 }
 
+interface UserRegisterInterface {
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    password: string;
+}
+
+interface UserEditInterface {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    ativo: boolean;
+}
+
+interface ResetPasswordInterface {
+    id: string;
+    password: string;
+}
+
+interface UserInterface {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    image: string;
+    ativo: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+interface UsersInterface {
+    current_page: number;
+    data: UserInterface[];
+    last_page: number;
+    total: string;
+}
+
+interface DataUserInterface {
+    dataUser: UserInterface;
+}
+
 interface DataTableInterface {
     handleSearch?: (e: ChangeEvent<HTMLInputElement>) => void; 
     rows: Array<T>; 

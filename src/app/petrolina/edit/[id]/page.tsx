@@ -540,6 +540,7 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
                               variant="contained"
                               type="button"
                               href="/petrolina"
+                              style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                             >
                                 Cancelar
                             </Button>
