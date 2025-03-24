@@ -21,7 +21,7 @@ export async function login(email: string, password: string) {
 
 export async function me() {
     try {
-        const response: { data: { name: string, role: string }, status: number } = await axios.get(url+'/me', configAuth());
+        const response: { data: UserInterface, status: number } = await axios.get(url+'/me', configAuth());
     
         if (response.status === 200) {
             setCookie('role', response.data.role);

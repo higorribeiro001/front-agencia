@@ -47,7 +47,7 @@ export default function Users() {
         { field: 'email', headerName: 'E-mail', flex: 2 },
         { field: 'phone', headerName: 'Telefone', flex: 2 },
         { field: 'role', headerName: 'Papel', flex: 2 },
-        { field: 'ativo', headerName: 'Ativo', flex: 1, renderCell: (params) => {
+        { field: 'ativo', headerName: 'Status', flex: 1, renderCell: (params) => {
             return <ColColor message={params.value ? 'ativo' : 'inativo'} />
         } },
         { field: 'acao', headerName: 'Ação', flex: 1 , renderCell: (data) => (
@@ -110,7 +110,7 @@ export default function Users() {
                     value={dataUser?.role ?? ''}
                 />
                 <RowDrawer
-                    keyRow="Ativo"
+                    keyRow="Status"
                     value={dataUser?.ativo ? 'ativo' : 'inativo'}
                 />
                 <RowDrawer

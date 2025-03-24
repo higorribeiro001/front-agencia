@@ -1,12 +1,11 @@
 "use client"
 
-import { Autocomplete, Button, IconButton, InputLabel, Switch, TextField } from "@mui/material";
+import { Button, IconButton, InputLabel, Switch, TextField } from "@mui/material";
 import { Base } from "../../../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
-import { ArrowBack, Label } from "@mui/icons-material";
-import profiles from "../../../../data/profiles.json";
+import { ArrowBack } from "@mui/icons-material";
 import { putUser, user } from "@/app/service/api/user";
 import UserAdapt from "@/app/service/adapt/UserAdapt";
 import { IMaskInput } from "react-imask";
@@ -43,8 +42,6 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
       .addTextField('name', '* Nome', 'text')
       .addTextField('email', '* E-mail', 'text')
       .addTextField('phone', '* Telefone', 'text')
-      .addTextField('role', '* Papel', 'select')
-      .addTextField('ativo', '* Status', 'check')
       .build();
   
     const [isLoading, setIsLoading] = useState(false);
@@ -68,9 +65,6 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
           updateModel[0].value = userData?.name;
           updateModel[1].value = userData?.email;
           updateModel[2].value = userData?.phone;
-          updateModel[3].label = profiles.filter((item) => item.value === userData?.role)[0].label;
-          updateModel[3].value = userData?.role;
-          updateModel[4].value = String(userData?.ativo);
           setChecked(userData?.ativo);
 
           return updateModel;
@@ -98,12 +92,6 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
         {
             label: '',
             name: 'phone',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'role',
             value: '',
             error: '',
         },
@@ -247,41 +235,7 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
                   >
                       <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
                         {formFields.map((value, index: number) => (
-                            value.type === 'select' ? (
-                              <Autocomplete
-                                  key={index}
-                                  disablePortal
-                                  disabled={value.name === 'unidade_id'}
-                                  options={profiles}
-                                  className="w-full lg:w-[49%]"
-                                  value={model[index]} 
-                                  onChange={(event, newValue) => {
-                                    if (newValue) {
-                                      setModel((prevModel) => {
-                                        const updateModel = [...prevModel];
-                                        updateModel[index] = { 
-                                          label: newValue.label,
-                                          name: updateModel[index].name,
-                                          value: newValue.value, 
-                                          error: ''
-                                        };
-                                        return updateModel;
-                                      });
-                                    }
-                                  }}
-                                  isOptionEqualToValue={(option, value) => option?.value === value?.value}
-                                  renderInput={(params) => 
-                                    <TextField 
-                                      {...params} 
-                                      label={value.label} 
-                                      onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
-                                      value={model[index].value}
-                                      error={model[index].error !== '' ? true : false}
-                                      helperText={model[index].error}
-                                    />
-                                  }
-                                />
-                                ) : value.name === 'phone' ? (
+                            value.name === 'phone' ? (
                                     <TextField
                                       key={index}
                                       className="w-full lg:w-[49%]"
@@ -296,16 +250,7 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
                                         inputComponent: TextMaskCustom as any,
                                       }}
                                     />
-                                  ) : value.type === 'check' ? (
-                                  <div className="flex flex-col" key={index}>
-                                    <InputLabel className="pl-3">Ativo:</InputLabel>
-                                    <Switch
-                                      checked={checked}
-                                      onChange={handleChange}
-                                      inputProps={{ 'aria-label': 'controlled' }}
-                                    />
-                                  </div>
-                                ) : (
+                                  ) : (
                                   <TextField
                                     key={index}
                                     className="w-full lg:w-[49%]"

@@ -253,7 +253,7 @@ export default function Sidebar() {
                     className={isExpanded ? "w-full transition-all" : "w-[30px] transition-all overflow-hidden"}
                 >
                     <div
-                        className={ pathname === '/profile' ? "uppercase p-1 rounded-md bg-secondary" : "uppercase p-1"}
+                        className={ pathname === '/logout' ? "uppercase p-1 rounded-md bg-secondary" : "uppercase p-1"}
                     >
                         <button 
                             className="flex gap-2 h-[24px]"
