@@ -128,50 +128,54 @@ export default function Login() {
         isSuccess={isSuccess}
         message={messageAlert}
       />
-      <div className="w-[100%] h-full bg-background py-12 px-16 flex flex-col justify-between items-center animate-fade-up bg-primary">
-        <div className="lg:w-[600px] w-[350px] p-10 flex flex-col items-center gap-10 rounded shadow-lg bg-white">
-          <Image 
-            className="w-[250px]"
-            src={logo} 
-            alt="logo"     
-          />
-          <h2 className="text-center text-primary text-[28px] font-medium">LOGIN</h2>
-          <form 
-            className="flex flex-col gap-10 w-full" 
-            onSubmit={submitForm}
-          >
-            {formFields.map((value, index: number) => (
-              <TextField
-                key={index}
-                label={value.label} 
-                variant="outlined"
-                fullWidth
-                type={value.type === 'password' ? showPassword ? "text" : "password" : value.type}
-                InputProps={value.type === 'password' ? {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={() => setShowPassword(!showPassword)}>
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                } : {}}
-                error={model[index].error !== '' ? true : false}
-                helperText={model[index].error}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
-                value={model[index].value}
-              />
-            ))}
-            <Button 
-              className="bg-primary font-semibold h-[56px]"
-              variant="contained"
-              type="submit"
-              loading={isLoading}
-              sx={{bgcolor: "#FB3A04"}}
-            >
-              Entrar
-            </Button>
-          </form>
+      <div className="w-[100%] h-full bg-background py-8 px-16 flex flex-col justify-between items-center animate-fade-up bg-primary">
+        <div className="w-full h-full justify-center items-center flex">
+          <div className="lg:w-[600px] w-[350px] p-10 flex flex-col justify-between items-center gap-10 rounded shadow-lg bg-white">
+            <Image 
+              className="w-[200px]"
+              src={logo} 
+              alt="logo"     
+            />
+            <div className="w-full">
+              <h2 className="text-center text-primary text-[28px] font-medium mb-6">LOGIN</h2>
+              <form 
+                className="flex flex-col gap-10 w-full" 
+                onSubmit={submitForm}
+              >
+                {formFields.map((value, index: number) => (
+                  <TextField
+                    key={index}
+                    label={value.label} 
+                    variant="outlined"
+                    fullWidth
+                    type={value.type === 'password' ? showPassword ? "text" : "password" : value.type}
+                    InputProps={value.type === 'password' ? {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    } : {}}
+                    error={model[index].error !== '' ? true : false}
+                    helperText={model[index].error}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
+                    value={model[index].value}
+                  />
+                ))}
+                <Button 
+                  className="bg-primary font-semibold h-[56px]"
+                  variant="contained"
+                  type="submit"
+                  loading={isLoading}
+                  sx={{bgcolor: "#FB3A04"}}
+                >
+                  Entrar
+                </Button>
+              </form>
+            </div>
+          </div>
         </div>
         <span className="text-white text-center text-[14px]">© vale metalicos | 2025</span>
       </div>
