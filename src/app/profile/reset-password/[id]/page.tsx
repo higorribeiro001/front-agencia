@@ -150,7 +150,7 @@ export default function ResetPassword({ params }: { params: Promise<{ id: string
                     isOpen={isLoading}
                   />
                   <div className="flex flex-row w-full justify-between z-10 relative">
-                      <IconButton href="/users">
+                      <IconButton href="/profile">
                         <ArrowBack color="inherit" />
                       </IconButton>
                       <Button 
@@ -199,7 +199,7 @@ export default function ResetPassword({ params }: { params: Promise<{ id: string
                               className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                               variant="contained"
                               type="button"
-                              href="/users"
+                              href="/profile"
                               style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                             >
                                 Cancelar

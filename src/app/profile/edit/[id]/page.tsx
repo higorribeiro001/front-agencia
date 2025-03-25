@@ -10,6 +10,7 @@ import { putUser, user } from "@/app/service/api/user";
 import UserAdapt from "@/app/service/adapt/UserAdapt";
 import { IMaskInput } from "react-imask";
 import Link from "next/link";
+import { getCookie } from "cookies-next";
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -49,13 +50,14 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [checked, setChecked] = useState(true);
+    const [role, setRole] = useState('');
 
     useEffect(() => {
       setIsLoading(true);
       
       const getUser = async () => {
-        const dataUser: UserInterface = await user(resolvedParams?.id);
-        const userAdapt = new UserAdapt(dataUser);
+        const dataUser: UserInterface | undefined = await user(resolvedParams?.id);
+        const userAdapt = new UserAdapt(dataUser!);
 
         const userData = userAdapt?.externalUserAdapt;
 
@@ -65,6 +67,7 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
           updateModel[0].value = userData?.name;
           updateModel[1].value = userData?.email;
           updateModel[2].value = userData?.phone;
+          setRole(userData?.role);
           setChecked(userData?.ativo);
 
           return updateModel;
@@ -170,7 +173,7 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
               name: model[0].value, 
               email: model[1].value, 
               phone: model[2].value, 
-              role: model[3].value,  
+              role: role!,  
               ativo: checked
           });
     
@@ -213,7 +216,7 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
                     isOpen={isLoading}
                   />
                   <div className="flex flex-row w-full justify-between z-10 relative">
-                      <IconButton href="/users">
+                      <IconButton href="/profile">
                         <ArrowBack color="inherit" />
                       </IconButton>
                       <Button 
@@ -266,14 +269,14 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
                         ))}
                       </div>
                       <div className="my-3 pl-3 flex flex-row gap-1">
-                        <Link href={`/users/reset-password/${resolvedParams.id}`}>Trocar senha?</Link>
+                        <Link href={`/profile/reset-password/${resolvedParams.id}`}>Trocar senha?</Link>
                       </div>
                       <div className="flex flex-row justify-between">
                             <Button 
                               className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                               variant="contained"
                               type="button"
-                              href="/users"
+                              href="/profile"
                               style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                             >
                                 Cancelar
