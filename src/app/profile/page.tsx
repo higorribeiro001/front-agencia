@@ -42,10 +42,10 @@ export default function Profile({ params }: { params: Promise<{ id: string }> })
                 />
                 <div className="flex flex-col rounded shadow-md p-4">
                     <h2 className="text-primary text-[25px] font-semibold mb-2">{ profile?.name }</h2>
-                    <RowInfo title="E-mail" info={profile?.email ?? ''} />
-                    <RowInfo title="Telefone" info={profile?.phone ?? ''} />
-                    <RowInfo title="Papel" info={profile?.role ?? ''} />
-                    <RowInfo title="Status" info={profile?.ativo ? 'ativo' : 'inativo'} />
+                    <RowInfo title="E-mail:" info={profile?.email ?? ''} />
+                    <RowInfo title="Telefone:" info={profile?.phone ?? ''} />
+                    <RowInfo title="Papel:" info={profile?.role ?? ''} />
+                    <RowInfo title="Status:" info={profile?.ativo ? 'ativo' : 'inativo'} />
                     <IconButton 
                         className="gap-2 mt-2 w-[120px] flex flex-row justify-start"
                         href={"/profile/edit/"+profile?.id}

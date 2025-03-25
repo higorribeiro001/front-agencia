@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getCookie, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const configAuth = () => {
@@ -13,14 +13,26 @@ export async function logistics(page: number, unidade_id: string) {
         return response.data;
     } catch(e: unknown) {
         const error = e as StatusResponse;
-        setCookie('statusMe', error.response.status);
-        window.location.reload();
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
     }
 }
 
 export async function logistic(id: string) {
-    const response: { data: LogisticInterface, status: number } = await axios.get(url+`/logistics/${id}/`, configAuth());
-    return response.data;
+    try {
+        const response: { data: LogisticInterface, status: number } = await axios.get(url+`/logistics/${id}/`, configAuth());
+        return response.data;
+    } catch(e: unknown) {
+        const error = e as StatusResponse;
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
+    }
 }
 
 export async function logisticFindByName(unity: string, name: string) {

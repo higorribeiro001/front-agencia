@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Arcelor Mittal: Logística",
-  description: "Sistema de Logística da Arcelor Mittal.",
+  title: "Vale Metálicos: Logística",
+  description: "Sistema de Logística da Vale Metálicos.",
 };
 
 export default function RootLayout({

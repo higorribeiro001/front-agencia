@@ -2,7 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 
 const protectedPageRoutes = [
     '/home',
-    '/orders'
+    '/cariri',
+    '/category',
+    '/client',
+    '/driver',
+    '/home',
+    '/juazeiro',
+    '/petrolina',
+    '/plate',
+    '/profile',
+    '/route',
+    '/seller',
+    '/transport',
+    '/users',
+    '/vehicle',
 ];
 
 // const adminPageRoutes = [

@@ -34,7 +34,7 @@ export default function Cariri() {
 
     const getLogistic = async (id: string) => {
         const dataUnity = await logistic(id);
-        const logisticAdapt = new LogisticAdapt(dataUnity);
+        const logisticAdapt = new LogisticAdapt(dataUnity!);
 
         setOpenDrawer(true);
         setDataLogistic(logisticAdapt.externalLogisticAdapt)
@@ -202,8 +202,8 @@ export default function Cariri() {
 
     const getLogistics = async () => {
         const dataUnity = await unity('CARIRI');
-        setUnityId(dataUnity[0].id);
-        const unityAdapt = new UnityAdapt(dataUnity[0]);
+        setUnityId(dataUnity![0].id);
+        const unityAdapt = new UnityAdapt(dataUnity![0]);
 
         const dataUnityAdapt = unityAdapt.externalUnityAdapt;
 

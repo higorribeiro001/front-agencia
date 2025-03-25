@@ -19,14 +19,16 @@ import usuarios from "../../../../public/assets/usuarios.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
-import { useState } from "react";
-import { logout } from "@/app/service/api/auth";
+import { useEffect, useState } from "react";
+import { logout, me } from "@/app/service/api/auth";
 import AlertApp from "../AlertApp";
 import { DialogApp } from "../DialogApp";
 import { usePathname } from "next/navigation";
+import { getCookie } from "cookies-next";
 
 export default function Sidebar() {
-    const optionsMenu = [
+    
+    const optionsMenuAdmin: { icon: React.ReactElement; title: string; to: string; }[] = [
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
@@ -137,6 +139,258 @@ export default function Sidebar() {
         }
     ];
 
+    const optionsMenuCariri: { icon: React.ReactElement; title: string; to: string; }[] = [
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={cariri} 
+                alt="logo"     
+            />,
+            title: 'Cariri',
+            to: '/cariri'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={vendedor} 
+                alt="logo"     
+            />,
+            title: 'Vendedores',
+            to: '/seller'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={cliente} 
+                alt="logo"     
+            />,
+            title: 'Clientes',
+            to: '/client'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={categoria} 
+                alt="logo"     
+            />,
+            title: 'Categorias',
+            to: '/category'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={rota} 
+                alt="logo"     
+            />,
+            title: 'Rotas',
+            to: '/route'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={transporte} 
+                alt="logo"     
+            />,
+            title: 'Nº Transportes',
+            to: '/transport'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={placa} 
+                alt="logo"     
+            />,
+            title: 'Placas',
+            to: '/plate'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={veiculo} 
+                alt="logo"     
+            />,
+            title: 'Tipos de veículos',
+            to: '/vehicle'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={motorista} 
+                alt="logo"     
+            />,
+            title: 'Motoristas',
+            to: '/driver'
+        },
+    ];
+
+    const optionsMenuJuazeiro: { icon: React.ReactElement; title: string; to: string; }[] = [
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={juazeiro} 
+                alt="logo"     
+            />,
+            title: 'Juazeiro',
+            to: '/juazeiro'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={vendedor} 
+                alt="logo"     
+            />,
+            title: 'Vendedores',
+            to: '/seller'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={cliente} 
+                alt="logo"     
+            />,
+            title: 'Clientes',
+            to: '/client'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={categoria} 
+                alt="logo"     
+            />,
+            title: 'Categorias',
+            to: '/category'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={rota} 
+                alt="logo"     
+            />,
+            title: 'Rotas',
+            to: '/route'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={transporte} 
+                alt="logo"     
+            />,
+            title: 'Nº Transportes',
+            to: '/transport'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={placa} 
+                alt="logo"     
+            />,
+            title: 'Placas',
+            to: '/plate'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={veiculo} 
+                alt="logo"     
+            />,
+            title: 'Tipos de veículos',
+            to: '/vehicle'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={motorista} 
+                alt="logo"     
+            />,
+            title: 'Motoristas',
+            to: '/driver'
+        }
+    ];
+
+    const optionsMenuPetrolina: { icon: React.ReactElement; title: string; to: string; }[] = [
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={petrolina} 
+                alt="logo"     
+            />,
+            title: 'Petrolina',
+            to: '/petrolina'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={vendedor} 
+                alt="logo"     
+            />,
+            title: 'Vendedores',
+            to: '/seller'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={cliente} 
+                alt="logo"     
+            />,
+            title: 'Clientes',
+            to: '/client'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={categoria} 
+                alt="logo"     
+            />,
+            title: 'Categorias',
+            to: '/category'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={rota} 
+                alt="logo"     
+            />,
+            title: 'Rotas',
+            to: '/route'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={transporte} 
+                alt="logo"     
+            />,
+            title: 'Nº Transportes',
+            to: '/transport'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={placa} 
+                alt="logo"     
+            />,
+            title: 'Placas',
+            to: '/plate'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={veiculo} 
+                alt="logo"     
+            />,
+            title: 'Tipos de veículos',
+            to: '/vehicle'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={motorista} 
+                alt="logo"     
+            />,
+            title: 'Motoristas',
+            to: '/driver'
+        }
+    ];
+
     const pathname = usePathname();
     const [isExpanded, setIsExpanded] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
@@ -175,6 +429,19 @@ export default function Sidebar() {
         }
     }
 
+    const role = getCookie("role");
+
+    const profileUser = async () => {
+        await me();
+    }
+
+    const [optionsMenu, setOptionsMenu] = useState<{ icon: React.ReactElement; title: string; to: string; }[]>();
+
+    useEffect(() => {
+        profileUser()
+        setOptionsMenu(role === 'admin' ? optionsMenuAdmin : role === 'cariri' ? optionsMenuCariri : role === 'juazeiro' ? optionsMenuJuazeiro : optionsMenuPetrolina);
+    }, [role])
+
     return (
         <div className={isExpanded ? "flex flex-col justify-between w-[300px] bg-primary h-screen px-4 py-6 overflow-hidden  transition-all" : "flex flex-col justify-between w-[63px] bg-primary h-screen px-4 py-6 overflow-hidden  transition-all"}>
             <DialogApp 
@@ -202,7 +469,7 @@ export default function Sidebar() {
                 </button>
             </div>
             <div className="h-[500px]">
-                {optionsMenu.map((value, index) => (
+                {optionsMenu?.map((value, index) => (
                     <div
                         className={isExpanded ? "w-full transition-all" : "w-[30px] transition-all overflow-hidden"}
                         key={index}

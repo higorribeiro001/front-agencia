@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getCookie, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const configAuth = () => {
@@ -8,8 +8,17 @@ const configAuth = () => {
 }
 
 export async function categoryItems() {
-    const response: { data: Model[], status: number } = await axios.get(url+`/category-items/`, configAuth());
-    return response.data;
+    try {
+        const response: { data: Model[], status: number } = await axios.get(url+`/category-items/`, configAuth());
+        return response.data;
+    } catch(e: unknown) {
+        const error = e as StatusResponse;
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
+    }
 }
 
 export async function categories(page: number) {
@@ -18,14 +27,26 @@ export async function categories(page: number) {
         return response.data;
     } catch(e: unknown) {
         const error = e as StatusResponse;
-        setCookie('statusMe', error.response.status);
-        window.location.reload();
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
     }
 }
 
 export async function category(id: string) {
-    const response: { data: CategoryInterface, status: number } = await axios.get(url+`/category/${id}/`, configAuth());
-    return response.data;
+    try {
+        const response: { data: CategoryInterface, status: number } = await axios.get(url+`/category/${id}/`, configAuth());
+        return response.data;
+    } catch(e: unknown) {
+        const error = e as StatusResponse;
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
+    }
 }
 
 export async function categoryFindByName(name: string) {

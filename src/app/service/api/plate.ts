@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getCookie, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const configAuth = () => {
@@ -18,14 +18,26 @@ export async function plates(page: number) {
         return response.data;
     } catch(e: unknown) {
         const error = e as StatusResponse;
-        setCookie('statusMe', error.response.status);
-        window.location.reload();
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
     }
 }
 
 export async function plate(id: string) {
-    const response: { data: PlateInterface, status: number } = await axios.get(url+`/plate/${id}/`, configAuth());
-    return response.data;
+    try {
+        const response: { data: PlateInterface, status: number } = await axios.get(url+`/plate/${id}/`, configAuth());
+        return response.data;
+    } catch(e: unknown) {
+        const error = e as StatusResponse;
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
+    }
 }
 
 export async function plateFindByName(name: string) {

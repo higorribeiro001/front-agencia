@@ -29,16 +29,21 @@ export async function me() {
         } 
     } catch (e) {
         const error = e as StatusResponse;
-        setCookie('statusMe', error.response.status);
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            deleteCookie('role');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
     }
 }
 
 export async function logout() {
-    const refresh = getCookie('refresh');
-    const response: { status: number } = await axios.post(url+'/logout', {refresh}, configAuth());
+    const response: { status: number } = await axios.get(url+'/logout', configAuth());
 
     if (response.status === 200) {
         deleteCookie('access');
+        deleteCookie('role');
         window.location.reload();
     }
 

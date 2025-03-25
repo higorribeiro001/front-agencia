@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getCookie, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const configAuth = () => {
@@ -13,14 +13,26 @@ export async function users(page: number) {
         return response.data;
     } catch(e: unknown) {
         const error = e as StatusResponse;
-        setCookie('statusMe', error.response.status);
-        window.location.reload();
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
     }
 }
 
 export async function user(id: string) {
-    const response: { data: UserInterface, status: number } = await axios.get(url+`/user/${id}/`, configAuth());
-    return response.data;
+    try {
+        const response: { data: UserInterface, status: number } = await axios.get(url+`/user/${id}/`, configAuth());
+        return response.data;
+    } catch(e: unknown) {
+        const error = e as StatusResponse;
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
+    }
 }
 
 export async function userFindByName(name: string) {
