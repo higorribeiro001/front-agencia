@@ -2,7 +2,7 @@
 
 import { Drawer, IconButton, SelectChangeEvent, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Edit, Visibility } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import { RowDrawer } from "../components/RowDrawer";
@@ -124,16 +124,20 @@ export default function Vehicle() {
         );
     }
 
-    const getDrawer = async () => {
+    const getDrawer = useCallback(async () => {
+        setIsLoading(true);
+        
         const dataVehicle = await typeVehicles(currentPage);
         const categoriesData = new DataAdapts(dataVehicle!);
-
+        
         const dataVehicleAdapt = categoriesData.externalDataAdapts;
         setRowsDrawer(dataVehicleAdapt?.data);
+        
         const numPages = dataVehicleAdapt?.last_page;
         setPages(numPages);
+        
         setIsLoading(false);
-    }
+    }, [currentPage]);
 
     useEffect(() => {
         setIsLoading(true);
