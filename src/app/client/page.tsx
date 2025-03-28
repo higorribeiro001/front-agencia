@@ -36,7 +36,7 @@ export default function Client() {
 
     const getClientDrawer = async (id: string) => {
         const dataClient = await client(id);
-        const clientAdapt = new DataAdapt(dataClient);
+        const clientAdapt = new DataAdapt(dataClient!);
 
         setOpenDrawer(true);
         setDataClientDrawer(clientAdapt.externalDataAdapt)
@@ -174,7 +174,7 @@ export default function Client() {
         setIdName(id);
         const getName = async () => {
             const name = await client(id);
-            const clientAdapt = new DataAdapt(name);
+            const clientAdapt = new DataAdapt(name!);
             setModel((prevModel) => ({
                 ...prevModel, 
                 value: clientAdapt.externalDataAdapt.nome

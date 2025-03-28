@@ -67,15 +67,15 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
 
     const getUnities = async () => {
       const unityData = await unityItems();
-      setDataUnity(unityData);
+      setDataUnity(unityData!);
     }
 
     const getUnitySelected = async () => {
       const unityData = await unity('cariri');
       setModel((prevModel) => {
           const updateModel = [...prevModel];
-          updateModel[1].label = unityData[0]?.nome;
-          updateModel[1].value = unityData[0]?.id;
+          updateModel[1].label = unityData![0]?.nome;
+          updateModel[1].value = unityData![0]?.id;
 
           return updateModel;
       });
@@ -83,32 +83,32 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
 
     const getCategories = async () => {
       const categoryData = await categoryItems();
-      setCategory(categoryData);
+      setCategory(categoryData!);
     }
 
     const getSellers = async () => {
       const sellerData = await sellerItems();
-      setSeller(sellerData);
+      setSeller(sellerData!);
     }
 
     const getClients = async () => {
       const clientData = await clientItems();
-      setClient(clientData);
+      setClient(clientData!);
     }
 
     const getRoutes = async () => {
       const routeData = await routeItems();
-      setRoute(routeData);
+      setRoute(routeData!);
     }
 
     const getNumTransports = async () => {
       const numTransportData = await numTransportItems();
-      setNumTransport(numTransportData);
+      setNumTransport(numTransportData!);
     }
 
     const getDrivers = async () => {
       const driverData = await driverItems();
-      setDriver(driverData);
+      setDriver(driverData!);
     }
 
     const getPlate = async () => {
@@ -138,8 +138,8 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
       setIsLoading(true);
       
       const getLogistic = async () => {
-        const dataLogistic: LogisticInterface = await logistic(resolvedParams?.id);
-        const orderAdapt = new LogisticAdapt(dataLogistic);
+        const dataLogistic: LogisticInterface | undefined = await logistic(resolvedParams?.id);
+        const orderAdapt = new LogisticAdapt(dataLogistic!);
 
         const orderData = orderAdapt?.externalLogisticAdapt;
 

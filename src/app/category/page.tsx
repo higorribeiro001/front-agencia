@@ -36,7 +36,7 @@ export default function Category() {
 
     const getCategoryDrawer = async (id: string) => {
         const dataCategory = await category(id);
-        const categoryAdapt = new DataAdapt(dataCategory);
+        const categoryAdapt = new DataAdapt(dataCategory!);
 
         setOpenDrawer(true);
         setDataCategoryDrawer(categoryAdapt.externalDataAdapt)
@@ -174,7 +174,7 @@ export default function Category() {
         setIdName(id);
         const getName = async () => {
             const name = await category(id);
-            const categoryAdapt = new DataAdapt(name);
+            const categoryAdapt = new DataAdapt(name!);
             setModel((prevModel) => ({
                 ...prevModel, 
                 value: categoryAdapt.externalDataAdapt.nome

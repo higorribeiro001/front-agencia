@@ -139,7 +139,7 @@ export default function Vehicle() {
         setIsLoading(true);
 
         getDrawer();
-    }, [currentPage]);
+    }, [currentPage, getDrawer]);
 
     const closeAlert = () => {
         setTimeout(() => {

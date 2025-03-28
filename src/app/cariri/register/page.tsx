@@ -96,8 +96,8 @@ export default function RegisterCariri() {
       const unityData = await unity('cariri');
       setModel((prevModel) => {
           const updateModel = [...prevModel];
-          updateModel[1].label = unityData[0].nome;
-          updateModel[1].value = unityData[0].id;
+          updateModel[1].label = unityData![0].nome;
+          updateModel[1].value = unityData![0].id;
 
           return updateModel;
       });
