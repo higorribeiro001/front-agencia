@@ -14,7 +14,6 @@ import { deleteLogistic, logistic, logisticFindByName, logistics } from "../serv
 import LogisticsAdapt from "../service/adapt/LogisticsAdapt";
 import { unity } from "../service/api/unity";
 import UnityAdapt from "../service/adapt/UnityAdapt";
-import { getCookie } from "cookies-next";
 
 export default function Cariri() {
     const [rowsCariri, setRowsCariri] = useState<LogisticInterface[]>([]);
@@ -29,18 +28,7 @@ export default function Cariri() {
     const [openDialog, setOpenDialog] = useState(false);
     const [monthSelected, setMonthSelected] = useState('');
     const [according, setAccording] = useState<{"label": string; "value": string}>({"label": "Todos", "value": ""});
-    const role = getCookie("role");
     const [unityId, setUnityId] = useState('');
-
-    useEffect(() => {
-        console.log(role)
-        if (role === 'juazeiro') {
-            window.location.href = 'juazeiro';
-        } else if (role === 'petrolina') {
-            console.log('testeee')
-            window.location.href = 'petrolina';
-        }
-    }, [role]);
 
     const getLogistic = async (id: string) => {
         const dataUnity = await logistic(id);
