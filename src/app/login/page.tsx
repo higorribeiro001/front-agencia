@@ -9,10 +9,9 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import React, { ChangeEvent, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import FormBuilder from "../service/forms/FormBuilder";
-import { login } from "../service/api/auth";
+import { login, me } from "../service/api/auth";
 import AlertApp from "../components/AlertApp";
 import { useRouter } from "next/navigation";
-import { getCookie } from "cookies-next";
 
 export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -90,8 +89,6 @@ export default function Login() {
     }, 6000);
   }
 
-  const role = getCookie("role");
-
   const changeLogin = async () => {
     try {
       const response = await login(model[0].value, model[1].value);
@@ -102,7 +99,8 @@ export default function Login() {
         setIsSuccess(true);
         
         closeAlert();
-        router.replace(role === 'admin' ? '/cariri' : `${role}`);
+        const user = await me();
+        router.replace(user?.role === 'admin' ? '/cariri' : `${user!.role}`);
       }
     } catch (e: unknown) {
       const error = e as StatusResponse;
