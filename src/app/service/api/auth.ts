@@ -5,7 +5,7 @@ const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const config = {headers: { 'Accept': 'application/json' }};
 const configAuth = () => {
     const token = getCookie('access');
-    return {headers: { 'Accept': 'application/json', 'Authorization': 'Bearer '+token}}
+    return {headers: { 'Accept': 'application/json', 'Authorization': 'Bearer '+token, "ngrok-skip-browser-warning": "69420",}}
 }
 
 export async function login(email: string, password: string) {
