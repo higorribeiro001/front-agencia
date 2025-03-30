@@ -30,6 +30,11 @@ export default function Cariri() {
     const [according, setAccording] = useState<{"label": string; "value": string}>({"label": "Todos", "value": ""});
     const [unityId, setUnityId] = useState('');
 
+    // useEffect(() => {
+    //     const user = await me();
+    //     router.replace(user?.role === 'admin' ? '/cariri' : `${user!.role}`);
+    // }, [])
+
     const getLogistic = async (id: string) => {
         const dataUnity = await logistic(id);
         const logisticAdapt = new LogisticAdapt(dataUnity!);

@@ -100,7 +100,9 @@ export default function Login() {
         
         closeAlert();
         const user = await me();
-        router.replace(user?.role === 'admin' ? '/cariri' : `${user!.role}`);
+        if (user) {
+          router.replace(user.role === 'admin' ? '/cariri' : `${user.role}`);
+        }
       }
     } catch (e: unknown) {
       const error = e as StatusResponse;
