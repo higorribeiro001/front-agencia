@@ -490,7 +490,6 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
                                   disablePortal
                                   disabled={value.name === 'unidade_id'}
                                   options={value.name === 'categoria_id' && category ? category : value.name === 'unidade_id' && dataUnity ? dataUnity : value.name === 'vendedor_id' && seller ? seller : value.name === 'cliente_id' && client ? client : value.name === 'categoria_id' && category ? category : value.name === 'rota_id' && route ? route : value.name === 'num_transporte_id' && numTransport ? numTransport : value.name === 'motorista_id' && driver ? driver : value.name === 'placa_id' && plate ? plate : value.name === 'tipo_veiculo_id' && typeVehicle ? typeVehicle : value.name === 'status' ? status : [{ label: 'Aguarde...', value: '' }]}
-                                  sx={{ width: 300 }}
                                   className="w-full lg:w-[49%]"
                                   value={model[index]} 
                                   onChange={(event, newValue) => {
