@@ -102,7 +102,9 @@ export default function Login() {
         setIsSuccess(true);
         
         closeAlert();
-        router.replace(role === 'admin' ? '/cariri' : `${role}`);
+        if (role) {
+          router.replace(role === 'admin' ? '/cariri' : `${role}`);
+        }
       }
     } catch (e: unknown) {
       const error = e as StatusResponse;
