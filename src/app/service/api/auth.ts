@@ -14,6 +14,8 @@ export async function login(email: string, password: string) {
     if (response.status === 200) {
         deleteCookie('statusMe');
         setCookie('access', response.data['access']);
+        const user = await me();
+        setCookie('role', user?.role);
     } 
 
     return response;
