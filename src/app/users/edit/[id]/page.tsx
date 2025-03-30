@@ -5,7 +5,7 @@ import { Base } from "../../../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
-import { ArrowBack, Label } from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import profiles from "../../../../data/profiles.json";
 import { putUser, user } from "@/app/service/api/user";
 import UserAdapt from "@/app/service/adapt/UserAdapt";
@@ -28,7 +28,7 @@ const TextMaskCustom = React.forwardRef<HTMLInputElement, CustomProps>(
           '#': /[1-9]/,
         }}
         inputRef={ref}
-        onAccept={(value: any) => onChange({ target: { name: props.name, value } })}
+        onAccept={(value: string) => onChange({ target: { name: props.name, value } })}
         overwrite
         className="w-full p-4 rounded-md focus:outline-none focus:border-blue-500"
       />
@@ -57,8 +57,8 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
       setIsLoading(true);
       
       const getUser = async () => {
-        const dataUser: UserInterface = await user(resolvedParams?.id);
-        const userAdapt = new UserAdapt(dataUser);
+        const dataUser: UserInterface | undefined = await user(resolvedParams?.id);
+        const userAdapt = new UserAdapt(dataUser!);
 
         const userData = userAdapt?.externalUserAdapt;
 
@@ -293,7 +293,7 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
                                       onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
                                       value={model[index].value}
                                       InputProps={{
-                                        inputComponent: TextMaskCustom as any,
+                                        inputComponent: TextMaskCustom as unknown as React.ComponentType,
                                       }}
                                     />
                                   ) : value.type === 'check' ? (

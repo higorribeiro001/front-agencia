@@ -13,7 +13,7 @@ import { deleteLogistic } from "../service/api/logistic";
 import DataAdapt from "../service/adapt/DataAdapt";
 import { DialogRegister } from "../components/DialogRegister";
 import DataAdapts from "../service/adapt/DataAdapts";
-import { postRoute, putRoute, route, routeFindByName, routes } from "../service/api/route";
+import { postRoute, putRoute, route, routeFindByName, routes } from "../service/api/routeService";
 
 export default function Route() {
     const [rowsSeller, setRowsDrawer] = useState<DataInterface[]>([]);

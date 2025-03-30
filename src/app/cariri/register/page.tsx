@@ -10,7 +10,7 @@ import { postLogistic } from "@/app/service/api/logistic";
 import { unity, unityItems } from "@/app/service/api/unity";
 import { sellerItems } from "@/app/service/api/seller";
 import { clientItems } from "@/app/service/api/client";
-import { routeItems } from "@/app/service/api/route";
+import { routeItems } from "@/app/service/api/routeService";
 import { numTransportItems } from "@/app/service/api/numTransport";
 import { driverItems } from "@/app/service/api/driver";
 import { plateItems } from "@/app/service/api/plate";
@@ -73,10 +73,13 @@ export default function RegisterCariri() {
           error: ''
         })
       }
+
+      setStates(states);
     }
 
     const getCitiesData = async () => {
       const citiesData = await getCities(model[8]?.value) as { nome: string; }[];
+      setCities(cities);
       for (let i=0; i<citiesData.length; i++) {
         cities.push({
           label: citiesData[i].nome,

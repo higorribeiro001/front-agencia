@@ -13,7 +13,7 @@ import { unity, unityItems } from "@/app/service/api/unity";
 import { categoryItems } from "@/app/service/api/category";
 import { sellerItems } from "@/app/service/api/seller";
 import { clientItems } from "@/app/service/api/client";
-import { routeItems } from "@/app/service/api/route";
+import { routeItems } from "@/app/service/api/routeService";
 import { numTransportItems } from "@/app/service/api/numTransport";
 import { driverItems } from "@/app/service/api/driver";
 import { plateItems } from "@/app/service/api/plate";
@@ -73,8 +73,8 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
       const unityData = await unity('petrolina');
       setModel((prevModel) => {
           const updateModel = [...prevModel];
-          updateModel[1].label = unityData[0].nome;
-          updateModel[1].value = unityData[0].id;
+          updateModel[1].label = unityData![0].nome;
+          updateModel[1].value = unityData![0].id;
 
           return updateModel;
       });
@@ -139,8 +139,8 @@ export default function EditLogistic({ params }: { params: Promise<{ id: string 
       setIsLoading(true);
       
       const getLogistic = async () => {
-        const dataLogistic: LogisticInterface = await logistic(resolvedParams.id);
-        const orderAdapt = new LogisticAdapt(dataLogistic);
+        const dataLogistic: LogisticInterface | undefined = await logistic(resolvedParams.id);
+        const orderAdapt = new LogisticAdapt(dataLogistic!);
 
         const orderData = orderAdapt.externalLogisticAdapt;
 

@@ -36,7 +36,7 @@ export default function Vehicle() {
 
     const getVehicleDrawer = async (id: string) => {
         const dataVehicle = await typeVehicle(id);
-        const vehicleAdapt = new DataAdapt(dataVehicle);
+        const vehicleAdapt = new DataAdapt(dataVehicle!);
 
         setOpenDrawer(true);
         setDataVehicleDrawer(vehicleAdapt.externalDataAdapt)
@@ -178,7 +178,7 @@ export default function Vehicle() {
         setIdName(id);
         const getName = async () => {
             const name = await typeVehicle(id);
-            const vehicleAdapt = new DataAdapt(name);
+            const vehicleAdapt = new DataAdapt(name!);
             setModel((prevModel) => ({
                 ...prevModel, 
                 value: vehicleAdapt.externalDataAdapt.nome

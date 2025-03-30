@@ -1,9 +1,9 @@
 import { Search } from "@mui/icons-material";
-import { Autocomplete, Box, Button, IconButton, InputAdornment, Pagination, TextField } from "@mui/material";
+import { Box, Button, IconButton, InputAdornment, Pagination, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ChangeEvent } from "react";
 
-export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handleCurrentPage, title, according, setAccording, hrefRegister, funcOpenDialog}: DataTableInterface) => { 
+export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handleCurrentPage, title, hrefRegister, funcOpenDialog}: DataTableInterface) => { 
     
     const CustomNoRowsOverlay = () => (
         <div style={{ textAlign: 'center', padding: '20px' }}>

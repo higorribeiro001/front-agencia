@@ -31,7 +31,7 @@ export default function Users() {
 
     const getUser = async (id: string) => {
         const dataUser = await user(id);
-        const userAdapt = new UserAdapt(dataUser);
+        const userAdapt = new UserAdapt(dataUser!);
 
         setOpenDrawer(true);
         setDataUser(userAdapt.externalUserAdapt)

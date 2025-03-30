@@ -34,7 +34,7 @@ export default function Juazeiro() {
 
     const getLogistic = async (id: string) => {
         const dataUnity = await logistic(id);
-        const logisticAdapt = new LogisticAdapt(dataUnity);
+        const logisticAdapt = new LogisticAdapt(dataUnity!);
 
         setOpenDrawer(true);
         setDataLogistic(logisticAdapt.externalLogisticAdapt)
@@ -71,11 +71,6 @@ export default function Juazeiro() {
             </IconButton>
         ), },
     ];
-
-    const convertDateDrawer = (isoDate: string) => {
-        const date = new Date(isoDate);
-        return date.toLocaleDateString('pt-BR');
-    }
 
     let timeout: NodeJS.Timeout;
 
@@ -114,7 +109,7 @@ export default function Juazeiro() {
                 <h2 className="text-primary text-[25px] font-semibold mb-2">{ dataLogistic?.cliente?.nome }</h2>
                 <RowDrawer
                     keyRow="Data"
-                    value={convertDateDrawer(dataLogistic?.data) ?? ''}
+                    value={convertDate(dataLogistic?.data) ?? ''}
                 />
                 <RowDrawer
                     keyRow="OV"
@@ -166,7 +161,7 @@ export default function Juazeiro() {
                 />
                 <RowDrawer
                     keyRow="Previsão de Saída da Carga"
-                    value={convertDateDrawer(dataLogistic?.previsao_saida_carga)}
+                    value={convertDate(dataLogistic?.previsao_saida_carga)}
                 />
                 <RowDrawer
                     keyRow="Placa"
@@ -194,7 +189,7 @@ export default function Juazeiro() {
                 />
                 <RowDrawer
                     keyRow="Data Retorno Carga"
-                    value={convertDateDrawer(dataLogistic?.data_retorno_carga)}
+                    value={convertDate(dataLogistic?.data_retorno_carga)}
                 />
             </div>
         );
@@ -202,8 +197,8 @@ export default function Juazeiro() {
 
     const getLogistics = async () => {
         const dataUnity = await unity('JUAZEIRO');
-        setUnityId(dataUnity[0].id);
-        const unityAdapt = new UnityAdapt(dataUnity[0]);
+        setUnityId(dataUnity![0].id);
+        const unityAdapt = new UnityAdapt(dataUnity![0]);
 
         const dataUnityAdapt = unityAdapt.externalUnityAdapt;
 

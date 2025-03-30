@@ -36,7 +36,7 @@ export default function Plate() {
 
     const getPlateDrawer = async (id: string) => {
         const dataPlate = await plate(id);
-        const plateAdapt = new DataAdapt(dataPlate);
+        const plateAdapt = new DataAdapt(dataPlate!);
 
         setOpenDrawer(true);
         setDataPlateDrawer(plateAdapt.externalDataAdapt)
@@ -174,7 +174,7 @@ export default function Plate() {
         setIdName(id);
         const getName = async () => {
             const name = await plate(id);
-            const plateAdapt = new DataAdapt(name);
+            const plateAdapt = new DataAdapt(name!);
             setModel((prevModel) => ({
                 ...prevModel, 
                 value: plateAdapt.externalDataAdapt.nome

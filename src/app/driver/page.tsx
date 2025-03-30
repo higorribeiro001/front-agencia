@@ -36,7 +36,7 @@ export default function Driver() {
 
     const getDriverDrawer = async (id: string) => {
         const dataDriver = await driver(id);
-        const driverAdapt = new DataAdapt(dataDriver);
+        const driverAdapt = new DataAdapt(dataDriver!);
 
         setOpenDrawer(true);
         setDataDriverDrawer(driverAdapt.externalDataAdapt)
@@ -174,7 +174,7 @@ export default function Driver() {
         setIdName(id);
         const getName = async () => {
             const name = await driver(id);
-            const driverAdapt = new DataAdapt(name);
+            const driverAdapt = new DataAdapt(name!);
             setModel((prevModel) => ({
                 ...prevModel, 
                 value: driverAdapt.externalDataAdapt.nome

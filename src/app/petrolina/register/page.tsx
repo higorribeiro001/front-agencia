@@ -10,7 +10,7 @@ import { postLogistic } from "@/app/service/api/logistic";
 import { unity, unityItems } from "@/app/service/api/unity";
 import { sellerItems } from "@/app/service/api/seller";
 import { clientItems } from "@/app/service/api/client";
-import { routeItems } from "@/app/service/api/route";
+import { routeItems } from "@/app/service/api/routeService";
 import { numTransportItems } from "@/app/service/api/numTransport";
 import { driverItems } from "@/app/service/api/driver";
 import { plateItems } from "@/app/service/api/plate";
@@ -73,10 +73,13 @@ export default function RegisterPetrolina() {
           error: ''
         })
       }
+
+      setStates(states);
     }
 
     const getCitiesData = async () => {
       const citiesData = await getCities(model[8]?.value) as { nome: string; }[];
+      setCities(cities);
       for (let i=0; i<citiesData.length; i++) {
         cities.push({
           label: citiesData[i].nome,
@@ -96,8 +99,8 @@ export default function RegisterPetrolina() {
       const unityData = await unity('petrolina');
       setModel((prevModel) => {
           const updateModel = [...prevModel];
-          updateModel[1].label = unityData[0].nome;
-          updateModel[1].value = unityData[0].id;
+          updateModel[1].label = unityData![0].nome;
+          updateModel[1].value = unityData![0].id;
 
           return updateModel;
       });

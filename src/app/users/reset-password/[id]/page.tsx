@@ -1,14 +1,12 @@
 "use client"
 
-import { Autocomplete, Button, IconButton, InputAdornment, InputLabel, Switch, TextField } from "@mui/material";
+import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { Base } from "../../../components/Base/layout";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
-import { ArrowBack, Label, Visibility, VisibilityOff } from "@mui/icons-material";
-import profiles from "../../../../data/profiles.json";
-import { patchResetPassword, putUser, user } from "@/app/service/api/user";
-import UserAdapt from "@/app/service/adapt/UserAdapt";
+import { ArrowBack, Visibility, VisibilityOff } from "@mui/icons-material";
+import { patchResetPassword } from "@/app/service/api/user";
 
 export default function ResetPassword({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = React.use(params);
@@ -22,7 +20,6 @@ export default function ResetPassword({ params }: { params: Promise<{ id: string
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [checked, setChecked] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
 
     const initModel = [
@@ -41,10 +38,6 @@ export default function ResetPassword({ params }: { params: Promise<{ id: string
     ];
 
     const [model, setModel] = useState(initModel);
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setChecked(event.target.checked);
-    };
 
     const cleanFields = () => {
       setModel(initModel);

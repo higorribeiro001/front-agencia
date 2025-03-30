@@ -6,7 +6,7 @@ export async function getCities(uf: string) {
         if (response.status === 200) {
             return response.data
         }
-    } catch (error) {
+    } catch {
         return []
     }
 }

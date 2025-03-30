@@ -9,7 +9,6 @@ import { RowDrawer } from "../components/RowDrawer";
 import { DataTable } from "../components/DataTable";
 import { DialogApp } from "../components/DialogApp";
 import ColColor from "../components/ColColor";
-import { getCookie } from "cookies-next";
 import LogisticAdapt from "../service/adapt/LogisticAdapt";
 import { deleteLogistic, logistic, logisticFindByName, logistics } from "../service/api/logistic";
 import LogisticsAdapt from "../service/adapt/LogisticsAdapt";
@@ -29,7 +28,6 @@ export default function Cariri() {
     const [openDialog, setOpenDialog] = useState(false);
     const [monthSelected, setMonthSelected] = useState('');
     const [according, setAccording] = useState<{"label": string; "value": string}>({"label": "Todos", "value": ""});
-    const role = getCookie("role");
     const [unityId, setUnityId] = useState('');
 
     const getLogistic = async (id: string) => {
@@ -72,11 +70,6 @@ export default function Cariri() {
         ), },
     ];
 
-    const convertDateDrawer = (isoDate: string) => {
-        const date = new Date(isoDate);
-        return date.toLocaleDateString('pt-BR');
-    }
-
     let timeout: NodeJS.Timeout;
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +107,7 @@ export default function Cariri() {
                 <h2 className="text-primary text-[25px] font-semibold mb-2">{ dataLogistic?.cliente?.nome }</h2>
                 <RowDrawer
                     keyRow="Data"
-                    value={convertDateDrawer(dataLogistic?.data) ?? ''}
+                    value={convertDate(dataLogistic?.data) ?? ''}
                 />
                 <RowDrawer
                     keyRow="OV"
@@ -166,7 +159,7 @@ export default function Cariri() {
                 />
                 <RowDrawer
                     keyRow="Previsão de Saída da Carga"
-                    value={convertDateDrawer(dataLogistic?.previsao_saida_carga)}
+                    value={convertDate(dataLogistic?.previsao_saida_carga)}
                 />
                 <RowDrawer
                     keyRow="Placa"
@@ -194,7 +187,7 @@ export default function Cariri() {
                 />
                 <RowDrawer
                     keyRow="Data Retorno Carga"
-                    value={convertDateDrawer(dataLogistic?.data_retorno_carga)}
+                    value={convertDate(dataLogistic?.data_retorno_carga)}
                 />
             </div>
         );

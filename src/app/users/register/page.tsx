@@ -26,7 +26,7 @@ const TextMaskCustom = React.forwardRef<HTMLInputElement, CustomProps>(
           '#': /[1-9]/,
         }}
         inputRef={ref}
-        onAccept={(value: any) => onChange({ target: { name: props.name, value } })}
+        onAccept={(value: string) => onChange({ target: { name: props.name, value } })}
         overwrite
         className="w-full p-4 rounded-md focus:outline-none focus:border-blue-500"
       />
@@ -264,7 +264,7 @@ export default function RegisterUser() {
                                     onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
                                     value={model[index].value}
                                     InputProps={{
-                                      inputComponent: TextMaskCustom as any,
+                                      inputComponent: TextMaskCustom as unknown as React.ComponentType,
                                     }}
                                   />
                                 ) : (
