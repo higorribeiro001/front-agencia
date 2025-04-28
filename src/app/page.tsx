@@ -167,13 +167,13 @@ export default function Login() {
               variant="contained"
               type="submit"
               loading={isLoading}
-              sx={{bgcolor: "#FB3A04"}}
+              sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
             >
               Entrar
             </Button>
           </form>
         </div>
-        <span className="text-gray-600 text-center text-[14px]">© vale metalicos | 2025</span>
+        <span className="text-gray-600 text-center text-[14px]">© fazenda sao jose | 2025</span>
       </div>
     </div>
   );

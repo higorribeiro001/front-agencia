@@ -27,7 +27,7 @@ export default function NotFound() {
                     página anterior
                 </Button>
             </div>
-            <span className="text-background text-center text-[14px]">© vale metalicos | 2025</span>
+            <span className="text-background text-center text-[14px]">© fazenda sao jose | 2025</span>
         </div>
     );
 }

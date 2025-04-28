@@ -36,11 +36,11 @@ export default function Cariri() {
     // }, [])
 
     const getLogistic = async (id: string) => {
-        const dataUnity = await logistic(id);
-        const logisticAdapt = new LogisticAdapt(dataUnity!);
+        // const dataUnity = await logistic(id);
+        // const logisticAdapt = new LogisticAdapt(dataUnity!);
 
-        setOpenDrawer(true);
-        setDataLogistic(logisticAdapt.externalLogisticAdapt)
+        // setOpenDrawer(true);
+        // setDataLogistic(logisticAdapt.externalLogisticAdapt)
     }
 
     const convertDate = (isoDate: string) => {
@@ -78,20 +78,20 @@ export default function Cariri() {
     let timeout: NodeJS.Timeout;
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-        clearTimeout(timeout);
-        setIsLoading(true);
-        timeout = setTimeout(async () => {
-            if (e.target.value !== "") {
-                const dataLogistics = await logisticFindByName(unityId, e.target.value);
+        // clearTimeout(timeout);
+        // setIsLoading(true);
+        // timeout = setTimeout(async () => {
+        //     if (e.target.value !== "") {
+        //         const dataLogistics = await logisticFindByName(unityId, e.target.value);
 
-                const logisticData = dataLogistics;
-                setRowsCariri(logisticData.data);
-                setPages(1);
-                setIsLoading(false);
-            } else {
-                getLogistics();
-            }
-        }, 3000);
+        //         const logisticData = dataLogistics;
+        //         setRowsCariri(logisticData.data);
+        //         setPages(1);
+        //         setIsLoading(false);
+        //     } else {
+        //         getLogistics();
+        //     }
+        // }, 3000);
     }
 
     const changeValuesSelect = (e: SelectChangeEvent<string>) => {
@@ -199,20 +199,20 @@ export default function Cariri() {
     }
 
     const getLogistics = async () => {
-        const dataUnity = await unity('CARIRI');
-        setUnityId(dataUnity![0].id);
-        const unityAdapt = new UnityAdapt(dataUnity![0]);
+        // const dataUnity = await unity('CARIRI');
+        // setUnityId(dataUnity![0].id);
+        // const unityAdapt = new UnityAdapt(dataUnity![0]);
 
-        const dataUnityAdapt = unityAdapt.externalUnityAdapt;
+        // const dataUnityAdapt = unityAdapt.externalUnityAdapt;
 
-        const dataLogistics = await logistics(currentPage, dataUnityAdapt?.id);
-        const logisticsAdapt = new LogisticsAdapt(dataLogistics!);
+        // const dataLogistics = await logistics(currentPage, dataUnityAdapt?.id);
+        // const logisticsAdapt = new LogisticsAdapt(dataLogistics!);
 
-        const dataLogistic = logisticsAdapt.externalLogisticsAdapt;
-        setRowsCariri(dataLogistic?.data);
-        const numPages = dataLogistic?.last_page;
-        setPages(numPages);
-        setIsLoading(false);
+        // const dataLogistic = logisticsAdapt.externalLogisticsAdapt;
+        // setRowsCariri(dataLogistic?.data);
+        // const numPages = dataLogistic?.last_page;
+        // setPages(numPages);
+        // setIsLoading(false);
     }
 
     useEffect(() => {
@@ -252,83 +252,85 @@ export default function Cariri() {
             messageAlert={messageAlert}
             title="cariri"
         >
-            <Drawer
-                anchor="right"
-                open={openDrawer}
-                onClose={() => setOpenDrawer(false)}
-                disableAutoFocus
-                disableEnforceFocus
-                className="z-[998]"
-            >
-                <div className="flex flex-col justify-between gap-4 px-10 py-5 h-full">
-                    <DialogApp 
-                        isOpen={openDialog}
-                        title="Excluir"
-                        content="Tem certeza que deseja excluir?"
-                        func={() => removeLogistic(dataLogistic!.id)}
-                        handleClose={handleClose}
-                    />
-                    <ContentViewLogistic 
-                        dataLogistic={dataLogistic!}
-                    />
-                    {/* {role === 'admin' && dataLogistic && !dataLogistic?.observacao && (
-                        <div className="flex flex-col gap-2 justify-start">
-                            <TextField
-                                className="w-full"
-                                label="Observação" 
-                                variant="outlined"
-                                type="text"
-                                onChange={handleChange}
-                                value={observation}
-                                inputRef={inputRef}
-                            />
-                            <Button 
-                                className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                                variant="contained"
-                                type="button"
-                                onClick={() => observationOrder(dataLogistic.id, dataLogistic.num_pedido, observation)}
-                                sx={{bgcolor: "#FB3A04"}}
+            <div>
+                <Drawer
+                    anchor="right"
+                    open={openDrawer}
+                    onClose={() => setOpenDrawer(false)}
+                    disableAutoFocus
+                    disableEnforceFocus
+                    className="z-[998]"
+                >
+                    <div className="flex flex-col justify-between gap-4 px-10 py-5 h-full">
+                        <DialogApp 
+                            isOpen={openDialog}
+                            title="Excluir"
+                            content="Tem certeza que deseja excluir?"
+                            func={() => removeLogistic(dataLogistic!.id)}
+                            handleClose={handleClose}
+                        />
+                        <ContentViewLogistic 
+                            dataLogistic={dataLogistic!}
+                        />
+                        {/* {role === 'admin' && dataLogistic && !dataLogistic?.observacao && (
+                            <div className="flex flex-col gap-2 justify-start">
+                                <TextField
+                                    className="w-full"
+                                    label="Observação" 
+                                    variant="outlined"
+                                    type="text"
+                                    onChange={handleChange}
+                                    value={observation}
+                                    inputRef={inputRef}
+                                />
+                                <Button 
+                                    className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                                    variant="contained"
+                                    type="button"
+                                    onClick={() => observationOrder(dataLogistic.id, dataLogistic.num_pedido, observation)}
+                                    sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
+                                >
+                                    Enviar
+                                </Button>
+                            </div>
+                        )} */}
+                        <footer className="flex flex-row justify-between gap-3">
+                            <IconButton 
+                                className="gap-2"
+                                href={"/cariri/edit/"+dataLogistic?.id}
                             >
-                                Enviar
-                            </Button>
-                        </div>
-                    )} */}
-                    <footer className="flex flex-row justify-between gap-3">
-                        <IconButton 
-                            className="gap-2"
-                            href={"/cariri/edit/"+dataLogistic?.id}
-                        >
-                            <Edit 
-                                fontSize="small"
-                                color="success" 
-                            /> 
-                            <Typography 
-                                className="font-semibold text-[16px]"
-                                color="success"
-                            >
-                                Editar
-                            </Typography>
-                        </IconButton>
-                    </footer>
-                </div>
-            </Drawer>
-            <div className="transition-all h-full">
-                <div className="animate-fade-up">
-                    <DataTable 
-                        title="Logística"
-                        handleSearch={handleSearch} 
-                        rows={rowsCariri} 
-                        columns={columnsCariri} 
-                        isLoading={isLoading} 
-                        pages={pages}     
-                        hrefRegister="/cariri/register" 
-                        handleCurrentPage={setCurrentPage}  
-                        monthFilter={true} 
-                        valueMonthFilter={monthSelected}
-                        funcMonthFilter={changeValuesSelect}
-                        according={according}
-                        setAccording={setAccording}
-                    />
+                                <Edit 
+                                    fontSize="small"
+                                    color="success" 
+                                /> 
+                                <Typography 
+                                    className="font-semibold text-[16px]"
+                                    color="success"
+                                >
+                                    Editar
+                                </Typography>
+                            </IconButton>
+                        </footer>
+                    </div>
+                </Drawer>
+                <div className="transition-all h-full">
+                    <div className="animate-fade-up">
+                        <DataTable 
+                            title="Logística"
+                            handleSearch={handleSearch} 
+                            rows={rowsCariri} 
+                            columns={columnsCariri} 
+                            isLoading={isLoading} 
+                            pages={pages}     
+                            hrefRegister="/cariri/register" 
+                            handleCurrentPage={setCurrentPage}  
+                            monthFilter={true} 
+                            valueMonthFilter={monthSelected}
+                            funcMonthFilter={changeValuesSelect}
+                            according={according}
+                            setAccording={setAccording}
+                        />
+                    </div>
                 </div>
             </div>
         </Base>

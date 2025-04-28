@@ -21,13 +21,13 @@ export const DialogApp = ({isOpen, title, content, func, handleClose}: DialogInt
             <DialogActions>
                 <Button 
                     onClick={func}
-                    sx={{ color: "#FB3A04" }}
+                    sx={{ color: "#031B17" }}
                 >
                     Sim
                 </Button>
                 <Button 
                     onClick={handleClose} 
-                    sx={{ color: "#FB3A04" }}
+                    sx={{ color: "#031B17" }}
                     autoFocus
                 >
                     Não

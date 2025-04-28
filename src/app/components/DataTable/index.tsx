@@ -34,20 +34,20 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                     /> 
                     {hrefRegister ? (
                         <Button 
-                            className="bg-primary font-semibold w-[200px] h-[56px]"
+                            className="bg-primary text-white font-semibold w-[200px] h-[56px]"
                             variant="contained"
                             type="button"
                             href={hrefRegister}
-                            style={{background: "#FB3A04"}}
+                            style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Cadastrar
                         </Button>) : (
                         <Button 
-                            className="bg-primary font-semibold w-[200px] h-[56px]"
+                            className="bg-primary text-white font-semibold w-[200px] h-[56px]"
                             variant="contained"
                             type="button"
                             onClick={funcOpenDialog}
-                            style={{background: "#FB3A04"}}
+                            style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Cadastrar
                         </Button>
@@ -96,7 +96,7 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                             variant="outlined" 
                             sx={{
                                 "& .MuiPaginationItem-root.Mui-selected": {
-                                    backgroundColor: "#FB3A04", 
+                                    backgroundColor: "#031B17", 
                                     color: "#FFFFFF",
                                 },
                             }}   

@@ -296,7 +296,7 @@ export default function RegisterUser() {
                             className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
                             variant="contained"
                             type="submit"
-                            style={{background: "#FB3A04"}}
+                            style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Enviar
                         </Button>

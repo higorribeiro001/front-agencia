@@ -47,7 +47,7 @@ export default function Users() {
         { field: 'email', headerName: 'E-mail', flex: 2 },
         { field: 'phone', headerName: 'Telefone', flex: 2 },
         { field: 'role', headerName: 'Papel', flex: 2 },
-        { field: 'ativo', headerName: 'Status', flex: 1, renderCell: (params) => {
+        { field: 'is_active', headerName: 'Status', flex: 1, renderCell: (params) => {
             return <ColColor message={params.value ? 'ativo' : 'inativo'} />
         } },
         { field: 'acao', headerName: 'Ação', flex: 1 , renderCell: (data) => (
@@ -111,7 +111,7 @@ export default function Users() {
                 />
                 <RowDrawer
                     keyRow="Status"
-                    value={dataUser?.ativo ? 'ativo' : 'inativo'}
+                    value={dataUser?.is_active ? 'ativo' : 'inativo'}
                 />
                 <RowDrawer
                     keyRow="Data de criação"
@@ -131,8 +131,8 @@ export default function Users() {
 
         const dataUserAdapt = usersAdapt.externalUsersAdapt;
 
-        setRowsUser(dataUserAdapt?.data);
-        const numPages = dataUser?.last_page;
+        setRowsUser(dataUserAdapt?.results);
+        const numPages = dataUser?.next;
         setPages(numPages);
         setIsLoading(false);
     }
@@ -168,12 +168,7 @@ export default function Users() {
     };
 
     return (
-        <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
-            title="Usuários"
-        >
+        <div>
             <Drawer
                 anchor="right"
                 open={openDrawer}
@@ -209,7 +204,7 @@ export default function Users() {
                                 variant="contained"
                                 type="button"
                                 onClick={() => observationOrder(dataUser.id, dataUser.num_pedido, observation)}
-                                sx={{bgcolor: "#FB3A04"}}
+                                sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
                             >
                                 Enviar
                             </Button>
@@ -253,6 +248,6 @@ export default function Users() {
                     />
                 </div>
             </div>
-        </Base>
+        </div>
     );
 }

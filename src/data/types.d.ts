@@ -24,6 +24,7 @@ interface AlertAppInterface {
 }
 
 interface BaseProps {
+    window?: () => Window;
     children: ReactNode;
     openAlert?: boolean; 
     isSuccess?: boolean; 
@@ -517,16 +518,16 @@ interface UserInterface {
     phone: string;
     role: string;
     image: string;
-    ativo: boolean;
+    is_active: boolean;
     created_at: string;
     updated_at: string;
 }
 
 interface UsersInterface {
-    current_page: number;
-    data: UserInterface[];
-    last_page: number;
-    total: string;
+    previous: number;
+    results: UserInterface[];
+    next: number;
+    count: string;
 }
 
 interface DataUserInterface {

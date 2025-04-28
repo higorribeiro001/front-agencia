@@ -284,7 +284,7 @@ export default function Juazeiro() {
                                 variant="contained"
                                 type="button"
                                 onClick={() => observationOrder(dataLogistic.id, dataLogistic.num_pedido, observation)}
-                                sx={{bgcolor: "#FB3A04"}}
+                                sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
                             >
                                 Enviar
                             </Button>

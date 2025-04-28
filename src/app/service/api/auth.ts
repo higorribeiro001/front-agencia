@@ -5,11 +5,16 @@ const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const config = {headers: { 'Accept': 'application/json' }};
 const configAuth = () => {
     const token = getCookie('access');
-    return {headers: { 'Accept': 'application/json', 'Authorization': 'Bearer '+token, "ngrok-skip-browser-warning": true,}}
+    return {
+        headers: { 
+            'Accept': 'application/json', 
+            'Authorization': 'Bearer '+token, 
+            // "ngrok-skip-browser-warning": true,
+        }}
 }
 
 export async function login(email: string, password: string) {
-    const response: { data: { access: string, refresh: string }, status: number } = await axios.post(url+'/login', { email, password }, config);
+    const response: { data: { access: string, refresh: string }, status: number } = await axios.post(url+'auth/api/v1/login/', { email, password }, config);
 
     if (response.status === 200) {
         deleteCookie('statusMe');
@@ -23,7 +28,7 @@ export async function login(email: string, password: string) {
 
 export async function me() {
     try {
-        const response: { data: UserInterface, status: number } = await axios.get(url+'/me', configAuth());
+        const response: { data: UserInterface, status: number } = await axios.get(url+'auth/api/v1/profile', configAuth());
     
         if (response.status === 200) {
             setCookie('role', response.data.role);
@@ -41,7 +46,7 @@ export async function me() {
 }
 
 export async function logout() {
-    const response: { status: number } = await axios.get(url+'/logout', configAuth());
+    const response: { status: number } = await axios.get(url+'auth/api/v1/logout', configAuth());
 
     if (response.status === 200) {
         deleteCookie('access');

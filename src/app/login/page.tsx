@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import logo from "../../../public/assets/logo.png"
+import fundo_login from "../../../public/assets/fundo_login.png"
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
@@ -101,7 +102,7 @@ export default function Login() {
         closeAlert();
         const user = await me();
         if (user) {
-          router.replace(user.role === 'admin' ? '/cariri' : `${user.role}`);
+          router.replace(user.role === 'admin' ? '/fazenda-sao-jose' : `${user.role}`);
         }
       }
     } catch (e: unknown) {
@@ -131,9 +132,14 @@ export default function Login() {
         isSuccess={isSuccess}
         message={messageAlert}
       />
-      <div className="w-[100%] h-full bg-background py-8 px-16 flex flex-col justify-between items-center animate-fade-up bg-primary">
+      <div className="w-[100%] h-full bg-background flex flex-col justify-between items-center animate-fade-up bg-primary">
+        <Image 
+          src={fundo_login} 
+          alt="fundo_login"     
+          style={{ position: 'absolute', zIndex: 998, width: '100%', height: '100%' }}
+        />
         <div className="w-full h-full justify-center items-center flex">
-          <div className="lg:w-[600px] w-[350px] p-10 flex flex-col justify-between items-center gap-10 rounded shadow-lg bg-white">
+          <div className="lg:w-[600px] w-[350px] p-10 flex flex-col justify-between items-center gap-10 rounded shadow-lg bg-white" style={{ zIndex: 999 }}>
             <Image 
               className="w-[200px]"
               src={logo} 
@@ -172,7 +178,7 @@ export default function Login() {
                   variant="contained"
                   type="submit"
                   loading={isLoading}
-                  sx={{bgcolor: "#FB3A04"}}
+                  sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
                 >
                   Entrar
                 </Button>
@@ -180,7 +186,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <span className="text-white text-center text-[14px]">© vale metalicos | 2025</span>
+        <span className="text-white text-center text-[14px]">© fazenda sao jose | 2025</span>
       </div>
     </div>
   );

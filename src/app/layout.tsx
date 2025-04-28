@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vale Metálicos: Logística",
-  description: "Sistema de Logística da Vale Metálicos.",
+  title: "Fazenda São José",
+  description: "Sistema voltado ao Agro para gerenciamento de recursos da fazenda São José",
 };
 
 export default function RootLayout({

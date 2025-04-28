@@ -402,7 +402,7 @@ export default function Vehicle() {
                                 variant="contained"
                                 type="button"
                                 onClick={() => observationOrder(dataSeller.id, dataSeller.num_pedido, observation)}
-                                sx={{bgcolor: "#FB3A04"}}
+                                sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
                             >
                                 Enviar
                             </Button>

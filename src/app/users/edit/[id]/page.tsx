@@ -337,7 +337,7 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
                                 className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
                                 variant="contained"
                                 type="submit"
-                                sx={{bgcolor: "#FB3A04"}}
+                                sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
                             >
                                 Enviar
                             </Button>

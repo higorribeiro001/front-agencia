@@ -4,12 +4,17 @@ import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const configAuth = () => {
     const token = getCookie('access');
-    return {headers: { 'Accept': 'application/json', 'Authorization': 'Bearer '+token, "ngrok-skip-browser-warning": true}}
+    return {
+        headers: { 
+            'Accept': 'application/json', 
+            'Authorization': 'Bearer '+token, 
+            // "ngrok-skip-browser-warning": true,
+        }}
 }
 
 export async function users(page: number) {
     try {
-        const response: { data: UsersInterface, status: number } = await axios.get(url+`/users/?page=${page}`, configAuth());
+        const response: { data: UsersInterface, status: number } = await axios.get(url+`auth/api/v1/register?page=${page}`, configAuth());
         return response.data;
     } catch(e: unknown) {
         const error = e as StatusResponse;

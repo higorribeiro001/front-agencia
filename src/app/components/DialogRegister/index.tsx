@@ -34,7 +34,7 @@ export const DialogRegister = ({isOpen, title, funcRegister, funcInput, valueInp
                 </Button>
                 <Button 
                     onClick={funcRegister}
-                    sx={{ color: "#FB3A04" }}
+                    sx={{ color: "#031B17" }}
                     loading={isLoading}
                 >
                     Salvar
