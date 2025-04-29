@@ -19,7 +19,7 @@ import FarmsAdapt from "../service/adapt/FarmsAdapt";
 import FarmAdapt from "../service/adapt/FarmAdapt";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Image from "next/image";
-import farmImage from "../../../public/assets/farm.png"
+import TerrainIcon from '@mui/icons-material/Terrain';
 
 export default function Farm() {
     const [rowsFarm, setRowsFarm] = useState<FarmInterface[]>([]);
@@ -138,101 +138,95 @@ export default function Farm() {
                         Novo
                     </Button>
                 </div>
-                <div className="flex flex-col w-full lg:w-2/3 h-full">
-                    <Accordion className="mb-4 p-2 animate-fade-up">
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel3-content"
-                            id="panel3-header"
-                        >
-                            <div className="flex flex-row items-center gap-2 overflow-hidden">
-                                <Image 
-                                    width={40}
-                                    height={40}
-                                    src={farmImage} 
-                                    alt="fazenda"  
-                                />
-                                <h2 className="text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[220px] lg:w-full">
-                                    Fazenda São Joséeeeeeeeeeeeeeeeeee
-                                </h2>
-                            </div>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <div className="flex flex-col gap-2 w-full">
-                                <div className="flex flex-row gap-1">
-                                    <h3 className="font-semibold">Área (HA):</h3>
-                                    <p>210</p>
-                                </div>
-                                <div className="flex flex-row gap-1">
-                                    <h3 className="font-semibold">Quantidade de animais:</h3>
-                                    <p>5000</p>
-                                </div>
-                            </div>
-                        </AccordionDetails>
-                        <AccordionActions>
-                            <IconButton 
-                                className="gap-2"
+                <div className="flex flex-wrap gap-3 w-full h-full">
+                    <div className="animate-fade-up w-full lg:w-1/3">
+                        <Accordion className="p-2">
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel3-content"
+                                id="panel3-header"
                             >
-                                <Edit 
-                                    fontSize="small"
-                                    color="inherit" 
-                                /> 
-                                <Typography 
-                                    className="font-semibold text-[16px]"
-                                    color="inherit"
+                                <div className="flex flex-row items-center gap-3 overflow-hidden">
+                                    <TerrainIcon sx={{ fontSize: '35px' }} />
+                                    <h2 className="text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[220px] lg:w-full">
+                                        Fazenda São Joséeeeeeeeeeeeeeeeeee
+                                    </h2>
+                                </div>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <div className="flex flex-col gap-2 w-full">
+                                    <div className="flex flex-row gap-1">
+                                        <h3 className="font-semibold">Área (HA):</h3>
+                                        <p>210</p>
+                                    </div>
+                                    <div className="flex flex-row gap-1">
+                                        <h3 className="font-semibold">Quantidade de animais:</h3>
+                                        <p>5000</p>
+                                    </div>
+                                </div>
+                            </AccordionDetails>
+                            <AccordionActions>
+                                <IconButton 
+                                    className="gap-2"
                                 >
-                                    Editar
-                                </Typography>
-                            </IconButton>
-                        </AccordionActions>
-                    </Accordion>
-                    <Accordion className="mb-4 p-2 animate-fade-up">
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel3-content"
-                            id="panel3-header"
-                        >
-                            <div className="flex flex-row items-center gap-2 overflow-hidden">
-                                <Image 
-                                    width={40}
-                                    height={40}
-                                    src={farmImage} 
-                                    alt="fazenda"  
-                                />
-                                <h2 className="text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[220px] lg:w-full">
-                                    Fazenda São Joséeeeeeeeeeeeeeeeeee
-                                </h2>
-                            </div>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <div className="flex flex-col gap-2 w-full">
-                                <div className="flex flex-row gap-1">
-                                    <h3 className="font-semibold">Área (HA):</h3>
-                                    <p>210</p>
-                                </div>
-                                <div className="flex flex-row gap-1">
-                                    <h3 className="font-semibold">Quantidade de animais:</h3>
-                                    <p>5000</p>
-                                </div>
-                            </div>
-                        </AccordionDetails>
-                        <AccordionActions>
-                            <IconButton 
-                                className="gap-2"
+                                    <Edit 
+                                        fontSize="small"
+                                        color="inherit" 
+                                    /> 
+                                    <Typography 
+                                        className="font-semibold text-[16px]"
+                                        color="inherit"
+                                    >
+                                        Editar
+                                    </Typography>
+                                </IconButton>
+                            </AccordionActions>
+                        </Accordion>
+                    </div>
+                    <div className="animate-fade-up w-full lg:w-1/3">
+                        <Accordion className="p-2">
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel3-content"
+                                id="panel3-header"
                             >
-                                <Edit 
-                                    fontSize="small"
-                                    color="inherit" 
-                                /> 
-                                <Typography 
-                                    className="font-semibold text-[16px]"
-                                    color="inherit"
+                                <div className="flex flex-row items-center gap-3 overflow-hidden">
+                                    <TerrainIcon sx={{ fontSize: '35px' }} />
+                                    <h2 className="text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[220px] lg:w-full">
+                                        Fazenda São Joséeeeeeeeeeeeeeeeeee
+                                    </h2>
+                                </div>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <div className="flex flex-col gap-2 w-full">
+                                    <div className="flex flex-row gap-1">
+                                        <h3 className="font-semibold">Área (HA):</h3>
+                                        <p>210</p>
+                                    </div>
+                                    <div className="flex flex-row gap-1">
+                                        <h3 className="font-semibold">Quantidade de animais:</h3>
+                                        <p>5000</p>
+                                    </div>
+                                </div>
+                            </AccordionDetails>
+                            <AccordionActions>
+                                <IconButton 
+                                    className="gap-2"
                                 >
-                                    Editar
-                                </Typography>
-                            </IconButton>
-                        </AccordionActions>
-                    </Accordion>
+                                    <Edit 
+                                        fontSize="small"
+                                        color="inherit" 
+                                    /> 
+                                    <Typography 
+                                        className="font-semibold text-[16px]"
+                                        color="inherit"
+                                    >
+                                        Editar
+                                    </Typography>
+                                </IconButton>
+                            </AccordionActions>
+                        </Accordion>
+                    </div>
                 </div>
             </div>
         </div>
