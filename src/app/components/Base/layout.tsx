@@ -19,6 +19,7 @@ import { Divider } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ptBR } from '@mui/material/locale';
 import Users from '@/app/users/page';
+import Farm from '@/app/farm/page';
 
 const NAVIGATION: Navigation = [
   {
@@ -149,6 +150,9 @@ const screens: {
     screen: () => React.JSX.Element;
   };
 } = {
+  farm: {
+    screen: () => <Farm />
+  },
   users: {
     screen: () => <Users />
   },
@@ -187,7 +191,7 @@ export const Base: React.FC<BaseProps> = (props) => {
     setMounted(true);
   }, []);
 
-  const router = useDemoRouter('/users');
+  const router = useDemoRouter('/farm');
   
   if (!mounted) {
     return null; 

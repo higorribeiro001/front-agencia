@@ -7,8 +7,19 @@
   --background: #FFFFFF;
   --foreground: #171717;
   --secondary: #0d5c4f;
-  --black2: #1E1E1E;
+  --black2: #020202;
   --copy: #1E1E1E;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --primary: #031B17;
+    --background: #FFFFFF;
+    --foreground: #171717;
+    --secondary: #0d5c4f;
+    --black2: #020202;
+    --copy: #1E1E1E;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

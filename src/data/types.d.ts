@@ -568,3 +568,32 @@ interface RowInfo {
     success?: boolean;
     approved?: boolean;
 }
+
+interface FarmInterface {
+    id: string;
+    fazenda: string;
+    area_ha: string;
+    qtd_animais: string;
+    data_criacao: string;
+    data_edicao: string;
+}
+
+interface FarmRegisterInterface {
+    fazenda: string;
+    area_ha: string;
+    qtd_animais: string;
+}
+
+interface FarmEditInterface {
+    id: string;
+    fazenda: string;
+    area_ha: string;
+    qtd_animais: string;
+}
+
+interface FarmsInterface {
+    previous: number;
+    results: FarmInterface[];
+    next: number;
+    count: string;
+}
