@@ -1,6 +1,6 @@
 "use client"
 
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Autocomplete, Button, Divider, Drawer, IconButton, InputAdornment, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Autocomplete, Breadcrumbs, Button, Divider, Drawer, IconButton, InputAdornment, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { Base } from "../components/Base/layout";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Edit, Search, Visibility } from "@mui/icons-material";
@@ -93,50 +93,64 @@ export default function Farm() {
         getFarms();
     }, [currentPage]);
 
-    return (
-        <div className="transition-all h-full">
+    const [indexFrame, setIndexFrame] = useState(0);
+
+    const frames: {
+      frame: () => React.JSX.Element;
+    }[] = [
+        {
+            frame: () => <ViewFarms />
+        }
+    ];
+
+    const ViewFarms = () => {
+        return (
             <div className="animate-fade-left">
-                {/* <div className="flex flex-col gap-3">
-                    <h1 className="text-[30px] font-semibold text-gray">Fazendas</h1>
-                    <Divider />
-                </div> */}
-                <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mb-8">
-                    <Autocomplete
-                        disablePortal
-                        freeSolo
-                        options={[]}
-                        className="w-4/5"
-                        value={according} 
-                        onChange={(event, newValue) => {
-                            if (newValue) {
+                <div className="flex flex-col">
+                    <Breadcrumbs aria-label="breadcrumb">
+                        <h2 className="font-bold text-[20px]">Fazenda</h2>
+                    </Breadcrumbs>
+                    <div className="mt-4 mb-7">
+                        <Divider />
+                    </div>
+                    <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mb-8">
+                        <Autocomplete
+                            disablePortal
+                            freeSolo
+                            options={[]}
+                            className="w-4/5"
+                            value={according} 
+                            onChange={(event, newValue) => {
+                                if (newValue) {
+                                }
+                            }}
+                            renderInput={(params) => 
+                                <TextField 
+                                    {...params} 
+                                    placeholder="pesquise..."
+                                    value={according}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <IconButton>
+                                                    <Search />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
                             }
-                        }}
-                        renderInput={(params) => 
-                            <TextField 
-                                {...params} 
-                                placeholder="pesquise..."
-                                value={according}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <IconButton>
-                                                <Search />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        }
-                    />
-                    <Button 
-                        className="bg-primary text-white font-semibold w-1/5 h-[56px]"
-                        variant="contained"
-                        type="button"
-                        // onClick={funcOpenDialog}
-                        style={{background: "#031B17", color: "#FFFFFF"}}
-                    >
-                        Novo
-                    </Button>
+                        />
+                        <Button 
+                            className="bg-primary text-white font-semibold w-1/5 h-[56px]"
+                            variant="contained"
+                            type="button"
+                            // onClick={funcOpenDialog}
+                            style={{background: "#031B17", color: "#FFFFFF"}}
+                        >
+                            Novo
+                        </Button>
+                    </div>
                 </div>
                 <div className="flex flex-wrap gap-3 w-full h-full">
                     <div className="animate-fade-up w-full lg:w-1/3">
@@ -229,6 +243,12 @@ export default function Farm() {
                     </div>
                 </div>
             </div>
+        );
+    }
+
+    return (
+        <div className="transition-all h-full">
+            { frames[indexFrame].frame() }
         </div>
     );
 }

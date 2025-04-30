@@ -139,7 +139,7 @@ export default function Login() {
           style={{ position: 'absolute', zIndex: 998, width: '100%', height: '100%' }}
         />
         <div className="w-full h-full justify-center items-center flex">
-          <div className="lg:w-[600px] w-[350px] p-10 flex flex-col justify-between items-center gap-10 rounded shadow-lg bg-white" style={{ zIndex: 999 }}>
+          <div className="lg:w-[600px] w-[350px] p-10 flex flex-col justify-between items-center gap-10 rounded shadow-lg bg-background" style={{ zIndex: 999 }}>
             <Image 
               className="w-[200px]"
               src={logo} 
