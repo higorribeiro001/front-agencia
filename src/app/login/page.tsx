@@ -102,7 +102,7 @@ export default function Login() {
         closeAlert();
         const user = await me();
         if (user) {
-          router.replace(user.role === 'admin' ? '/fazenda-sao-jose' : `${user.role}`);
+          router.replace(user.role === 'admin' ? '/farm' : `${user.role}`);
         }
       }
     } catch (e: unknown) {
@@ -132,7 +132,7 @@ export default function Login() {
         isSuccess={isSuccess}
         message={messageAlert}
       />
-      <div className="w-[100%] h-full bg-background flex flex-col justify-between items-center animate-fade-up bg-primary">
+      <div className="w-[100%] h-full flex flex-col justify-between items-center animate-fade-up bg-primary">
         <Image 
           src={fundo_login} 
           alt="fundo_login"     
@@ -155,13 +155,39 @@ export default function Login() {
                   <TextField
                     key={index}
                     label={value.label} 
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: model[index].error ? 'black2' : '#d1d5db', 
+                        },
+                        '&:hover fieldset': {
+                          borderColor: model[index].error ? 'black2' : '#9ca3af', 
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: model[index].error ? 'black2' : '#3b82f6', 
+                        },
+                      },
+                      '& .MuiOutlinedInput-input': {
+                        color: model[index].error ? '#b91c1c' : 'var(--black2)',
+                        '&::placeholder': {
+                          color: model[index].error ? '#fca5a5' : 'var(--black2)',
+                          opacity: 1, // necessário para que apareça em todos os navegadores
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: model[index].error ? '#ef4444' : 'var(--black2)',
+                        '&.Mui-focused': {
+                          color: model[index].error ? '#ef4444' : 'var(--black2)',
+                        },
+                      },
+                    }}
                     variant="outlined"
                     fullWidth
                     type={value.type === 'password' ? showPassword ? "text" : "password" : value.type}
                     InputProps={value.type === 'password' ? {
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton onClick={() => setShowPassword(!showPassword)}>
+                          <IconButton className="text-black2" onClick={() => setShowPassword(!showPassword)}>
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>

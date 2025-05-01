@@ -20,6 +20,7 @@ import FarmAdapt from "../service/adapt/FarmAdapt";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Image from "next/image";
 import TerrainIcon from '@mui/icons-material/Terrain';
+import RegisterFarm from "./register/page";
 
 export default function Farm() {
     const [rowsFarm, setRowsFarm] = useState<FarmInterface[]>([]);
@@ -93,27 +94,16 @@ export default function Farm() {
         getFarms();
     }, [currentPage]);
 
-    const [indexFrame, setIndexFrame] = useState(0);
-
-    const frames: {
-      frame: () => React.JSX.Element;
-    }[] = [
-        {
-            frame: () => <ViewFarms />
-        }
-    ];
-
-    const ViewFarms = () => {
-        return (
+    return (
+        <Base
+            openAlert={openAlert}
+            isSuccess={isSuccess}
+            messageAlert={messageAlert}
+            title="petrolina"
+        >
             <div className="animate-fade-left">
                 <div className="flex flex-col">
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <h2 className="font-bold text-[20px]">Fazenda</h2>
-                    </Breadcrumbs>
-                    <div className="mt-4 mb-7">
-                        <Divider />
-                    </div>
-                    <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mb-8">
+                    <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mt-7 mb-8">
                         <Autocomplete
                             disablePortal
                             freeSolo
@@ -129,11 +119,37 @@ export default function Farm() {
                                     {...params} 
                                     placeholder="pesquise..."
                                     value={according}
+                                    sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                '& fieldset': {
+                                                borderColor: 'var(--black2)', 
+                                                },
+                                                '&:hover fieldset': {
+                                                borderColor: 'var(--black2)', 
+                                                },
+                                                '&.Mui-focused fieldset': {
+                                                borderColor: 'var(--black2)', 
+                                                },
+                                            },
+                                            '& .MuiOutlinedInput-input': {
+                                                color: 'var(--black2)',
+                                                '&::placeholder': {
+                                                color: 'var(--black2)',
+                                                opacity: 1, 
+                                                },
+                                            },
+                                            '& .MuiInputLabel-root': {
+                                                color: 'var(--black2)',
+                                                '&.Mui-focused': {
+                                                color: 'var(--black2)',
+                                                },
+                                            },
+                                        }}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
                                                 <IconButton>
-                                                    <Search />
+                                                    <Search className="text-black2" />
                                                 </IconButton>
                                             </InputAdornment>
                                         ),
@@ -145,7 +161,7 @@ export default function Farm() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
-                            // onClick={funcOpenDialog}
+                            // onClick={() => setIndexFrame(1)}
                             style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Novo
@@ -154,7 +170,7 @@ export default function Farm() {
                 </div>
                 <div className="flex flex-wrap gap-3 w-full h-full">
                     <div className="animate-fade-up w-full lg:w-1/3">
-                        <Accordion className="p-2">
+                        <Accordion className="p-2 bg-[var(--card)] text-[var(--foreground)]">
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel3-content"
@@ -181,7 +197,7 @@ export default function Farm() {
                             </AccordionDetails>
                             <AccordionActions>
                                 <IconButton 
-                                    className="gap-2"
+                                    className="gap-2 text-foreground"
                                 >
                                     <Edit 
                                         fontSize="small"
@@ -198,7 +214,7 @@ export default function Farm() {
                         </Accordion>
                     </div>
                     <div className="animate-fade-up w-full lg:w-1/3">
-                        <Accordion className="p-2">
+                        <Accordion className="p-2 bg-[var(--card)] text-[var(--foreground)]">
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel3-content"
@@ -225,7 +241,7 @@ export default function Farm() {
                             </AccordionDetails>
                             <AccordionActions>
                                 <IconButton 
-                                    className="gap-2"
+                                    className="gap-2 text-foreground"
                                 >
                                     <Edit 
                                         fontSize="small"
@@ -243,12 +259,6 @@ export default function Farm() {
                     </div>
                 </div>
             </div>
-        );
-    }
-
-    return (
-        <div className="transition-all h-full">
-            { frames[indexFrame].frame() }
-        </div>
+        </Base>
     );
 }
