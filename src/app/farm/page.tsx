@@ -1,97 +1,65 @@
 "use client"
 
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Autocomplete, Breadcrumbs, Button, Divider, Drawer, IconButton, InputAdornment, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { Autocomplete, Button,IconButton, InputAdornment, TextField } from "@mui/material";
 import { Base } from "../components/Base/layout";
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Edit, Search, Visibility } from "@mui/icons-material";
-import { GridColDef } from "@mui/x-data-grid";
-import { RowDrawer } from "../components/RowDrawer";
-import { DataTable } from "../components/DataTable";
-import { DialogApp } from "../components/DialogApp";
-import ColColor from "../components/ColColor";
-import LogisticAdapt from "../service/adapt/LogisticAdapt";
-import { deleteLogistic, logistic, logisticFindByName, logistics } from "../service/api/logistic";
-import LogisticsAdapt from "../service/adapt/LogisticsAdapt";
-import { unity } from "../service/api/unity";
-import UnityAdapt from "../service/adapt/UnityAdapt";
-import { farm, farmFindByName, farms } from "../service/api/farms";
+import React, { useEffect, useState } from "react";
+import { Search } from "@mui/icons-material";
+import { farm, farms, farmsFormat } from "../service/api/farms";
 import FarmsAdapt from "../service/adapt/FarmsAdapt";
 import FarmAdapt from "../service/adapt/FarmAdapt";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Image from "next/image";
-import TerrainIcon from '@mui/icons-material/Terrain';
-import RegisterFarm from "./register/page";
+import ReplayIcon from '@mui/icons-material/Replay';
+import { AccordionFarm } from "../components/AccordionFarm";
+import { Loading } from "../components/Loading";
 
 export default function Farm() {
+    const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsFarm, setRowsFarm] = useState<FarmInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [pages, setPages] = useState<number>();
     const [currentPage, setCurrentPage] = useState(1);
-    const [openDrawer, setOpenDrawer] = useState(false);
-    const [dataFarm, setDataFarm] = useState<FarmInterface>();
-    const [openDialog, setOpenDialog] = useState(false);
-    const [monthSelected, setMonthSelected] = useState('');
-    const [according, setAccording] = useState<{"label": string; "value": string}>({"label": "", "value": ""});
-    const [unityId, setUnityId] = useState('');
+    const [farmSelected, setFarmSelected] = useState<Model>(emptyOption);
+    const [countFarms, setCountFarms] = useState(0);
+    const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
 
     const getFarm = async (id: string) => {
         const dataFarm = await farm(id);
         const farmAdapt = new FarmAdapt(dataFarm!);
-
-        setOpenDrawer(true);
-        setDataFarm(farmAdapt.externalFarmAdapt)
+        setRowsFarm([farmAdapt.externalFarmAdapt])
     }
-
-    const getFarms = async () => {
-        const dataFarms = await farms(currentPage);
-        const farmssAdapt = new FarmsAdapt(dataFarms!);
-
-        const dataFarm = farmssAdapt.externalFarmsAdapt;
-        setRowsFarm(dataFarm.results);
-        const numPages = dataFarm?.next;
-        setPages(numPages);
-        setIsLoading(false);
-    }
-
-    const convertDate = (isoDate: string) => {
-        const [year, month, day] = isoDate.split('-');
-        return `${day}/${month}/${year}`;
-    }
-
-    let timeout: NodeJS.Timeout;
-
-    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-        clearTimeout(timeout);
-        setIsLoading(true);
-        timeout = setTimeout(async () => {
-            if (e.target.value !== "") {
-                const dataFarms = await farmFindByName(unityId, e.target.value);
-
-                const farmData = dataFarms;
-                setRowsFarm(farmData.results);
-                setPages(1);
-                setIsLoading(false);
-            } else {
-                getFarms();
-            }
-        }, 3000);
-    }
-
-    const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
-        if (openDrawer && inputRef.current) {
-            inputRef.current.focus();
+        if (farmSelected.value != "") {
+            getFarm(farmSelected.value);
+        } else {
+            setCurrentPage(1);
+            getFarms();
         }
-    }, [openDrawer]);
+    }, [farmSelected]);
+
+    const getFarms = async () => {
+        const dataFarms = await farms(currentPage ?? 1);
+        if (dataFarms?.status === 200) {
+            const farmssAdapt = new FarmsAdapt(dataFarms.data);
+            const dataFarm = farmssAdapt.externalFarmsAdapt;
+            setRowsFarm(prev => [...prev, ...dataFarm.results]);
+            setCountFarms(parseInt(dataFarm.count));
+        }
+        setIsLoading(false);    
+    }
+
+    const getFarmsFormat = async () => {
+        const dataFarms: Model[] | undefined = await farmsFormat();
+
+        setOptionsFarms(dataFarms!);
+    }
 
     useEffect(() => {
         setIsLoading(true);
 
         getFarms();
+        getFarmsFormat();
     }, [currentPage]);
 
     return (
@@ -102,60 +70,64 @@ export default function Farm() {
             title="fazenda"
         >
             <div className="animate-fade-left">
+                <Loading 
+                    isOpen={isLoading}
+                />
                 <div className="flex flex-col">
                     <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mt-7 mb-8">
                         <Autocomplete
                             disablePortal
-                            freeSolo
-                            options={[]}
+                            options={optionsFarms || []}
                             className="w-4/5"
-                            value={according} 
+                            value={farmSelected}
                             onChange={(event, newValue) => {
                                 if (newValue) {
+                                    setFarmSelected(newValue);
                                 }
                             }}
-                            renderInput={(params) => 
-                                <TextField 
-                                    {...params} 
-                                    placeholder="pesquise..."
-                                    value={according}
-                                    sx={{
-                                            '& .MuiOutlinedInput-root': {
-                                                '& fieldset': {
-                                                borderColor: 'var(--black2)', 
-                                                },
-                                                '&:hover fieldset': {
-                                                borderColor: 'var(--black2)', 
-                                                },
-                                                '&.Mui-focused fieldset': {
-                                                borderColor: 'var(--black2)', 
-                                                },
-                                            },
-                                            '& .MuiOutlinedInput-input': {
-                                                color: 'var(--black2)',
-                                                '&::placeholder': {
-                                                color: 'var(--black2)',
-                                                opacity: 1, 
-                                                },
-                                            },
-                                            '& .MuiInputLabel-root': {
-                                                color: 'var(--black2)',
-                                                '&.Mui-focused': {
-                                                color: 'var(--black2)',
-                                                },
-                                            },
-                                        }}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <IconButton>
-                                                    <Search className="text-black2" />
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                            onInputChange={(event, inputValue, reason) => {
+                                if (reason === 'clear' || inputValue === '') {
+                                    setFarmSelected(emptyOption);
+                                }
+                            }}
+                            isOptionEqualToValue={(option, value) => option?.value === value?.value}
+                            getOptionLabel={(option) => option?.label || ''}
+                            renderInput={(params) => (
+                                <TextField
+                                {...params}
+                                placeholder="pesquise..."
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                    '& fieldset': { borderColor: 'var(--black2)' },
+                                    '&:hover fieldset': { borderColor: 'var(--black2)' },
+                                    '&.Mui-focused fieldset': { borderColor: 'var(--black2)' },
+                                    },
+                                    '& .MuiOutlinedInput-input': {
+                                    color: 'var(--black2)',
+                                    '&::placeholder': {
+                                        color: 'var(--black2)',
+                                        opacity: 1,
+                                    },
+                                    },
+                                    '& .MuiInputLabel-root': {
+                                    color: 'var(--black2)',
+                                    '&.Mui-focused': {
+                                        color: 'var(--black2)',
+                                    },
+                                    },
+                                }}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    startAdornment: (
+                                    <InputAdornment position="start">
+                                        <IconButton>
+                                            <Search className="text-black2" />
+                                        </IconButton>
+                                    </InputAdornment>
+                                    ),
+                                }}
                                 />
-                            }
+                            )}
                         />
                         <Button 
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
@@ -169,95 +141,18 @@ export default function Farm() {
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-3 w-full h-full">
-                    <div className="animate-fade-up w-full lg:w-1/3">
-                        <Accordion className="p-2 bg-[var(--card)] text-[var(--foreground)]">
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel3-content"
-                                id="panel3-header"
-                            >
-                                <div className="flex flex-row items-center gap-3 overflow-hidden">
-                                    <TerrainIcon className="text-[24px] lg:text-[32px]"/>
-                                    <h2 className="text-[16px] lg:text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[190px] lg:w-full">
-                                        Fazenda São Joséeeeeeeeeeeeeeeeeee
-                                    </h2>
-                                </div>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <div className="flex flex-col gap-2 w-full">
-                                    <div className="flex flex-row gap-1">
-                                        <h3 className="font-semibold">Área (HA):</h3>
-                                        <p>210</p>
-                                    </div>
-                                    <div className="flex flex-row gap-1">
-                                        <h3 className="font-semibold">Quantidade de animais:</h3>
-                                        <p>5000</p>
-                                    </div>
-                                </div>
-                            </AccordionDetails>
-                            <AccordionActions>
-                                <IconButton 
-                                    className="gap-2 text-foreground"
-                                >
-                                    <Edit 
-                                        fontSize="small"
-                                        color="inherit" 
-                                    /> 
-                                    <Typography 
-                                        className="font-semibold text-[16px]"
-                                        color="inherit"
-                                    >
-                                        Editar
-                                    </Typography>
-                                </IconButton>
-                            </AccordionActions>
-                        </Accordion>
-                    </div>
-                    <div className="animate-fade-up w-full lg:w-1/3">
-                        <Accordion className="p-2 bg-[var(--card)] text-[var(--foreground)]">
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel3-content"
-                                id="panel3-header"
-                            >
-                                <div className="flex flex-row items-center gap-3 overflow-hidden">
-                                    <TerrainIcon className="text-[24px] lg:text-[32px]"/>
-                                    <h2 className="text-[16px] lg:text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[190px] lg:w-full">
-                                        Fazenda São Joséeeeeeeeeeeeeeeeeee
-                                    </h2>
-                                </div>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <div className="flex flex-col gap-2 w-full">
-                                    <div className="flex flex-row gap-1">
-                                        <h3 className="font-semibold">Área (HA):</h3>
-                                        <p>210</p>
-                                    </div>
-                                    <div className="flex flex-row gap-1">
-                                        <h3 className="font-semibold">Quantidade de animais:</h3>
-                                        <p>5000</p>
-                                    </div>
-                                </div>
-                            </AccordionDetails>
-                            <AccordionActions>
-                                <IconButton 
-                                    className="gap-2 text-foreground"
-                                >
-                                    <Edit 
-                                        fontSize="small"
-                                        color="inherit" 
-                                    /> 
-                                    <Typography 
-                                        className="font-semibold text-[16px]"
-                                        color="inherit"
-                                    >
-                                        Editar
-                                    </Typography>
-                                </IconButton>
-                            </AccordionActions>
-                        </Accordion>
-                    </div>
+                    {rowsFarm.map((value, index) => (
+                        <AccordionFarm key={index} id={value.id} fazenda={value.fazenda} area_ha={value.area_ha} qtd_animais={value.qtd_animais}  />
+                    ))}
                 </div>
+                {countFarms > rowsFarm.length && (
+                    <div className="flex flex-col w-full justify-content items-center mt-5">
+                        <IconButton onClick={() => setCurrentPage(currentPage+1)}>
+                            <ReplayIcon className="text-black2" />
+                        </IconButton>
+                        <span className="text-black2">Carregar mais fazendas</span>
+                    </div>
+                )}
             </div>
         </Base>
     );

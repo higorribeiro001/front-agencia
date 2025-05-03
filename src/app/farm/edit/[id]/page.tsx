@@ -1,25 +1,53 @@
 "use client"
 
 import { Button, IconButton, TextField } from "@mui/material";
-import { Base } from "../../components/Base/layout";
-import React, { ChangeEvent, useState } from "react";
+import { Base } from "../../../components/Base/layout";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postFarm } from "@/app/service/api/farms";
+import { farm, putFarm } from "@/app/service/api/farms";
+import FarmAdapt from "@/app/service/adapt/FarmAdapt";
 
-export default function RegisterFarm() {
-
+export default function EditFarm({ params }: { params: Promise<{ id: string }> }) {
+    const resolvedParams = React.use(params);
+    
     const formFields = new FormBuilder()
         .addTextField('fazenda', 'Fazenda *', 'text')
         .addTextField('area_ha', 'Área (HA) *', 'text')
         .addTextField('qtd_animais', 'Qtd. de Animais', 'number')
         .build();
-
+  
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
+
+    useEffect(() => {
+      setIsLoading(true);
+      
+      const getLogistic = async () => {
+        const dataFarm: FarmInterface | undefined = await farm(resolvedParams.id);
+        const farmAdapt = new FarmAdapt(dataFarm!);
+
+        const farmData = farmAdapt.externalFarmAdapt;
+
+        setModel((prevModel) => {
+          const updateModel = [...prevModel];
+
+          updateModel[0].value = farmData?.fazenda;
+          updateModel[1].value = farmData?.area_ha;
+          updateModel[2].value = farmData?.qtd_animais;
+
+          return updateModel;
+        });
+
+        setIsLoading(false);
+      }
+
+      getLogistic();
+    }, [params]);
+
     const initModel = [
         {
             label: '',
@@ -48,7 +76,6 @@ export default function RegisterFarm() {
     }
 
     const changeValues = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        e.preventDefault()
         setModel((prevModel) => {
           const updateModel = [...prevModel];
           updateModel[index].value = e.target.value;
@@ -62,13 +89,13 @@ export default function RegisterFarm() {
     }
 
     const validator = (message: string, index: number) => {
-        if(index < 14) {
-          setModel((prevModel) => {
-            const updateModel = [...prevModel];
-            updateModel[index].error = message;
-            return updateModel;
-          });
-        }
+      if(index < 13) {
+        setModel((prevModel) => {
+          const updateModel = [...prevModel];
+          updateModel[index].error = message;
+          return updateModel;
+        });
+      }
     }
 
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -88,8 +115,7 @@ export default function RegisterFarm() {
     
         setIsLoading(true);
     
-        registerLogistic();
-    
+        EditFarm();
       }
     
       const closeAlert = () => {
@@ -98,25 +124,25 @@ export default function RegisterFarm() {
         }, 6000);
       }
     
-      const registerLogistic = async () => {
+      const EditFarm = async () => {
         try {
-          const response = await postFarm(
+          const response = await putFarm(
             { 
+              id: resolvedParams.id,
               fazenda: model[0].value, 
               area_ha: model[1].value, 
               qtd_animais: model[2].value, 
-            });
+          });
     
-          if (response.status === 201) {
+          if (response.status === 200) {
             setOpenAlert(true);
-            setMessageAlert('Registrado com sucesso!');
+            setMessageAlert('Editado com sucesso!');
             setIsSuccess(true);
-            cleanFields();
             closeAlert();
           }
         } catch (e: unknown) {
           const error = e as StatusResponse;
-          if (error.response.status === 422) {
+          if (error.response && error.response.status === 422) {
             setOpenAlert(true);
             setMessageAlert('Preencha todos os campos obrigatórios.');
             setIsSuccess(false);
@@ -126,6 +152,7 @@ export default function RegisterFarm() {
             setOpenAlert(true);
             setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
             setIsSuccess(false);
+            console.log(e)
     
             closeAlert();
           }
@@ -136,39 +163,38 @@ export default function RegisterFarm() {
 
     return (
         <Base 
-          title="Cadastro de fazenda"
+          title="Edição de Juazeiro"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
         >
-          <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
-              <Loading 
-                isOpen={isLoading}
-              />
-              <div className="flex flex-row w-full justify-between z-10 relative">
-                  <IconButton href="/farm" className="text-[var(--black2)]">
-                    <ArrowBack />
-                  </IconButton>
-                  <Button 
-                      className="font-semibold w-[200px] h-[56px] z-10 relative"
-                      variant="contained"
-                      type="button"
-                      color="error"
-                      onClick={cleanFields}
+              <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
+                  <Loading 
+                    isOpen={isLoading}
+                  />
+                  <div className="flex flex-row w-full justify-between z-10 relative">
+                      <IconButton href="/farm">
+                        <ArrowBack className="text-black2" />
+                      </IconButton>
+                      <Button 
+                          className="font-semibold w-[200px] h-[56px] z-10 relative"
+                          variant="contained"
+                          type="button"
+                          color="error"
+                          onClick={cleanFields}
+                      >
+                          Limpar campos
+                      </Button>
+                  </div>
+                  <span className="font-semibold text-black2">
+                      * Campos obrigatórios.
+                  </span>
+                  <form 
+                      className="flex flex-col gap-10 w-full" 
+                      onSubmit={submitForm}
                   >
-                      Limpar campos
-                  </Button>
-              </div>
-              <span className="font-semibold text-[var(--black2)]">
-                  * Campos obrigatórios.
-              </span>
-              <form 
-                  className="flex flex-col gap-10 w-full" 
-                  onSubmit={submitForm}
-              >
-                  <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                    {formFields
-                        .map((value, index) => ( 
+                    <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
+                      {formFields.map((value, index: number) => (
                           <TextField
                             key={index}
                             className="w-full lg:w-[49%]"
@@ -207,28 +233,28 @@ export default function RegisterFarm() {
                             }}
                           />
                       ))}
-                  </div>
-                  <div className="flex flex-row justify-between gap-2">
-                    <Button 
-                        className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
-                        variant="contained"
-                        type="button"
-                        href="/petrolina"
-                        style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button 
-                        className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                        variant="contained"
-                        type="submit"
-                        style={{background: "#031B17", color: "#FFFFFF"}}
-                    >
-                        Enviar
-                    </Button>
-                  </div>
-              </form>
-          </div>
+                    </div>
+                    <div className="flex flex-row justify-between">
+                          <Button 
+                            className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
+                            variant="contained"
+                            type="button"
+                            href="/farm"
+                            style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
+                          >
+                              Cancelar
+                          </Button>
+                          <Button 
+                              className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                              variant="contained"
+                              type="submit"
+                              sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
+                          >
+                              Enviar
+                          </Button>
+                    </div>
+                </form>
+            </div>
         </Base>
     );
 }

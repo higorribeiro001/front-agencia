@@ -14,6 +14,20 @@ const configAuth = () => {
 export async function farms(page: number) {
     try {
         const response: { data: FarmsInterface, status: number } = await axios.get(url+`fazenda/api/v1/?page=${page}`, configAuth());
+        return response;
+    } catch(e: unknown) {
+        const error = e as StatusResponse;
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
+    }
+}
+
+export async function farmsFormat() {
+    try {
+        const response: { data: Model[], status: number } = await axios.get(url+`fazenda/api/v1/itens/format/`, configAuth());
         return response.data;
     } catch(e: unknown) {
         const error = e as StatusResponse;

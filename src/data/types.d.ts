@@ -570,12 +570,12 @@ interface RowInfo {
 }
 
 interface FarmInterface {
-    id: string;
+    id?: string;
     fazenda: string;
     area_ha: string;
     qtd_animais: string;
-    data_criacao: string;
-    data_edicao: string;
+    data_criacao?: string;
+    data_edicao?: string;
 }
 
 interface FarmRegisterInterface {

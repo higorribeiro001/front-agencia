@@ -15,6 +15,7 @@ export default {
         foreground: "var(--foreground)",
         secondary: "var(--secondary)",
         black2: "var(--black2)",
+        card: "var(--card)",
       },
       keyframes: {
         'fade-left': {

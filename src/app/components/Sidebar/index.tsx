@@ -5,6 +5,7 @@ import logoP from "../../../../public/assets/logo.png"
 import arrow from "../../../../public/assets/close-menu.png";
 import Link from "next/link";
 import home from '../../../../public/assets/home.png';
+import fazenda from '../../../../public/assets/fazenda.png';
 import temaClaro from '../../../../public/assets/tema-claro.png';
 import temaEscuro from '../../../../public/assets/tema-escuro.png';
 import usuarios from "../../../../public/assets/usuarios.png";
@@ -47,7 +48,7 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={fazenda} 
                 alt="logo"     
             />,
             title: 'Fazenda',
@@ -59,8 +60,8 @@ export default function Sidebar() {
                 src={home} 
                 alt="logo"     
             />,
-            title: 'Juazeiro',
-            to: '/juazeiro'
+            title: 'Cocho',
+            to: '/cocho'
         },
         {
             icon: <Image
@@ -158,7 +159,7 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={fazenda} 
                 alt="logo"     
             />,
             title: 'Fazenda',
@@ -242,7 +243,7 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={fazenda} 
                 alt="logo"     
             />,
             title: 'Fazenda',
@@ -326,7 +327,7 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={fazenda} 
                 alt="logo"     
             />,
             title: 'Fazenda',

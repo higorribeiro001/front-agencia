@@ -10,24 +10,24 @@ export const DialogApp = ({isOpen, title, content, func, handleClose}: DialogInt
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="alert-dialog-title">
+            <DialogTitle id="alert-dialog-title" className="bg-card text-black2">
                 {title}
             </DialogTitle>
-            <DialogContent>
-                <DialogContentText id="alert-dialog-description">
+            <DialogContent className="bg-card text-black2">
+                <DialogContentText id="alert-dialog-description" className="text-black2">
                     {content}
                 </DialogContentText>
             </DialogContent>
-            <DialogActions>
+            <DialogActions className="bg-card text-black2">
                 <Button 
                     onClick={func}
-                    sx={{ color: "#031B17" }}
+                    sx={{ color: "var(--black2)" }}
                 >
                     Sim
                 </Button>
                 <Button 
                     onClick={handleClose} 
-                    sx={{ color: "#031B17" }}
+                    sx={{ color: "var(--black2)" }}
                     autoFocus
                 >
                     Não
