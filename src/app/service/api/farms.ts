@@ -50,7 +50,7 @@ export async function deleteFarm(id: string) {
 }
 
 export async function postFarm(dataFarm: FarmRegisterInterface) {
-    const response: { data: FarmInterface, status: number } = await axios.post(url+`fazenda/api/v1`, dataFarm, configAuth());
+    const response: { data: FarmInterface, status: number } = await axios.post(url+`fazenda/api/v1/`, dataFarm, configAuth());
     return response;
 }
 

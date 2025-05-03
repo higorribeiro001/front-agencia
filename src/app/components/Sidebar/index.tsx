@@ -50,8 +50,8 @@ export default function Sidebar() {
                 src={home} 
                 alt="logo"     
             />,
-            title: 'Cariri',
-            to: '/cariri'
+            title: 'Fazenda',
+            to: '/farm'
         },
         {
             icon: <Image
@@ -68,8 +68,8 @@ export default function Sidebar() {
                 src={home} 
                 alt="logo"     
             />,
-            title: 'Petrolina',
-            to: '/petrolina'
+            title: 'Teste',
+            to: '/test'
         },
         {
             icon: <Image
@@ -161,8 +161,8 @@ export default function Sidebar() {
                 src={home} 
                 alt="logo"     
             />,
-            title: 'Cariri',
-            to: '/cariri'
+            title: 'Fazenda',
+            to: '/farm'
         },
         {
             icon: <Image
@@ -245,8 +245,8 @@ export default function Sidebar() {
                 src={home} 
                 alt="logo"     
             />,
-            title: 'Juazeiro',
-            to: '/juazeiro'
+            title: 'Fazenda',
+            to: '/farm'
         },
         {
             icon: <Image
@@ -329,8 +329,8 @@ export default function Sidebar() {
                 src={home} 
                 alt="logo"     
             />,
-            title: 'Petrolina',
-            to: '/petrolina'
+            title: 'Fazenda',
+            to: '/farm'
         },
         {
             icon: <Image

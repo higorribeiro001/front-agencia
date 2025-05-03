@@ -27,7 +27,7 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
             <div className="px-5 lg:px-10 py-5 overflow-auto flex flex-col justify-between w-full z-[1] gap-3">
                 <div className="flex flex-col animate-fade-left transition-all mb-8">
                     <div className="flex flex-row justify-between">
-                        <h1 className="text-primary text-[30px] font-semibold">VALE METÁLICOS</h1>
+                        <h1 className="text-primary text-[30px] font-semibold">FAZENDA SÃO JOSÉ</h1>
                         {uploadFile && (
                             <Button
                                 component="label"
@@ -55,7 +55,7 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
                     {children}
                 </div>
                 <footer className="flex justify-center mt-12 w-full">
-                    <span className="text-gray-600 text-center text-[14px]">© vale metalicos | 2025</span>
+                    <span className="text-gray-600 text-center text-[14px]">© fazenda sao jose | 2025</span>
                 </footer>
             </div>
         </div>

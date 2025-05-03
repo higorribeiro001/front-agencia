@@ -99,7 +99,7 @@ export default function Farm() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="petrolina"
+            title="fazenda"
         >
             <div className="animate-fade-left">
                 <div className="flex flex-col">
@@ -161,7 +161,7 @@ export default function Farm() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
-                            // onClick={() => setIndexFrame(1)}
+                            href="/farm/register"
                             style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Novo
@@ -177,8 +177,8 @@ export default function Farm() {
                                 id="panel3-header"
                             >
                                 <div className="flex flex-row items-center gap-3 overflow-hidden">
-                                    <TerrainIcon sx={{ fontSize: '35px' }} />
-                                    <h2 className="text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[220px] lg:w-full">
+                                    <TerrainIcon className="text-[24px] lg:text-[32px]"/>
+                                    <h2 className="text-[16px] lg:text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[190px] lg:w-full">
                                         Fazenda São Joséeeeeeeeeeeeeeeeeee
                                     </h2>
                                 </div>
@@ -221,8 +221,8 @@ export default function Farm() {
                                 id="panel3-header"
                             >
                                 <div className="flex flex-row items-center gap-3 overflow-hidden">
-                                    <TerrainIcon sx={{ fontSize: '35px' }} />
-                                    <h2 className="text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[220px] lg:w-full">
+                                    <TerrainIcon className="text-[24px] lg:text-[32px]"/>
+                                    <h2 className="text-[16px] lg:text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[190px] lg:w-full">
                                         Fazenda São Joséeeeeeeeeeeeeeeeeee
                                     </h2>
                                 </div>
