@@ -163,7 +163,7 @@ export default function EditFarm({ params }: { params: Promise<{ id: string }> }
 
     return (
         <Base 
-          title="Edição de Juazeiro"
+          title="Edição de Fazenda"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}

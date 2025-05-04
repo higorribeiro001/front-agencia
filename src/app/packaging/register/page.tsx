@@ -6,14 +6,12 @@ import React, { ChangeEvent, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postFarm } from "@/app/service/api/farms";
+import { postPackaging } from "@/app/service/api/packagings";
 
-export default function RegisterFarm() {
+export default function RegisterPackaging() {
 
     const formFields = new FormBuilder()
-        .addTextField('fazenda', 'Fazenda *', 'text')
-        .addTextField('area_ha', 'Área (HA) *', 'text')
-        .addTextField('qtd_animais', 'Qtd. de Animais', 'number')
+        .addTextField('un', 'UN *', 'text')
         .build();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -23,19 +21,7 @@ export default function RegisterFarm() {
     const initModel = [
         {
             label: '',
-            name: 'fazenda',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'area_ha',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'qtd_animais',
+            name: 'un',
             value: '',
             error: '',
         }
@@ -88,7 +74,7 @@ export default function RegisterFarm() {
     
         setIsLoading(true);
     
-        registerLogistic();
+        registerPackaging();
     
       }
     
@@ -98,13 +84,11 @@ export default function RegisterFarm() {
         }, 6000);
       }
     
-      const registerLogistic = async () => {
+      const registerPackaging = async () => {
         try {
-          const response = await postFarm(
+          const response = await postPackaging(
             { 
-              fazenda: model[0].value, 
-              area_ha: model[1].value, 
-              qtd_animais: model[2].value, 
+              un: model[0].value
             });
     
           if (response.status === 201) {
@@ -136,7 +120,7 @@ export default function RegisterFarm() {
 
     return (
         <Base 
-          title="Cadastro de fazenda"
+          title="Cadastro de Embalagem"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
@@ -146,7 +130,7 @@ export default function RegisterFarm() {
                 isOpen={isLoading}
               />
               <div className="flex flex-row w-full justify-between z-10 relative">
-                  <IconButton href="/farm" className="text-[var(--black2)]">
+                  <IconButton href="/packaging" className="text-[var(--black2)]">
                     <ArrowBack />
                   </IconButton>
                   <Button 
@@ -213,7 +197,7 @@ export default function RegisterFarm() {
                         className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                         variant="contained"
                         type="button"
-                        href="/farm"
+                        href="/packaging"
                         style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                     >
                         Cancelar

@@ -623,3 +623,72 @@ interface CochosInterface {
     next: number;
     count: string;
 }
+
+interface ApplicationPhaseInterface {
+    id?: string;
+    fase_aplicacao: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface ApplicationPhaseRegisterInterface {
+    fase_aplicacao: string;
+}
+
+interface ApplicationPhaseEditInterface {
+    id: string;
+    fase_aplicacao: string;
+}
+
+interface ApplicationPhasesInterface {
+    previous: number;
+    results: ApplicationPhaseInterface[];
+    next: number;
+    count: string;
+}
+
+interface SupplierInterface {
+    id?: string;
+    fornecedor: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface SupplierRegisterInterface {
+    fornecedor: string;
+}
+
+interface SupplierEditInterface {
+    id: string;
+    fornecedor: string;
+}
+
+interface SuppliersInterface {
+    previous: number;
+    results: SupplierInterface[];
+    next: number;
+    count: string;
+}
+
+interface PackagingInterface {
+    id?: string;
+    un: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface PackagingRegisterInterface {
+    un: string;
+}
+
+interface PackagingEditInterface {
+    id: string;
+    un: string;
+}
+
+interface PackagingsInterface {
+    previous: number;
+    results: PackagingInterface[];
+    next: number;
+    count: string;
+}

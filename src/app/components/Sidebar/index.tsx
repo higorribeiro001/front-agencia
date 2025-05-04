@@ -7,6 +7,9 @@ import Link from "next/link";
 import home from '../../../../public/assets/home.png';
 import fazenda from '../../../../public/assets/fazenda.png';
 import vaca from '../../../../public/assets/vaca.png';
+import fases from '../../../../public/assets/fases.png';
+import fornecedor from '../../../../public/assets/fornecedor.png';
+import embalagem from '../../../../public/assets/embalagem.png';
 import temaClaro from '../../../../public/assets/tema-claro.png';
 import temaEscuro from '../../../../public/assets/tema-escuro.png';
 import usuarios from "../../../../public/assets/usuarios.png";
@@ -67,20 +70,20 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={fases} 
                 alt="logo"     
             />,
-            title: 'Teste',
-            to: '/test'
+            title: 'Fase de Aplicação',
+            to: '/application-phase'
         },
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={fornecedor} 
                 alt="logo"     
             />,
-            title: 'Vendedores',
-            to: '/seller'
+            title: 'Fornecedor',
+            to: '/supplier'
         },
         {
             icon: <Image
@@ -94,11 +97,11 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={embalagem} 
                 alt="logo"     
             />,
-            title: 'Categorias',
-            to: '/category'
+            title: 'Embalagem',
+            to: '/packaging'
         },
         {
             icon: <Image
