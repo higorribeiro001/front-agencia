@@ -10,21 +10,31 @@ import vaca from '../../../../public/assets/vaca.png';
 import fases from '../../../../public/assets/fases.png';
 import fornecedor from '../../../../public/assets/fornecedor.png';
 import embalagem from '../../../../public/assets/embalagem.png';
+import produto from '../../../../public/assets/produto.png';
 import temaClaro from '../../../../public/assets/tema-claro.png';
 import temaEscuro from '../../../../public/assets/tema-escuro.png';
 import usuarios from "../../../../public/assets/usuarios.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
-import { Divider } from "@mui/material";
+import { Divider, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { logout, me } from "@/app/service/api/auth";
 import AlertApp from "../AlertApp";
 import { DialogApp } from "../DialogApp";
 import { usePathname } from "next/navigation";
 import { getCookie } from "cookies-next";
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function Sidebar() {
     const [isDark, setIsDark] = useState(false);
+    const [isOpenChilds1, setIsOpenChilds1] = useState(false);
+
+    const handleOpenOptions = (option: string) => {
+        if (option === '/product') {
+            setIsOpenChilds1(!isOpenChilds1);
+        }
+    }
 
     useEffect(() => {
         const html = document.documentElement;
@@ -37,18 +47,18 @@ export default function Sidebar() {
 
     const toggleTheme = () => {
         const html = document.documentElement;
-        if (html.classList.contains('dark')) {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
+            if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
         setIsDark(false);
         } else {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-        setIsDark(true);
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            setIsDark(true);
         }
   };
 
-    const optionsMenuAdmin: { icon: React.ReactElement; title: string; to: string; }[] = [
+    const optionsMenuAdmin: SidebarInterface[] = [
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
@@ -88,11 +98,49 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={produto} 
                 alt="logo"     
             />,
-            title: 'Clientes',
-            to: '/client'
+            title: 'Produto',
+            to: '/product',
+            childs: [
+                {
+                    icon: <Image
+                        className="w-[25px] h-[25px]" 
+                        src={home} 
+                        alt="logo"     
+                    />,
+                    title: 'Produtos',
+                    to: '/products',
+                },
+                {
+                    icon: <Image
+                        className="w-[25px] h-[25px]" 
+                        src={home} 
+                        alt="logo"     
+                    />,
+                    title: 'TIPOS',
+                    to: '/type-products',
+                },
+                {
+                    icon: <Image
+                        className="w-[25px] h-[25px]" 
+                        src={home} 
+                        alt="logo"     
+                    />,
+                    title: 'Entrada',
+                    to: '/input-product',
+                },
+                {
+                    icon: <Image
+                        className="w-[25px] h-[25px]" 
+                        src={home} 
+                        alt="logo"     
+                    />,
+                    title: 'Saída',
+                    to: '/input-product',
+                }
+            ]
         },
         {
             icon: <Image
@@ -159,7 +207,7 @@ export default function Sidebar() {
         }
     ];
 
-    const optionsMenuCariri: { icon: React.ReactElement; title: string; to: string; }[] = [
+    const optionsMenuCariri: SidebarInterface[] = [
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
@@ -243,7 +291,7 @@ export default function Sidebar() {
         },
     ];
 
-    const optionsMenuJuazeiro: { icon: React.ReactElement; title: string; to: string; }[] = [
+    const optionsMenuJuazeiro: SidebarInterface[] = [
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
@@ -327,7 +375,7 @@ export default function Sidebar() {
         }
     ];
 
-    const optionsMenuPetrolina: { icon: React.ReactElement; title: string; to: string; }[] = [
+    const optionsMenuPetrolina: SidebarInterface[] = [
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
@@ -416,6 +464,7 @@ export default function Sidebar() {
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleExpandedMenu = () => {
+        setIsOpenChilds1(false);
         setIsExpanded(!isExpanded);
     }
 
@@ -455,7 +504,7 @@ export default function Sidebar() {
         await me();
     }
 
-    const [optionsMenu, setOptionsMenu] = useState<{ icon: React.ReactElement; title: string; to: string; }[]>();
+    const [optionsMenu, setOptionsMenu] = useState<SidebarInterface[]>();
 
     useEffect(() => {
         profileUser()
@@ -463,7 +512,7 @@ export default function Sidebar() {
     }, [role])
 
     return (
-        <div className={isExpanded ? "flex flex-col justify-between w-[300px] bg-primary h-screen px-4 py-6 overflow-hidden transition-all fixed lg:relative z-[999]" : "flex flex-col justify-between w-[63px] bg-primary h-screen px-4 py-6 overflow-hidden  transition-all"}>
+        <div className={isExpanded ? "flex flex-col justify-between w-[300px] bg-primary h-screen px-4 py-6 overflow-hidden transition-all fixed lg:relative z-[999]" : "flex flex-col justify-between w-[72px] bg-primary h-screen px-4 py-6 overflow-hidden  transition-all"}>
             <DialogApp 
                 isOpen={openDialog}
                 title="Sair"
@@ -488,24 +537,63 @@ export default function Sidebar() {
                     />
                 </button>
             </div>
-            <div className="h-[500px]">
+            <div className="max-h-[800px] overflow-x-auto">
                 {optionsMenu?.map((value, index) => (
                     <div
-                        className={isExpanded ? "w-full transition-all" : "w-[30px] transition-all overflow-hidden"}
+                        className={isExpanded ? "w-full transition-all flex flex-col" : "w-[33px] transition-all overflow-hidden"}
                         key={index}
                     >
                         <div
-                            className={String(pathname).includes(value.to) ? "uppercase p-1 rounded-md bg-secondary mb-2" : "uppercase p-1 mb-2"}
+                            className={String(pathname).includes(value.to) ? "flex flex-row uppercase p-1 rounded-md bg-secondary mb-2 justify-between items-center" : "flex flex-row uppercase p-1 mb-2 justify-between items-center"}
                         >
-                            <Link 
-                                href={value.to}
-                            >
-                                <div className="flex gap-2 h-[24px]">
+                            {value.childs ? (
+                                <div className="flex items-center gap-2 h-[24px]">
                                     {value.icon}
                                     <p className="text-background font-medium text-white">{value.title}</p>
                                 </div>
-                            </Link>
+                            ) : (
+                                <Link 
+                                    href={value.to}
+                                >
+                                    <div className="flex items-center gap-2 h-[24px]">
+                                        {value.icon}
+                                        <p className="text-background font-medium text-white">{value.title}</p>
+                                    </div>
+                                </Link>
+                            )}
+                            <div key={index}>
+                                {value.to === '/product' && (
+                                    value.childs && (
+                                        <div>
+                                            {isOpenChilds1 ? (
+                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
+                                                    <KeyboardArrowUpIcon className="text-white" />
+                                                </IconButton>
+                                            ) : (
+                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
+                                                    <KeyboardArrowDownIcon className="text-white" />
+                                                </IconButton>
+                                            )}
+                                        </div>
+                                    )
+                                )}
+                            </div>
                         </div>
+                        {value.to === '/product' && (
+                            <div className={isOpenChilds1 ? "w-full h-[150px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
+                                {isOpenChilds1 && value.childs?.map((child, index) => (
+                                    <Link 
+                                        key={index}
+                                        href={child.to}
+                                        className="my-1"
+                                    >
+                                        <div className={String(pathname).includes(child.to) ? "flex items-center gap-2 h-[24px] my-2 rounded-md bg-secondary p-2" : "flex items-center gap-2 h-[24px] my-2  p-2"}>
+                                            <p className="text-background font-medium text-white uppercase">{child.title}</p>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

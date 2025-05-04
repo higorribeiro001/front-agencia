@@ -147,7 +147,7 @@ export default function Packaging() {
                 {countPackaging > 0 ?
                     <div className="flex flex-wrap gap-3 w-full h-full">
                         {rowsPackaging.map((value, index) => (
-                            <AccordionApplicationPhase key={index} id={value.id} fase_aplicacao={value.un}  />
+                            <AccordionApplicationPhase key={index} id={value.id} fase_aplicacao={value.un} link="packaging" />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">

@@ -16,6 +16,7 @@ export default {
         secondary: "var(--secondary)",
         black2: "var(--black2)",
         card: "var(--card)",
+        secondaryMenu: "var(--secondaryMenu)",
       },
       keyframes: {
         'fade-left': {

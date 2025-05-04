@@ -3,7 +3,7 @@ import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, IconBu
 import TerrainIcon from '@mui/icons-material/Terrain';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export function AccordionApplicationPhase({id, fase_aplicacao}: ApplicationPhaseInterface) {
+export function AccordionApplicationPhase({id, fase_aplicacao, link}: ApplicationPhaseInterface) {
     return (
         <div className="animate-fade-up w-full lg:w-[32%]">
             <Accordion className="p-2 bg-[var(--card)] text-[var(--foreground)]">
@@ -21,7 +21,7 @@ export function AccordionApplicationPhase({id, fase_aplicacao}: ApplicationPhase
                 <AccordionActions>
                     <IconButton 
                         className="gap-2 text-foreground"
-                        href={"/application-phase/edit/"+id}
+                        href={`/${link}/edit/`+id}
                     >
                         <Edit 
                             fontSize="small"

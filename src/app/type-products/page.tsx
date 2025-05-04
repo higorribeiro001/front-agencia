@@ -7,63 +7,63 @@ import { Search } from "@mui/icons-material";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Loading } from "../components/Loading";
 import { AccordionApplicationPhase } from "../components/AccordionApplicationPhase";
-import { supplier, suppliers, suppliersFormat } from "../service/api/suppliers";
-import SupplierAdapt from "../service/adapt/SupplierAdapt";
-import SuppliersAdapt from "../service/adapt/SuppliersAdapt";
+import { typeProduct, typeProducts, typeProductsFormat } from "../service/api/typeProducts";
+import TypeProductAdapt from "../service/adapt/TypeProductAdapt";
+import TypeProductsAdapt from "../service/adapt/TypeProductsAdapt";
 
-export default function Supplier() {
+export default function TypeProducts() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const [rowsSupplier, setRowsSupplier] = useState<SupplierInterface[]>([]);
+    const [rowsTypeProducts, setRowsTypeProducts] = useState<TypeProductInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [supplierSelected, setSupplierSelected] = useState<Model>(emptyOption);
-    const [countSupplier, setCountSupplier] = useState(0);
-    const [optionsSupplier, setOptionsSupplier] = useState<Model[]>([emptyOption]);
+    const [typeProductsSelected, setTypeProducts] = useState<Model>(emptyOption);
+    const [countTypeProduct, setCountTypeProduct] = useState(0);
+    const [optionsTypeProduct, setOptionsTypeProduct] = useState<Model[]>([emptyOption]);
 
-    const getSupplier = async (id: string) => {
-        const dataSupplier = await supplier(id);
-        const supplierAdapt = new SupplierAdapt(dataSupplier!);
-        setRowsSupplier([supplierAdapt.externalSupplierAdapt])
+    const TypeProduct = async (id: string) => {
+        const dataTypeProduct = await typeProduct(id);
+        const typeProductAdapt = new TypeProductAdapt(dataTypeProduct!);
+        setRowsTypeProducts([typeProductAdapt.externalTypeProductAdapt])
     }
 
     useEffect(() => {
-        if (supplierSelected.value != "") {
-            getSupplier(supplierSelected.value);
+        if (typeProductsSelected.value != "") {
+            TypeProduct(typeProductsSelected.value);
         } else {
             setCurrentPage(1);
-            getSuppliers();
+            TypeProducts();
         }
-    }, [supplierSelected]);
+    }, [typeProductsSelected]);
 
-    const getSuppliers = async () => {
-        const dataSuppliers = await suppliers(currentPage ?? 1);
-        if (dataSuppliers?.status === 200) {
-            const suppliersAdapt = new SuppliersAdapt(dataSuppliers.data);
-            const suppliersData = suppliersAdapt.externalSuppliersAdapt;
-            setRowsSupplier(prev => {
+    const TypeProducts = async () => {
+        const dataTypeProducts = await typeProducts(currentPage ?? 1);
+        if (dataTypeProducts?.status === 200) {
+            const typeProductAdapt = new TypeProductsAdapt(dataTypeProducts.data);
+            const typeProductsData = typeProductAdapt.externalTypeProductsAdapt;
+            setRowsTypeProducts(prev => {
                 const newIds = new Set(prev.map(item => item.id));
-                const filtered = suppliersData.results.filter(item => !newIds.has(item.id));
+                const filtered = typeProductsData.results.filter(item => !newIds.has(item.id));
                 return [...prev, ...filtered];
             });
-            setCountSupplier(parseInt(suppliersData.count));
+            setCountTypeProduct(parseInt(typeProductsData.count));
         }
         setIsLoading(false);    
     }
 
-    const getSuppliersFormat = async () => {
-        const dataSuppliers: Model[] | undefined = await suppliersFormat();
+    const TypeProductsFormat = async () => {
+        const dataTypeProduct: Model[] | undefined = await typeProductsFormat();
 
-        setOptionsSupplier(dataSuppliers!);
+        setOptionsTypeProduct(dataTypeProduct!);
     }
 
     useEffect(() => {
         setIsLoading(true);
 
-        getSuppliersFormat();
-        getSuppliers();
+        TypeProductsFormat();
+        TypeProducts();
     }, [currentPage]);
 
     return (
@@ -71,7 +71,7 @@ export default function Supplier() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="Fornecedor"
+            title="Tipo de Produtos"
         >
             <div className="animate-fade-left">
                 <Loading 
@@ -81,17 +81,17 @@ export default function Supplier() {
                     <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mt-7 mb-8">
                         <Autocomplete
                             disablePortal
-                            options={optionsSupplier || []}
+                            options={optionsTypeProduct || []}
                             className="w-4/5"
-                            value={supplierSelected}
+                            value={typeProductsSelected}
                             onChange={(event, newValue) => {
                                 if (newValue) {
-                                    setSupplierSelected(newValue);
+                                    setTypeProducts(newValue);
                                 }
                             }}
                             onInputChange={(event, inputValue, reason) => {
                                 if (reason === 'clear' || inputValue === '') {
-                                    setSupplierSelected(emptyOption);
+                                    setTypeProducts(emptyOption);
                                 }
                             }}
                             isOptionEqualToValue={(option, value) => option?.value === value?.value}
@@ -137,29 +137,29 @@ export default function Supplier() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
-                            href="/supplier/register"
+                            href="/type-products/register"
                             style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Novo
                         </Button>
                     </div>
                 </div>
-                {countSupplier > 0 ?
+                {countTypeProduct > 0 ?
                     <div className="flex flex-wrap gap-3 w-full h-full">
-                        {rowsSupplier.map((value, index) => (
-                            <AccordionApplicationPhase key={index} id={value.id} fase_aplicacao={value.fornecedor} link="type-products" />
+                        {rowsTypeProducts.map((value, index) => (
+                            <AccordionApplicationPhase key={index} id={value.id} fase_aplicacao={value.tipo} link="type-products" />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">
-                        <p>Nenhum fornecedor de aplicação cadastrada.</p>
+                        <p>Nenhum tipo de produto cadastrado.</p>
                     </div>
                 }
-                {countSupplier > rowsSupplier.length && (
+                {countTypeProduct > rowsTypeProducts.length && (
                     <div className="flex flex-col w-full justify-content items-center mt-5">
                         <IconButton onClick={() => setCurrentPage(currentPage+1)}>
                             <ReplayIcon className="text-black2" />
                         </IconButton>
-                        <span className="text-black2">Carregar mais fornecedores</span>
+                        <span className="text-black2">Carregar mais embalagens</span>
                     </div>
                 )}
             </div>

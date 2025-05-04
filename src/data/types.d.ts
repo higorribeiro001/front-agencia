@@ -569,6 +569,8 @@ interface RowInfo {
     approved?: boolean;
 }
 
+interface SidebarInterface { icon: React.ReactElement; title: string; to: string; childs?: SidebarInterface[] }
+
 interface FarmInterface {
     id?: string;
     fazenda: string;
@@ -627,6 +629,7 @@ interface CochosInterface {
 interface ApplicationPhaseInterface {
     id?: string;
     fase_aplicacao: string;
+    link: string;
     data_criacao?: string;
     data_edicao?: string;
 }
@@ -689,6 +692,29 @@ interface PackagingEditInterface {
 interface PackagingsInterface {
     previous: number;
     results: PackagingInterface[];
+    next: number;
+    count: string;
+}
+
+interface TypeProductInterface {
+    id?: string;
+    tipo: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface TypeProductRegisterInterface {
+    tipo: string;
+}
+
+interface TypeProductEditInterface {
+    id: string;
+    tipo: string;
+}
+
+interface TypeProductsInterface {
+    previous: number;
+    results: TypeProductInterface[];
     next: number;
     count: string;
 }
