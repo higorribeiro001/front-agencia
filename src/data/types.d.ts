@@ -597,3 +597,29 @@ interface FarmsInterface {
     next: number;
     count: string;
 }
+
+interface CochoInterface {
+    id?: string;
+    fazenda: FarmInterface;
+    cocho: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface CochoRegisterInterface {
+    fazenda: string;
+    cocho: string;
+}
+
+interface CochoEditInterface {
+    id: string;
+    fazenda: string;
+    cocho: string;
+}
+
+interface CochosInterface {
+    previous: number;
+    results: CochoInterface[];
+    next: number;
+    count: string;
+}

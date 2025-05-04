@@ -6,6 +6,7 @@ import arrow from "../../../../public/assets/close-menu.png";
 import Link from "next/link";
 import home from '../../../../public/assets/home.png';
 import fazenda from '../../../../public/assets/fazenda.png';
+import vaca from '../../../../public/assets/vaca.png';
 import temaClaro from '../../../../public/assets/tema-claro.png';
 import temaEscuro from '../../../../public/assets/tema-escuro.png';
 import usuarios from "../../../../public/assets/usuarios.png";
@@ -57,7 +58,7 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={vaca} 
                 alt="logo"     
             />,
             title: 'Cocho',

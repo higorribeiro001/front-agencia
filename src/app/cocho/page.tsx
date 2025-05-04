@@ -10,60 +10,64 @@ import FarmAdapt from "../service/adapt/FarmAdapt";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { AccordionFarm } from "../components/AccordionFarm";
 import { Loading } from "../components/Loading";
+import CochoAdapt from "../service/adapt/CochoAdapt";
+import { cocho, cochos, cochosFormat } from "../service/api/cochos";
+import CochosAdapt from "../service/adapt/CochosAdapt";
+import { AccordionCocho } from "../components/AccordionCocho";
 
-export default function Farm() {
+export default function Cocho() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const [rowsFarm, setRowsFarm] = useState<FarmInterface[]>([]);
+    const [rowsCocho, setRowsCocho] = useState<CochoInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [farmSelected, setFarmSelected] = useState<Model>(emptyOption);
-    const [countFarms, setCountFarms] = useState(0);
-    const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
+    const [cochoSelected, setCochoSelected] = useState<Model>(emptyOption);
+    const [countCochos, setCountCochos] = useState(0);
+    const [optionsCochos, setOptionsCochos] = useState<Model[]>([emptyOption]);
 
-    const getFarm = async (id: string) => {
-        const dataFarm = await farm(id);
-        const farmAdapt = new FarmAdapt(dataFarm!);
-        setRowsFarm([farmAdapt.externalFarmAdapt])
+    const getCocho = async (id: string) => {
+        const dataCocho = await cocho(id);
+        const cochoAdapt = new CochoAdapt(dataCocho!);
+        setRowsCocho([cochoAdapt.externalCochoAdapt])
     }
 
     useEffect(() => {
-        if (farmSelected.value != "") {
-            getFarm(farmSelected.value);
+        if (cochoSelected.value != "") {
+            getCocho(cochoSelected.value);
         } else {
             setCurrentPage(1);
-            getFarms();
+            getCochos();
         }
-    }, [farmSelected]);
+    }, [cochoSelected]);
 
-    const getFarms = async () => {
-        const dataFarms = await farms(currentPage ?? 1);
-        if (dataFarms?.status === 200) {
-            const farmssAdapt = new FarmsAdapt(dataFarms.data);
-            const dataFarm = farmssAdapt.externalFarmsAdapt;
-            setRowsFarm(prev => {
+    const getCochos = async () => {
+        const dataCochos = await cochos(currentPage ?? 1);
+        if (dataCochos?.status === 200) {
+            const cochosAdapt = new CochosAdapt(dataCochos.data);
+            const dataCocho = cochosAdapt.externalCochosAdapt;
+            setRowsCocho(prev => {
                 const newIds = new Set(prev.map(item => item.id));
-                const filtered = dataFarm.results.filter(item => !newIds.has(item.id));
+                const filtered = dataCocho.results.filter(item => !newIds.has(item.id));
                 return [...prev, ...filtered];
             });
-            setCountFarms(parseInt(dataFarm.count));
+            setCountCochos(parseInt(dataCocho.count));
         }
         setIsLoading(false);    
     }
 
-    const getFarmsFormat = async () => {
-        const dataFarms: Model[] | undefined = await farmsFormat();
+    const getCochosFormat = async () => {
+        const dataCochos: Model[] | undefined = await cochosFormat();
 
-        setOptionsFarms(dataFarms!);
+        setOptionsCochos(dataCochos!);
     }
 
     useEffect(() => {
         setIsLoading(true);
 
-        getFarmsFormat();
-        getFarms();
+        getCochosFormat();
+        getCochos();
     }, [currentPage]);
 
     return (
@@ -71,7 +75,7 @@ export default function Farm() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="fazenda"
+            title="cocho"
         >
             <div className="animate-fade-left">
                 <Loading 
@@ -81,17 +85,17 @@ export default function Farm() {
                     <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mt-7 mb-8">
                         <Autocomplete
                             disablePortal
-                            options={optionsFarms || []}
+                            options={optionsCochos || []}
                             className="w-4/5"
-                            value={farmSelected}
+                            value={cochoSelected}
                             onChange={(event, newValue) => {
                                 if (newValue) {
-                                    setFarmSelected(newValue);
+                                    setCochoSelected(newValue);
                                 }
                             }}
                             onInputChange={(event, inputValue, reason) => {
                                 if (reason === 'clear' || inputValue === '') {
-                                    setFarmSelected(emptyOption);
+                                    setCochoSelected(emptyOption);
                                 }
                             }}
                             isOptionEqualToValue={(option, value) => option?.value === value?.value}
@@ -137,29 +141,29 @@ export default function Farm() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
-                            href="/farm/register"
+                            href="/cocho/register"
                             style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Novo
                         </Button>
                     </div>
                 </div>
-                {countFarms > 0 ?
+                {countCochos > 0 ? 
                     <div className="flex flex-wrap gap-3 w-full h-full">
-                        {rowsFarm.map((value, index) => (
-                            <AccordionFarm key={index} id={value.id} fazenda={value.fazenda} area_ha={value.area_ha} qtd_animais={value.qtd_animais}  />
+                        {rowsCocho.map((value, index) => (
+                            <AccordionCocho key={index} id={value.id} cocho={value.cocho} fazenda={value.fazenda}  />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">
-                        <p>Nenhuma fazenda cadastrada.</p>
+                        <p>Nenhum cocho cadastrado.</p>
                     </div>
                 }
-                {countFarms > rowsFarm.length && (
+                {countCochos > rowsCocho.length && (
                     <div className="flex flex-col w-full justify-content items-center mt-5">
                         <IconButton onClick={() => setCurrentPage(currentPage+1)}>
                             <ReplayIcon className="text-black2" />
                         </IconButton>
-                        <span className="text-black2">Carregar mais fazendas</span>
+                        <span className="text-black2">Carregar mais cochos</span>
                     </div>
                 )}
             </div>
