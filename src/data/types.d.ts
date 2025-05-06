@@ -747,3 +747,35 @@ interface ProductsInterface {
     next: number;
     count: string;
 }
+
+interface ChartAccountInterface {
+    id: string;
+    id_contas: string;    
+    tipo: string;
+    grupo: string;
+    descricao: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface ChartAccountRegisterInterface {
+    id_contas: string;    
+    tipo: string;
+    grupo: string;
+    descricao: string;
+}
+
+interface ChartAccountEditInterface {
+    id: string;
+    id_contas: string;    
+    tipo: string;
+    grupo: string;
+    descricao: string;
+}
+
+interface ChartAccountsInterface {
+    previous: number;
+    results: ChartAccountInterface[];
+    next: number;
+    count: string;
+}
