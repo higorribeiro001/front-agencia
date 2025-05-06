@@ -12,6 +12,8 @@ import fornecedor from '../../../../public/assets/fornecedor.png';
 import embalagem from '../../../../public/assets/embalagem.png';
 import produto from '../../../../public/assets/produto.png';
 import financeiro from '../../../../public/assets/financeiro.png';
+import brinco from '../../../../public/assets/brinco.png';
+import pesagem from '../../../../public/assets/pesagem.png';
 import temaClaro from '../../../../public/assets/tema-claro.png';
 import temaEscuro from '../../../../public/assets/tema-escuro.png';
 import usuarios from "../../../../public/assets/usuarios.png";
@@ -31,6 +33,7 @@ export default function Sidebar() {
     const [isDark, setIsDark] = useState(false);
     const [isOpenChilds1, setIsOpenChilds1] = useState(false);
     const [isOpenChilds2, setIsOpenChilds2] = useState(false);
+    const [isOpenChilds3, setIsOpenChilds3] = useState(false);
 
     const handleOpenOptions = (option: string) => {
         if (option === '/product') {
@@ -39,6 +42,10 @@ export default function Sidebar() {
 
         if (option === '/financial') {
             setIsOpenChilds2(!isOpenChilds2);
+        }
+
+        if (option === '/earring') {
+            setIsOpenChilds3(!isOpenChilds3);
         }
     }
 
@@ -180,38 +187,40 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={brinco} 
                 alt="logo"     
             />,
-            title: 'Nº Transportes',
-            to: '/transport'
+            title: 'Brinco',
+            to: '/earring',
+            childs: [
+                {
+                    icon: <Image
+                        className="w-[25px] h-[25px]" 
+                        src={home} 
+                        alt="logo"     
+                    />,
+                    title: 'Brincos',
+                    to: '/earrings',
+                },
+                {
+                    icon: <Image
+                        className="w-[25px] h-[25px]" 
+                        src={home} 
+                        alt="logo"     
+                    />,
+                    title: 'Baixa de Brinco',
+                    to: '/earring-drop',
+                },
+            ]
         },
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
-                src={home} 
+                src={pesagem} 
                 alt="logo"     
             />,
-            title: 'Placas',
-            to: '/plate'
-        },
-        {
-            icon: <Image
-                className="w-[25px] h-[25px]" 
-                src={home} 
-                alt="logo"     
-            />,
-            title: 'Tipos de veículos',
-            to: '/vehicle'
-        },
-        {
-            icon: <Image
-                className="w-[25px] h-[25px]" 
-                src={home} 
-                alt="logo"     
-            />,
-            title: 'Motoristas',
-            to: '/driver'
+            title: 'Pesagens',
+            to: '/weighings'
         },
         {
             icon: <Image
@@ -483,6 +492,7 @@ export default function Sidebar() {
     const handleExpandedMenu = () => {
         setIsOpenChilds1(false);
         setIsOpenChilds2(false);
+        setIsOpenChilds3(false);
         setIsExpanded(!isExpanded);
     }
 
@@ -594,10 +604,24 @@ export default function Sidebar() {
                                             )}
                                         </div>
                                     )
-                                ) : (
+                                ) : value.to === '/financial' ? (
                                     value.childs && (
                                         <div>
                                             {isOpenChilds2 ? (
+                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
+                                                    <KeyboardArrowUpIcon className="text-white" />
+                                                </IconButton>
+                                            ) : (
+                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
+                                                    <KeyboardArrowDownIcon className="text-white" />
+                                                </IconButton>
+                                            )}
+                                        </div>
+                                    )
+                                ) : (
+                                    value.childs && (
+                                        <div>
+                                            {isOpenChilds3 ? (
                                                 <IconButton onClick={() => handleOpenOptions(value.to)}>
                                                     <KeyboardArrowUpIcon className="text-white" />
                                                 </IconButton>
@@ -620,7 +644,7 @@ export default function Sidebar() {
                                         className="my-1"
                                     >
                                         <div className={String(pathname).includes(child.to) ? "flex items-center gap-2 h-[24px] my-2 rounded-md bg-secondary p-2" : "flex items-center gap-2 h-[24px] my-2  p-2"}>
-                                            <p className="text-background font-medium text-white uppercase">{child.title}</p>
+                                            <p className="text-background font-medium text-[14px] text-white uppercase">{child.title}</p>
                                         </div>
                                     </Link>
                                 ))}
@@ -635,7 +659,22 @@ export default function Sidebar() {
                                         className="my-1"
                                     >
                                         <div className={String(pathname).includes(child.to) ? "flex items-center gap-2 h-[24px] my-2 rounded-md bg-secondary p-2" : "flex items-center gap-2 h-[24px] my-2  p-2"}>
-                                            <p className="text-background font-medium text-white uppercase">{child.title}</p>
+                                            <p className="text-background font-medium text-[14px] text-white uppercase">{child.title}</p>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                        {value.to === '/earring' && (
+                            <div className={isOpenChilds3 ? "w-full h-[85px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
+                                {isOpenChilds3 && value.childs?.map((child, indexChild) => (
+                                    <Link 
+                                        key={indexChild}
+                                        href={child.to}
+                                        className="my-1"
+                                    >
+                                        <div className={String(pathname).includes(child.to) ? "flex items-center gap-2 h-[24px] my-2 rounded-md bg-secondary p-2" : "flex items-center gap-2 h-[24px] my-2  p-2"}>
+                                            <p className="text-background font-medium text-[14px] text-white uppercase">{child.title}</p>
                                         </div>
                                     </Link>
                                 ))}
