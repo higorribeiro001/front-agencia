@@ -1,50 +1,89 @@
 "use client"
 
 import { Autocomplete, Button, IconButton, TextField } from "@mui/material";
-import { Base } from "../../components/Base/layout";
+import { Base } from "../../../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postCocho } from "@/app/service/api/cochos";
-import { farmsFormat } from "@/app/service/api/farms";
+import { product, putProduct } from "@/app/service/api/products";
+import ProductAdapt from "@/app/service/adapt/ProductAdapt";
+import { typeProductsFormat } from "@/app/service/api/typeProducts";
+import destinos from "@/data/destinos.json";
 
-export default function RegisterCocho() {
+export default function EditProduct({ params }: { params: Promise<{ id: string }> }) {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const formFields = new FormBuilder()  
-        .addTextField('fazenda', 'Fazenda *', 'select')
-        .addTextField('cocho', 'Cocho *', 'text')
-        .build();
+    const resolvedParams = React.use(params);
 
+    const formFields = new FormBuilder()
+        .addTextField('insumo', 'Insumo *', 'text')
+        .addTextField('tipo', 'Tipo *', 'select')
+        .addTextField('destino', 'Destino *', 'select')
+        .build();
+  
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
+    const [optionsProducts, setOptionsProducts] = useState<Model[]>([emptyOption]);
+
+    useEffect(() => {
+      setIsLoading(true);
+      
+      const getProduct = async () => {
+        const dataProduct: ProductInterface | undefined = await product(resolvedParams.id);
+        const productAdapt = new ProductAdapt(dataProduct!);
+
+        const productData = productAdapt.externalProductAdapt;
+
+        setModel((prevModel) => {
+          const updateModel = [...prevModel];
+
+          updateModel[0].value = productData?.insumo;
+          updateModel[1].label = productData?.tipo.tipo;
+          updateModel[1].value = productData?.tipo.id ?? '';
+          updateModel[2].label = productData?.destino;
+          updateModel[2].value = productData?.destino;
+
+          return updateModel;
+        });
+
+        setIsLoading(false);
+      }
+
+      getProduct();
+    }, [params]);
+
+    const getProductsFormat = async () => {
+        const dataProducts: Model[] | undefined = await typeProductsFormat();
+
+        setOptionsProducts(dataProducts!);
+    }
+
+    useEffect(() => {
+        getProductsFormat();
+    }, []);
+
     const initModel = [
         {
             label: '',
-            name: 'fazenda',
+            name: 'insumo',
             value: '',
             error: '',
         },
         {
             label: '',
-            name: 'cocho',
+            name: 'tipo',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'destino',
             value: '',
             error: '',
         }
     ];
-
-    const getFarmFormat = async () => {
-        const dataChocos: Model[] | undefined = await farmsFormat();
-
-        setOptionsFarms(dataChocos!);
-    }
-
-    useEffect(() => {
-        getFarmFormat();
-    }, []);
 
     const [model, setModel] = useState(initModel);
 
@@ -53,7 +92,6 @@ export default function RegisterCocho() {
     }
 
     const changeValues = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        e.preventDefault()
         setModel((prevModel) => {
           const updateModel = [...prevModel];
           updateModel[index].value = e.target.value;
@@ -67,13 +105,13 @@ export default function RegisterCocho() {
     }
 
     const validator = (message: string, index: number) => {
-        if(index < 14) {
-          setModel((prevModel) => {
-            const updateModel = [...prevModel];
-            updateModel[index].error = message;
-            return updateModel;
-          });
-        }
+      if(index < 13) {
+        setModel((prevModel) => {
+          const updateModel = [...prevModel];
+          updateModel[index].error = message;
+          return updateModel;
+        });
+      }
     }
 
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -93,8 +131,7 @@ export default function RegisterCocho() {
     
         setIsLoading(true);
     
-        registerCocho();
-    
+        EditProduct();
       }
     
       const closeAlert = () => {
@@ -103,24 +140,25 @@ export default function RegisterCocho() {
         }, 6000);
       }
     
-      const registerCocho = async () => {
+      const EditProduct = async () => {
         try {
-          const response = await postCocho(
+          const response = await putProduct(
             { 
-              fazenda: model[0].value, 
-              cocho: model[1].value, 
-            });
+              id: resolvedParams.id,
+              insumo: model[0].value, 
+              tipo: model[1].value, 
+              destino: model[2].value, 
+          });
     
-          if (response.status === 201) {
+          if (response.status === 200) {
             setOpenAlert(true);
-            setMessageAlert('Registrado com sucesso!');
+            setMessageAlert('Editado com sucesso!');
             setIsSuccess(true);
-            cleanFields();
             closeAlert();
           }
         } catch (e: unknown) {
           const error = e as StatusResponse;
-          if (error.response.status === 422) {
+          if (error.response && error.response.status === 422) {
             setOpenAlert(true);
             setMessageAlert('Preencha todos os campos obrigatórios.');
             setIsSuccess(false);
@@ -130,6 +168,7 @@ export default function RegisterCocho() {
             setOpenAlert(true);
             setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
             setIsSuccess(false);
+            console.log(e)
     
             closeAlert();
           }
@@ -140,45 +179,44 @@ export default function RegisterCocho() {
 
     return (
         <Base 
-          title="Cadastro de cocho"
+          title="Edição de Produto"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
         >
-          <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
-              <Loading 
-                isOpen={isLoading}
-              />
-              <div className="flex flex-row w-full justify-between z-10 relative">
-                  <IconButton href="/cocho" className="text-[var(--black2)]">
-                    <ArrowBack />
-                  </IconButton>
-                  <Button 
-                      className="font-semibold w-[200px] h-[56px] z-10 relative"
-                      variant="contained"
-                      type="button"
-                      color="error"
-                      onClick={cleanFields}
+              <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
+                  <Loading 
+                    isOpen={isLoading}
+                  />
+                  <div className="flex flex-row w-full justify-between z-10 relative">
+                      <IconButton href="/products">
+                        <ArrowBack className="text-black2" />
+                      </IconButton>
+                      <Button 
+                          className="font-semibold w-[200px] h-[56px] z-10 relative"
+                          variant="contained"
+                          type="button"
+                          color="error"
+                          onClick={cleanFields}
+                      >
+                          Limpar campos
+                      </Button>
+                  </div>
+                  <span className="font-semibold text-black2">
+                      * Campos obrigatórios.
+                  </span>
+                  <form 
+                      className="flex flex-col gap-10 w-full" 
+                      onSubmit={submitForm}
                   >
-                      Limpar campos
-                  </Button>
-              </div>
-              <span className="font-semibold text-[var(--black2)]">
-                  * Campos obrigatórios.
-              </span>
-              <form 
-                  className="flex flex-col gap-10 w-full" 
-                  onSubmit={submitForm}
-              >
-                  <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                    {formFields
-                        .map((value, index) => ( 
+                    <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
+                      {formFields.map((value, index: number) => (
                           value.type === 'select' ? (
                             <Autocomplete
                                 key={index}
                                 disablePortal
                                 disabled={value.name === 'unidade_id'}
-                                options={optionsFarms}
+                                options={value.name === 'tipo' ? optionsProducts : destinos}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {
@@ -266,28 +304,28 @@ export default function RegisterCocho() {
                                 />
                               )
                       ))}
-                  </div>
-                  <div className="flex flex-row justify-between gap-2">
-                    <Button 
-                        className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
-                        variant="contained"
-                        type="button"
-                        href="/cocho"
-                        style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button 
-                        className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                        variant="contained"
-                        type="submit"
-                        style={{background: "#031B17", color: "#FFFFFF"}}
-                    >
-                        Enviar
-                    </Button>
-                  </div>
-              </form>
-          </div>
+                    </div>
+                    <div className="flex flex-row justify-between">
+                          <Button 
+                            className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
+                            variant="contained"
+                            type="button"
+                            href="/products"
+                            style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
+                          >
+                              Cancelar
+                          </Button>
+                          <Button 
+                              className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                              variant="contained"
+                              type="submit"
+                              sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
+                          >
+                              Enviar
+                          </Button>
+                    </div>
+                </form>
+            </div>
         </Base>
     );
 }

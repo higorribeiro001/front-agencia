@@ -6,44 +6,52 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postCocho } from "@/app/service/api/cochos";
-import { farmsFormat } from "@/app/service/api/farms";
+import { postProduct } from "@/app/service/api/products";
+import { typeProductsFormat } from "@/app/service/api/typeProducts";
+import destinos from "@/data/destinos.json";
 
-export default function RegisterCocho() {
+export default function RegisterProduct() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const formFields = new FormBuilder()  
-        .addTextField('fazenda', 'Fazenda *', 'select')
-        .addTextField('cocho', 'Cocho *', 'text')
+        .addTextField('insumo', 'Insumo *', 'text')
+        .addTextField('tipo', 'Tipo *', 'select')
+        .addTextField('destino', 'Destino *', 'select')
         .build();
 
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
+    const [optionsProduct, setOptionsProducts] = useState<Model[]>([emptyOption]);
     const initModel = [
         {
             label: '',
-            name: 'fazenda',
+            name: 'insumo',
             value: '',
             error: '',
         },
         {
             label: '',
-            name: 'cocho',
+            name: 'tipo',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'destino',
             value: '',
             error: '',
         }
     ];
 
-    const getFarmFormat = async () => {
-        const dataChocos: Model[] | undefined = await farmsFormat();
+    const getTypeProductFormat = async () => {
+        const dataProducts: Model[] | undefined = await typeProductsFormat();
 
-        setOptionsFarms(dataChocos!);
+        setOptionsProducts(dataProducts!);
     }
 
     useEffect(() => {
-        getFarmFormat();
+        getTypeProductFormat();
     }, []);
 
     const [model, setModel] = useState(initModel);
@@ -93,7 +101,7 @@ export default function RegisterCocho() {
     
         setIsLoading(true);
     
-        registerCocho();
+        registerProduct();
     
       }
     
@@ -103,12 +111,13 @@ export default function RegisterCocho() {
         }, 6000);
       }
     
-      const registerCocho = async () => {
+      const registerProduct = async () => {
         try {
-          const response = await postCocho(
+          const response = await postProduct(
             { 
-              fazenda: model[0].value, 
-              cocho: model[1].value, 
+              insumo: model[0].value, 
+              tipo: model[1].value, 
+              destino: model[2].value, 
             });
     
           if (response.status === 201) {
@@ -140,7 +149,7 @@ export default function RegisterCocho() {
 
     return (
         <Base 
-          title="Cadastro de cocho"
+          title="Cadastro de Produto"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
@@ -150,7 +159,7 @@ export default function RegisterCocho() {
                 isOpen={isLoading}
               />
               <div className="flex flex-row w-full justify-between z-10 relative">
-                  <IconButton href="/cocho" className="text-[var(--black2)]">
+                  <IconButton href="/products" className="text-[var(--black2)]">
                     <ArrowBack />
                   </IconButton>
                   <Button 
@@ -177,8 +186,7 @@ export default function RegisterCocho() {
                             <Autocomplete
                                 key={index}
                                 disablePortal
-                                disabled={value.name === 'unidade_id'}
-                                options={optionsFarms}
+                                options={value.name === 'tipo' ? optionsProduct : destinos}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {
@@ -272,7 +280,7 @@ export default function RegisterCocho() {
                         className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                         variant="contained"
                         type="button"
-                        href="/cocho"
+                        href="/products"
                         style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                     >
                         Cancelar

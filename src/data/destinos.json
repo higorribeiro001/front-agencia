@@ -1,0 +1,45 @@
+[
+    {
+        "label": "Gado",
+        "value": "Gado",
+        "name": "",        
+        "error": ""
+    },
+    {
+        "label": "Suíno",
+        "value": "Suíno",
+        "name": "",        
+        "error": ""
+    },
+    {
+        "label": "Aves",
+        "value": "Aves",
+        "name": "",        
+        "error": ""
+    },
+    {
+        "label": "Soja",
+        "value": "Soja",
+        "name": "",        
+        "error": ""
+    }
+    ,
+    {
+        "label": "Milho",
+        "value": "Milho",
+        "name": "",        
+        "error": ""
+    },
+    {
+        "label": "Algodão",
+        "value": "Algodão",
+        "name": "",        
+        "error": ""
+    },
+    {
+        "label": "Sorgo",
+        "value": "Sorgo",
+        "name": "",        
+        "error": ""
+    }
+]

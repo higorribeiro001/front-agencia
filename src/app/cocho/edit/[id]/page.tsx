@@ -6,10 +6,9 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { farm, farmsFormat, putFarm } from "@/app/service/api/farms";
-import FarmAdapt from "@/app/service/adapt/FarmAdapt";
 import { cocho, putCocho } from "@/app/service/api/cochos";
 import CochoAdapt from "@/app/service/adapt/CochoAdapt";
+import { farmsFormat } from "@/app/service/api/farms";
 
 export default function EditCocho({ params }: { params: Promise<{ id: string }> }) {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
@@ -38,7 +37,7 @@ export default function EditCocho({ params }: { params: Promise<{ id: string }> 
         setModel((prevModel) => {
           const updateModel = [...prevModel];
 
-          updateModel[0].value = cochoData?.fazenda.id!;
+          updateModel[0].value = cochoData?.fazenda.id ?? '';
           updateModel[0].label = cochoData?.fazenda.fazenda;
           updateModel[1].value = cochoData?.cocho;
 
@@ -169,7 +168,7 @@ export default function EditCocho({ params }: { params: Promise<{ id: string }> 
 
     return (
         <Base 
-          title="Edição de Juazeiro"
+          title="Edição de Cocho"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}

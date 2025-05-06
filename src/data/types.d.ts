@@ -718,3 +718,32 @@ interface TypeProductsInterface {
     next: number;
     count: string;
 }
+
+interface ProductInterface {
+    id: string;
+    tipo: TypeProductInterface;
+    insumo: string;    
+    destino: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface ProductRegisterInterface {
+    tipo: string;
+    insumo: string;    
+    destino: string;
+}
+
+interface ProductEditInterface {
+    id: string;
+    tipo: string;
+    insumo: string;    
+    destino: string;
+}
+
+interface ProductsInterface {
+    previous: number;
+    results: ProductInterface[];
+    next: number;
+    count: string;
+}
