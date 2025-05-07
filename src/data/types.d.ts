@@ -779,3 +779,50 @@ interface ChartAccountsInterface {
     next: number;
     count: string;
 }
+
+interface EarringInterface {
+    id: string;
+    brinco: string;
+    proprietario: string;
+    fazenda: FarmInterface;  
+    lote: string;
+    sexo: string;
+    raca: string;
+    data_entrada: string;
+    valor_entrada: number;
+    perda_dados: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface EarringRegisterInterface {
+    brinco: string;
+    proprietario: string;
+    fazenda: string;  
+    lote: string;
+    sexo: string;
+    raca: string;
+    data_entrada: string;
+    valor_entrada: number;
+    perda_dados: string;
+}
+
+interface EarringEditInterface {
+    id: string;
+    brinco: string;
+    proprietario: string;
+    fazenda: string;  
+    lote: string;
+    sexo: string;
+    raca: string;
+    data_entrada: string;
+    valor_entrada: number;
+    perda_dados: string;
+}
+
+interface EarringsInterface {
+    previous: number;
+    results: EarringInterface[];
+    next: number;
+    count: string;
+}
