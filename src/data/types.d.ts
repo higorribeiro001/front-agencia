@@ -826,3 +826,114 @@ interface EarringsInterface {
     next: number;
     count: string;
 }
+
+interface InputProductInterface {
+    id: string;
+    fornecedor: SupplierInterface;
+    n_nf: number;
+    produto: ProductInterface;  
+    lote: string;
+    un: string;
+    qtd: number;
+    total: number;
+    valor_unitario: number;
+    data_vencimento: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface InputProductRegisterInterface {
+    fornecedor: string;
+    n_nf: number;
+    produto: string;  
+    lote: string;
+    un: string;
+    qtd: number;
+    total: number;
+    valor_unitario: number;
+    data_vencimento: string;
+}
+
+interface InputProductEditInterface {
+    id: string;
+    fornecedor: string;
+    n_nf: number;
+    produto: string;  
+    lote: string;
+    un: string;
+    qtd: number;
+    total: number;
+    valor_unitario: number;
+    data_vencimento: string;
+}
+
+interface InputProductsInterface {
+    previous: number;
+    results: InputProductInterface[];
+    next: number;
+    count: string;
+}
+
+interface OutputProductInterface {
+    id: string;
+    data_movimentacao: string;
+    fazenda: FarmInterface;
+    produto: ProductInterface;  
+    fase_aplicacao: ApplicationPhaseInterface;
+    hectares: string;
+    lote: string;
+    total_aplicacao: number;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface OutputProductRegisterInterface {
+    data_movimentacao: string;
+    fazenda: string;
+    produto: string;  
+    fase_aplicacao: string;
+    hectares: string;
+    lote: string;
+    total_aplicacao: number;
+}
+
+interface OutputProductEditInterface {
+    id: string;
+    data_movimentacao: string;
+    fazenda: string;
+    produto: string;  
+    fase_aplicacao: string;
+    hectares: string;
+    lote: string;
+    total_aplicacao: number;
+}
+
+interface OutputProductsInterface {
+    previous: number;
+    results: OutputProductInterface[];
+    next: number;
+    count: string;
+}
+
+interface DestinationInterface {
+    id: string;
+    destino: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface DestinationRegisterInterface {
+    destino: string;
+}
+
+interface DestinationEditInterface {
+    id: string;
+    destino: string;
+}
+
+interface DestinationsInterface {
+    previous: number;
+    results: DestinationInterface[];
+    next: number;
+    count: string;
+}

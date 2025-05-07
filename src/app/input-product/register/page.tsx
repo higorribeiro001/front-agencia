@@ -6,52 +6,102 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postProduct } from "@/app/service/api/products";
-import { typeProductsFormat } from "@/app/service/api/typeProducts";
-import destinos from "@/data/destinos.json";
+import { postInputProduct } from "@/app/service/api/inputProducts";
+import { suppliersFormat } from "@/app/service/api/suppliers";
+import { productsFormat } from "@/app/service/api/products";
 
-export default function RegisterProduct() {
+export default function RegisterInputProduct() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const formFields = new FormBuilder()  
-        .addTextField('insumo', 'Insumo *', 'text')
-        .addTextField('tipo', 'Tipo *', 'select')
-        .addTextField('destino', 'Destino *', 'select')
+        .addTextField('fornecedor', 'Fornecedor *', 'select')
+        .addTextField('n_nf', 'N° NF *', 'text')
+        .addTextField('produto', 'Produto *', 'select')
+        .addTextField('lote', 'Lote *', 'text')
+        .addTextField('un', 'UN *', 'text')
+        .addTextField('qtd', 'Qtd. *', 'text')
+        .addTextField('total', 'Total *', 'text')
+        .addTextField('valor_unitario', 'Valor Unitário *', 'text')
+        .addTextField('data_vencimento', 'Data de Vencimento *', 'date')
         .build();
 
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [optionsProduct, setOptionsProducts] = useState<Model[]>([emptyOption]);
+    const [optionsSuppliers, setOptionsSuppliers] = useState<Model[]>([emptyOption]);
+    const [optionsProducts, setOptionsProducts] = useState<Model[]>([emptyOption]);
     const initModel = [
         {
             label: '',
-            name: 'insumo',
+            name: 'fornecedor',
             value: '',
             error: '',
         },
         {
             label: '',
-            name: 'tipo',
+            name: 'n_nf',
             value: '',
             error: '',
         },
         {
             label: '',
-            name: 'destino',
+            name: 'produto',
             value: '',
             error: '',
-        }
+        },
+        {
+            label: '',
+            name: 'lote',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'un',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'qtd',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'total',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'valor_unitario',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'data_vencimento',
+            value: '2001-12-31',
+            error: '',
+        },
     ];
 
-    const getTypeProductFormat = async () => {
-        const dataProducts: Model[] | undefined = await typeProductsFormat();
+    const getSupplierFormat = async () => {
+        const dataSuppliers: Model[] | undefined = await suppliersFormat();
 
-        setOptionsProducts(dataProducts!);
+        setOptionsSuppliers(dataSuppliers!);
+    }
+
+    const getProductFormat = async () => {
+      const dataProducts: Model[] | undefined = await productsFormat();
+
+      setOptionsProducts(dataProducts!);
     }
 
     useEffect(() => {
-        getTypeProductFormat();
+        getSupplierFormat();
+        getProductFormat();
     }, []);
 
     const [model, setModel] = useState(initModel);
@@ -101,7 +151,7 @@ export default function RegisterProduct() {
     
         setIsLoading(true);
     
-        registerProduct();
+        registerInputProduct();
     
       }
     
@@ -111,13 +161,19 @@ export default function RegisterProduct() {
         }, 6000);
       }
     
-      const registerProduct = async () => {
+      const registerInputProduct = async () => {
         try {
-          const response = await postProduct(
+          const response = await postInputProduct(
             { 
-              insumo: model[0].value, 
-              tipo: model[1].value, 
-              destino: model[2].value, 
+              fornecedor: model[0].value, 
+              n_nf: parseInt(model[1].value), 
+              produto: model[2].value,
+              lote: model[3].value,
+              un: model[4].value,
+              qtd: parseInt(model[5].value),
+              total: parseFloat(model[6].value.replace(',', '.')),
+              valor_unitario: parseFloat(model[7].value.replace(',', '.')),
+              data_vencimento: model[8].value
             });
     
           if (response.status === 201) {
@@ -149,7 +205,7 @@ export default function RegisterProduct() {
 
     return (
         <Base 
-          title="Cadastro de Produto"
+          title="Cadastro de Entrada de Produto"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
@@ -159,7 +215,7 @@ export default function RegisterProduct() {
                 isOpen={isLoading}
               />
               <div className="flex flex-row w-full justify-between z-10 relative">
-                  <IconButton href="/products" className="text-[var(--black2)]">
+                  <IconButton href="/input-product" className="text-[var(--black2)]">
                     <ArrowBack />
                   </IconButton>
                   <Button 
@@ -186,7 +242,7 @@ export default function RegisterProduct() {
                             <Autocomplete
                                 key={index}
                                 disablePortal
-                                options={value.name === 'tipo' ? optionsProduct : destinos}
+                                options={value.name === 'fornecedor' ? optionsSuppliers : optionsProducts}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {
@@ -274,7 +330,7 @@ export default function RegisterProduct() {
                         className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                         variant="contained"
                         type="button"
-                        href="/products"
+                        href="/input-product"
                         style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                     >
                         Cancelar

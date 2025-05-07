@@ -1,6 +1,5 @@
 import { Edit } from "@mui/icons-material";
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, IconButton, Typography } from "@mui/material";
-import TerrainIcon from '@mui/icons-material/Terrain';
+import { Accordion, AccordionActions, AccordionSummary, IconButton, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export function AccordionApplicationPhase({id, fase_aplicacao, link}: ApplicationPhaseInterface) {

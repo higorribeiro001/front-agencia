@@ -6,64 +6,64 @@ import React, { useEffect, useState } from "react";
 import { Search } from "@mui/icons-material";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Loading } from "../components/Loading";
-import { AccordionApplicationPhase } from "../components/AccordionApplicationPhase";
-import { supplier, suppliers, suppliersFormat } from "../service/api/suppliers";
-import SupplierAdapt from "../service/adapt/SupplierAdapt";
-import SuppliersAdapt from "../service/adapt/SuppliersAdapt";
+import { inputProduct, inputProducts, inputProductsFormat } from "../service/api/inputProducts";
+import InputProductAdapt from "../service/adapt/InputProductAdapt";
+import InputProductsAdapt from "../service/adapt/InputProductsAdapt";
+import { AccordionInputProduct } from "../components/AccordionInputProduct";
 
-export default function Supplier() {
+export default function InputProducts() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const [rowsSupplier, setRowsSupplier] = useState<SupplierInterface[]>([]);
+    const [rowsInputProduct, setRowsInputProduct] = useState<InputProductInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [supplierSelected, setSupplierSelected] = useState<Model>(emptyOption);
-    const [countSupplier, setCountSupplier] = useState(0);
-    const [optionsSupplier, setOptionsSupplier] = useState<Model[]>([emptyOption]);
+    const [inputProductSelected, setInputProductSelected] = useState<Model>(emptyOption);
+    const [countInputProducts, setCountInputProducts] = useState(0);
+    const [optionsInputProduct, setOptionsInputProducts] = useState<Model[]>([emptyOption]);
 
-    const getSupplier = async (id: string) => {
-        const dataSupplier = await supplier(id);
-        const supplierAdapt = new SupplierAdapt(dataSupplier!);
-        setRowsSupplier([supplierAdapt.externalSupplierAdapt])
+    const getInputProduct = async (id: string) => {
+        const dataInputProduct = await inputProduct(id);
+        const inputProductAdapt = new InputProductAdapt(dataInputProduct!);
+        setRowsInputProduct([inputProductAdapt.externalInputProductAdapt])
     }
 
     useEffect(() => {
-        if (supplierSelected.value != "") {
-            getSupplier(supplierSelected.value);
+        if (inputProductSelected.value != "") {
+            getInputProduct(inputProductSelected.value);
         } else {
             setCurrentPage(1);
-            getSuppliers();
+            getInputProducts();
         }
-    }, [supplierSelected]);
+    }, [inputProductSelected]);
 
-    const getSuppliers = async () => {
-        const dataSuppliers = await suppliers(currentPage ?? 1);
-        if (dataSuppliers?.status === 200) {
-            const suppliersAdapt = new SuppliersAdapt(dataSuppliers.data);
-            const suppliersData = suppliersAdapt.externalSuppliersAdapt;
-            setRowsSupplier(prev => {
+    const getInputProducts = async () => {
+        const dataInputProducts = await inputProducts(currentPage ?? 1);
+        if (dataInputProducts?.status === 200) {
+            const inputProductsAdapt = new InputProductsAdapt(dataInputProducts.data);
+            const dataInputProduct = inputProductsAdapt.externalInputProductsAdapt;
+            setRowsInputProduct(prev => {
                 const newIds = new Set(prev.map(item => item.id));
-                const filtered = suppliersData.results.filter(item => !newIds.has(item.id));
+                const filtered = dataInputProduct.results.filter(item => !newIds.has(item.id));
                 return [...prev, ...filtered];
             });
-            setCountSupplier(parseInt(suppliersData.count));
+            setCountInputProducts(parseInt(dataInputProduct.count));
         }
         setIsLoading(false);    
     }
 
-    const getSuppliersFormat = async () => {
-        const dataSuppliers: Model[] | undefined = await suppliersFormat();
+    const getInputProductsFormat = async () => {
+        const dataInputProducts: Model[] | undefined = await inputProductsFormat();
 
-        setOptionsSupplier(dataSuppliers!);
+        setOptionsInputProducts(dataInputProducts!);
     }
 
     useEffect(() => {
         setIsLoading(true);
 
-        getSuppliersFormat();
-        getSuppliers();
+        getInputProductsFormat();
+        getInputProducts();
     }, [currentPage]);
 
     return (
@@ -71,7 +71,7 @@ export default function Supplier() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="Fornecedor"
+            title="entrada de produto"
         >
             <div className="animate-fade-left">
                 <Loading 
@@ -81,17 +81,17 @@ export default function Supplier() {
                     <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mt-7 mb-8">
                         <Autocomplete
                             disablePortal
-                            options={optionsSupplier || []}
+                            options={optionsInputProduct || []}
                             className="w-4/5"
-                            value={supplierSelected}
+                            value={inputProductSelected}
                             onChange={(event, newValue) => {
                                 if (newValue) {
-                                    setSupplierSelected(newValue);
+                                    setInputProductSelected(newValue);
                                 }
                             }}
                             onInputChange={(event, inputValue, reason) => {
                                 if (reason === 'clear' || inputValue === '') {
-                                    setSupplierSelected(emptyOption);
+                                    setInputProductSelected(emptyOption);
                                 }
                             }}
                             isOptionEqualToValue={(option, value) => option?.value === value?.value}
@@ -137,29 +137,29 @@ export default function Supplier() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
-                            href="/supplier/register"
+                            href="/input-product/register"
                             style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Novo
                         </Button>
                     </div>
                 </div>
-                {countSupplier > 0 ?
+                {countInputProducts > 0 ? 
                     <div className="flex flex-wrap gap-3 w-full h-full">
-                        {rowsSupplier.map((value, index) => (
-                            <AccordionApplicationPhase key={index} id={value.id} fase_aplicacao={value.fornecedor} link="supplier" />
+                        {rowsInputProduct.map((value, index) => (
+                            <AccordionInputProduct key={index} id={value.id} fornecedor={value.fornecedor} n_nf={value.n_nf} produto={value.produto} lote={value.lote} un={value.un} qtd={value.qtd} total={value.total} valor_unitario={value.valor_unitario} data_vencimento={value.data_vencimento} />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">
-                        <p>Nenhum fornecedor de aplicação cadastrada.</p>
+                        <p>Nenhuma entrada de produto cadastrado.</p>
                     </div>
                 }
-                {countSupplier > rowsSupplier.length && (
+                {countInputProducts > rowsInputProduct.length && (
                     <div className="flex flex-col w-full justify-content items-center mt-5">
                         <IconButton onClick={() => setCurrentPage(currentPage+1)}>
                             <ReplayIcon className="text-black2" />
                         </IconButton>
-                        <span className="text-black2">Carregar mais fornecedores</span>
+                        <span className="text-black2">Carregar mais entradas de produtos</span>
                     </div>
                 )}
             </div>

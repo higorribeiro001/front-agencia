@@ -14,6 +14,7 @@ import produto from '../../../../public/assets/produto.png';
 import financeiro from '../../../../public/assets/financeiro.png';
 import brinco from '../../../../public/assets/brinco.png';
 import pesagem from '../../../../public/assets/pesagem.png';
+import estoque from '../../../../public/assets/estoque.png';
 import temaClaro from '../../../../public/assets/tema-claro.png';
 import temaEscuro from '../../../../public/assets/tema-escuro.png';
 import usuarios from "../../../../public/assets/usuarios.png";
@@ -34,6 +35,7 @@ export default function Sidebar() {
     const [isOpenChilds1, setIsOpenChilds1] = useState(false);
     const [isOpenChilds2, setIsOpenChilds2] = useState(false);
     const [isOpenChilds3, setIsOpenChilds3] = useState(false);
+    const [isOpenChilds4, setIsOpenChilds4] = useState(false);
 
     const handleOpenOptions = (option: string) => {
         if (option === '/product') {
@@ -46,6 +48,10 @@ export default function Sidebar() {
 
         if (option === '/earring') {
             setIsOpenChilds3(!isOpenChilds3);
+        }
+
+        if (option === '/stock') {
+            setIsOpenChilds4(!isOpenChilds4);
         }
     }
 
@@ -141,6 +147,26 @@ export default function Sidebar() {
                         src={home} 
                         alt="logo"     
                     />,
+                    title: 'DESTINO',
+                    to: '/destination',
+                },
+            ]
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={estoque} 
+                alt="logo"     
+            />,
+            title: 'Estoque',
+            to: '/stock',
+            childs: [
+                {
+                    icon: <Image
+                        className="w-[25px] h-[25px]" 
+                        src={home} 
+                        alt="logo"     
+                    />,
                     title: 'Entrada',
                     to: '/input-product',
                 },
@@ -151,7 +177,7 @@ export default function Sidebar() {
                         alt="logo"     
                     />,
                     title: 'Saída',
-                    to: '/input-product',
+                    to: '/output-product',
                 }
             ]
         },
@@ -636,7 +662,7 @@ export default function Sidebar() {
                             </div>
                         </div>
                         {value.to === '/product' && (
-                            <div className={isOpenChilds1 ? "w-full h-[150px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
+                            <div className={isOpenChilds1 ? "w-full h-[120px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
                                 {isOpenChilds1 && value.childs?.map((child, indexChild) => (
                                     <Link 
                                         key={indexChild}
@@ -668,6 +694,21 @@ export default function Sidebar() {
                         {value.to === '/earring' && (
                             <div className={isOpenChilds3 ? "w-full h-[85px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
                                 {isOpenChilds3 && value.childs?.map((child, indexChild) => (
+                                    <Link 
+                                        key={indexChild}
+                                        href={child.to}
+                                        className="my-1"
+                                    >
+                                        <div className={String(pathname).includes(child.to) ? "flex items-center gap-2 h-[24px] my-2 rounded-md bg-secondary p-2" : "flex items-center gap-2 h-[24px] my-2  p-2"}>
+                                            <p className="text-background font-medium text-[14px] text-white uppercase">{child.title}</p>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                        {value.to === '/stock' && (
+                            <div className={isOpenChilds4 ? "w-full h-[85px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
+                                {isOpenChilds4 && value.childs?.map((child, indexChild) => (
                                     <Link 
                                         key={indexChild}
                                         href={child.to}

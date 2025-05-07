@@ -2,7 +2,7 @@ import { Edit } from "@mui/icons-material";
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, IconButton, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export function AccordionEarring({id, brinco, proprietario, fazenda, lote, sexo, raca, data_entrada, valor_entrada, perda_dados}: EarringInterface) {
+export function AccordionOutputProduct({id, data_movimentacao, fazenda, produto, fase_aplicacao, hectares, lote, total_aplicacao}: OutputProductInterface) {
     const convertDate = (isoDate: string) => {
         const [year, month, day] = isoDate.split('-');
         return `${day}/${month}/${year}`;
@@ -18,15 +18,15 @@ export function AccordionEarring({id, brinco, proprietario, fazenda, lote, sexo,
                 >
                     <div className="flex flex-row items-center gap-3 overflow-hidden">
                         <h2 className="text-[16px] lg:text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[190px] lg:w-full">
-                            {brinco}
+                            {produto.insumo}
                         </h2>
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Proprietário:</h3>
-                            <p>{proprietario}</p>
+                            <h3 className="font-semibold">Data Movimentação:</h3>
+                            <p>{convertDate(data_movimentacao)}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
@@ -37,45 +37,33 @@ export function AccordionEarring({id, brinco, proprietario, fazenda, lote, sexo,
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
+                            <h3 className="font-semibold">Fase de Aplicação:</h3>
+                            <p>{fase_aplicacao.fase_aplicacao}</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-2 w-full">
+                        <div className="flex flex-row gap-1">
+                            <h3 className="font-semibold">Hectares:</h3>
+                            <p>{hectares}</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-2 w-full">
+                        <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Lote:</h3>
                             <p>{lote}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Sexo:</h3>
-                            <p>{sexo}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Raça:</h3>
-                            <p>{raca}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Data de Entrada:</h3>
-                            <p>{convertDate(data_entrada)}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Valor de Entrada:</h3>
-                            <p>{String(valor_entrada).replace('.', ',')}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Perda de Dados:</h3>
-                            <p>{perda_dados}</p>
+                            <h3 className="font-semibold">R$ Total Aplicação:</h3>
+                            <p>{String(total_aplicacao).replace('.', '.')}</p>
                         </div>
                     </div>
                 </AccordionDetails>
                 <AccordionActions>
                     <IconButton 
                         className="gap-2 text-foreground"
-                        href={"/earrings/edit/"+id}
+                        href={"/output-product/edit/"+id}
                     >
                         <Edit 
                             fontSize="small"

@@ -6,52 +6,97 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postProduct } from "@/app/service/api/products";
-import { typeProductsFormat } from "@/app/service/api/typeProducts";
-import destinos from "@/data/destinos.json";
+import { productsFormat } from "@/app/service/api/products";
+import { postOutputProduct } from "@/app/service/api/outputProducts";
+import { farmsFormat } from "@/app/service/api/farms";
+import { applicationPhasesFormat } from "@/app/service/api/applicationPhase";
 
-export default function RegisterProduct() {
+export default function RegisterOutputProduct() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const formFields = new FormBuilder()  
-        .addTextField('insumo', 'Insumo *', 'text')
-        .addTextField('tipo', 'Tipo *', 'select')
-        .addTextField('destino', 'Destino *', 'select')
+        .addTextField('data_movimentacao', 'Data da Movimentação *', 'date')
+        .addTextField('fazenda', 'Fazenda *', 'select')
+        .addTextField('produto', 'Produto *', 'select')
+        .addTextField('fase_aplicacao', 'Fase de Aplicação *', 'select')
+        .addTextField('hectares', 'Hectares *', 'text')
+        .addTextField('lote', 'Lote *', 'text')
+        .addTextField('total_aplicacao', 'R$ Total Aplicação *', 'text')
         .build();
 
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [optionsProduct, setOptionsProducts] = useState<Model[]>([emptyOption]);
+    const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
+    const [optionsProducts, setOptionsProducts] = useState<Model[]>([emptyOption]);
+    const [optionsApplicationPhase, setOptionsApplicationPhase] = useState<Model[]>([emptyOption]);
     const initModel = [
         {
             label: '',
-            name: 'insumo',
+            name: 'data_movimentacao',
+            value: '2001-12-31',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'fazenda',
             value: '',
             error: '',
         },
         {
             label: '',
-            name: 'tipo',
+            name: 'produto',
             value: '',
             error: '',
         },
         {
             label: '',
-            name: 'destino',
+            name: 'fase_aplicacao',
             value: '',
             error: '',
-        }
+        },
+        {
+            label: '',
+            name: 'hectares',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'lote',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'total_aplicacao',
+            value: '',
+            error: '',
+        },
     ];
 
-    const getTypeProductFormat = async () => {
-        const dataProducts: Model[] | undefined = await typeProductsFormat();
+    const getFarmFormat = async () => {
+        const dataFarms: Model[] | undefined = await farmsFormat();
 
-        setOptionsProducts(dataProducts!);
+        setOptionsFarms(dataFarms!);
+    }
+
+    const getProductFormat = async () => {
+      const dataProducts: Model[] | undefined = await productsFormat();
+
+      setOptionsProducts(dataProducts!);
+    }
+
+    const getAplicationPhaseFormat = async () => {
+      const dataAplicationPhases: Model[] | undefined = await applicationPhasesFormat();
+
+      setOptionsApplicationPhase(dataAplicationPhases!);
     }
 
     useEffect(() => {
-        getTypeProductFormat();
+        getFarmFormat();
+        getProductFormat();
+        getAplicationPhaseFormat();
     }, []);
 
     const [model, setModel] = useState(initModel);
@@ -101,7 +146,7 @@ export default function RegisterProduct() {
     
         setIsLoading(true);
     
-        registerProduct();
+        registerOutputProduct();
     
       }
     
@@ -111,13 +156,17 @@ export default function RegisterProduct() {
         }, 6000);
       }
     
-      const registerProduct = async () => {
+      const registerOutputProduct = async () => {
         try {
-          const response = await postProduct(
+          const response = await postOutputProduct(
             { 
-              insumo: model[0].value, 
-              tipo: model[1].value, 
-              destino: model[2].value, 
+              data_movimentacao: model[0].value, 
+              fazenda: model[1].value, 
+              produto: model[2].value,
+              fase_aplicacao: model[3].value,
+              hectares: model[4].value,
+              lote: model[5].value,
+              total_aplicacao: parseFloat(model[6].value.replace(',', '.')),
             });
     
           if (response.status === 201) {
@@ -149,7 +198,7 @@ export default function RegisterProduct() {
 
     return (
         <Base 
-          title="Cadastro de Produto"
+          title="Cadastro de Saída de Produto"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
@@ -159,7 +208,7 @@ export default function RegisterProduct() {
                 isOpen={isLoading}
               />
               <div className="flex flex-row w-full justify-between z-10 relative">
-                  <IconButton href="/products" className="text-[var(--black2)]">
+                  <IconButton href="/output-product" className="text-[var(--black2)]">
                     <ArrowBack />
                   </IconButton>
                   <Button 
@@ -186,7 +235,7 @@ export default function RegisterProduct() {
                             <Autocomplete
                                 key={index}
                                 disablePortal
-                                options={value.name === 'tipo' ? optionsProduct : destinos}
+                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'produto' ? optionsProducts : optionsApplicationPhase}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {
@@ -274,7 +323,7 @@ export default function RegisterProduct() {
                         className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                         variant="contained"
                         type="button"
-                        href="/products"
+                        href="/output-product"
                         style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                     >
                         Cancelar

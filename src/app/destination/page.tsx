@@ -4,66 +4,66 @@ import { Autocomplete, Button,IconButton, InputAdornment, TextField } from "@mui
 import { Base } from "../components/Base/layout";
 import React, { useEffect, useState } from "react";
 import { Search } from "@mui/icons-material";
+import { farm, farms, farmsFormat } from "../service/api/farms";
+import FarmsAdapt from "../service/adapt/FarmsAdapt";
+import FarmAdapt from "../service/adapt/FarmAdapt";
 import ReplayIcon from '@mui/icons-material/Replay';
+import { AccordionFarm } from "../components/AccordionFarm";
 import { Loading } from "../components/Loading";
-import { AccordionApplicationPhase } from "../components/AccordionApplicationPhase";
-import { supplier, suppliers, suppliersFormat } from "../service/api/suppliers";
-import SupplierAdapt from "../service/adapt/SupplierAdapt";
-import SuppliersAdapt from "../service/adapt/SuppliersAdapt";
 
-export default function Supplier() {
+export default function Farm() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const [rowsSupplier, setRowsSupplier] = useState<SupplierInterface[]>([]);
+    const [rowsFarm, setRowsFarm] = useState<FarmInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [supplierSelected, setSupplierSelected] = useState<Model>(emptyOption);
-    const [countSupplier, setCountSupplier] = useState(0);
-    const [optionsSupplier, setOptionsSupplier] = useState<Model[]>([emptyOption]);
+    const [farmSelected, setFarmSelected] = useState<Model>(emptyOption);
+    const [countFarms, setCountFarms] = useState(0);
+    const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
 
-    const getSupplier = async (id: string) => {
-        const dataSupplier = await supplier(id);
-        const supplierAdapt = new SupplierAdapt(dataSupplier!);
-        setRowsSupplier([supplierAdapt.externalSupplierAdapt])
+    const getFarm = async (id: string) => {
+        const dataFarm = await farm(id);
+        const farmAdapt = new FarmAdapt(dataFarm!);
+        setRowsFarm([farmAdapt.externalFarmAdapt])
     }
 
     useEffect(() => {
-        if (supplierSelected.value != "") {
-            getSupplier(supplierSelected.value);
+        if (farmSelected.value != "") {
+            getFarm(farmSelected.value);
         } else {
             setCurrentPage(1);
-            getSuppliers();
+            getFarms();
         }
-    }, [supplierSelected]);
+    }, [farmSelected]);
 
-    const getSuppliers = async () => {
-        const dataSuppliers = await suppliers(currentPage ?? 1);
-        if (dataSuppliers?.status === 200) {
-            const suppliersAdapt = new SuppliersAdapt(dataSuppliers.data);
-            const suppliersData = suppliersAdapt.externalSuppliersAdapt;
-            setRowsSupplier(prev => {
+    const getFarms = async () => {
+        const dataFarms = await farms(currentPage ?? 1);
+        if (dataFarms?.status === 200) {
+            const farmssAdapt = new FarmsAdapt(dataFarms.data);
+            const dataFarm = farmssAdapt.externalFarmsAdapt;
+            setRowsFarm(prev => {
                 const newIds = new Set(prev.map(item => item.id));
-                const filtered = suppliersData.results.filter(item => !newIds.has(item.id));
+                const filtered = dataFarm.results.filter(item => !newIds.has(item.id));
                 return [...prev, ...filtered];
             });
-            setCountSupplier(parseInt(suppliersData.count));
+            setCountFarms(parseInt(dataFarm.count));
         }
         setIsLoading(false);    
     }
 
-    const getSuppliersFormat = async () => {
-        const dataSuppliers: Model[] | undefined = await suppliersFormat();
+    const getFarmsFormat = async () => {
+        const dataFarms: Model[] | undefined = await farmsFormat();
 
-        setOptionsSupplier(dataSuppliers!);
+        setOptionsFarms(dataFarms!);
     }
 
     useEffect(() => {
         setIsLoading(true);
 
-        getSuppliersFormat();
-        getSuppliers();
+        getFarmsFormat();
+        getFarms();
     }, [currentPage]);
 
     return (
@@ -71,7 +71,7 @@ export default function Supplier() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="Fornecedor"
+            title="fazenda"
         >
             <div className="animate-fade-left">
                 <Loading 
@@ -81,17 +81,17 @@ export default function Supplier() {
                     <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mt-7 mb-8">
                         <Autocomplete
                             disablePortal
-                            options={optionsSupplier || []}
+                            options={optionsFarms || []}
                             className="w-4/5"
-                            value={supplierSelected}
+                            value={farmSelected}
                             onChange={(event, newValue) => {
                                 if (newValue) {
-                                    setSupplierSelected(newValue);
+                                    setFarmSelected(newValue);
                                 }
                             }}
                             onInputChange={(event, inputValue, reason) => {
                                 if (reason === 'clear' || inputValue === '') {
-                                    setSupplierSelected(emptyOption);
+                                    setFarmSelected(emptyOption);
                                 }
                             }}
                             isOptionEqualToValue={(option, value) => option?.value === value?.value}
@@ -137,29 +137,29 @@ export default function Supplier() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
-                            href="/supplier/register"
+                            href="/farm/register"
                             style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Novo
                         </Button>
                     </div>
                 </div>
-                {countSupplier > 0 ?
+                {countFarms > 0 ?
                     <div className="flex flex-wrap gap-3 w-full h-full">
-                        {rowsSupplier.map((value, index) => (
-                            <AccordionApplicationPhase key={index} id={value.id} fase_aplicacao={value.fornecedor} link="supplier" />
+                        {rowsFarm.map((value, index) => (
+                            <AccordionFarm key={index} id={value.id} fazenda={value.fazenda} area_ha={value.area_ha} qtd_animais={value.qtd_animais}  />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">
-                        <p>Nenhum fornecedor de aplicação cadastrada.</p>
+                        <p>Nenhuma fazenda cadastrada.</p>
                     </div>
                 }
-                {countSupplier > rowsSupplier.length && (
+                {countFarms > rowsFarm.length && (
                     <div className="flex flex-col w-full justify-content items-center mt-5">
                         <IconButton onClick={() => setCurrentPage(currentPage+1)}>
                             <ReplayIcon className="text-black2" />
                         </IconButton>
-                        <span className="text-black2">Carregar mais fornecedores</span>
+                        <span className="text-black2">Carregar mais fazendas</span>
                     </div>
                 )}
             </div>

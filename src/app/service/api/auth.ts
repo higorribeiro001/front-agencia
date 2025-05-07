@@ -46,7 +46,7 @@ export async function me() {
 }
 
 export async function logout() {
-    const response: { status: number } = await axios.get(url+'auth/api/v1/logout', configAuth());
+    const response: { status: number } = await axios.post(url+'auth/api/v1/logout', configAuth());
 
     if (response.status === 200) {
         deleteCookie('access');

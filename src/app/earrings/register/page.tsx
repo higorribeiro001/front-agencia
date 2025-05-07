@@ -294,31 +294,25 @@ export default function RegisterEarring() {
                                   onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
                                   value={model[index].value}
                                   sx={{
-                                      '& .MuiOutlinedInput-root': {
-                                        '& fieldset': {
-                                          borderColor: model[index].error ? 'black2' : '#d1d5db', 
+                                        '& .MuiOutlinedInput-root': {
+                                        '& fieldset': { borderColor: 'var(--black2)' },
+                                        '&:hover fieldset': { borderColor: 'var(--black2)' },
+                                        '&.Mui-focused fieldset': { borderColor: 'var(--black2)' },
                                         },
-                                        '&:hover fieldset': {
-                                          borderColor: model[index].error ? 'black2' : '#9ca3af', 
-                                        },
-                                        '&.Mui-focused fieldset': {
-                                          borderColor: model[index].error ? 'black2' : '#3b82f6', 
-                                        },
-                                      },
-                                      '& .MuiOutlinedInput-input': {
-                                        color: model[index].error ? '#b91c1c' : 'var(--black2)',
+                                        '& .MuiOutlinedInput-input': {
+                                        color: 'var(--black2)',
                                         '&::placeholder': {
-                                          color: model[index].error ? '#fca5a5' : 'var(--black2)',
-                                          opacity: 1, 
+                                            color: 'var(--black2)',
+                                            opacity: 1,
                                         },
-                                      },
-                                      '& .MuiInputLabel-root': {
-                                        color: model[index].error ? '#ef4444' : 'var(--black2)',
+                                        },
+                                        '& .MuiInputLabel-root': {
+                                        color: 'var(--black2)',
                                         '&.Mui-focused': {
-                                          color: model[index].error ? '#ef4444' : 'var(--black2)',
+                                            color: 'var(--black2)',
                                         },
-                                      },
-                                  }}
+                                        },
+                                    }}
                                 />
                               )
                       ))}

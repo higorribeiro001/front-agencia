@@ -1,58 +1,139 @@
 "use client"
 
 import { Autocomplete, Button, IconButton, TextField } from "@mui/material";
-import { Base } from "../../components/Base/layout";
+import { Base } from "../../../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postProduct } from "@/app/service/api/products";
-import { typeProductsFormat } from "@/app/service/api/typeProducts";
-import destinos from "@/data/destinos.json";
+import { farmsFormat } from "@/app/service/api/farms";
+import { applicationPhasesFormat } from "@/app/service/api/applicationPhase";
+import { outputProduct, putOutputProduct } from "@/app/service/api/outputProducts";
+import OutputProductAdapt from "@/app/service/adapt/OutputProductAdapt";
+import { productsFormat } from "@/app/service/api/products";
 
-export default function RegisterProduct() {
+export default function EditOutputProduct({ params }: { params: Promise<{ id: string }> }) {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const formFields = new FormBuilder()  
-        .addTextField('insumo', 'Insumo *', 'text')
-        .addTextField('tipo', 'Tipo *', 'select')
-        .addTextField('destino', 'Destino *', 'select')
-        .build();
+    const resolvedParams = React.use(params);
 
+    const formFields = new FormBuilder()  
+        .addTextField('data_movimentacao', 'Data da Movimentação *', 'date')
+        .addTextField('fazenda', 'Fazenda *', 'select')
+        .addTextField('produto', 'Produto *', 'select')
+        .addTextField('fase_aplicacao', 'Fase de Aplicação *', 'select')
+        .addTextField('hectares', 'Hectares *', 'text')
+        .addTextField('lote', 'Lote *', 'text')
+        .addTextField('total_aplicacao', 'R$ Total Aplicação *', 'text')
+        .build();
+  
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [optionsProduct, setOptionsProducts] = useState<Model[]>([emptyOption]);
-    const initModel = [
-        {
-            label: '',
-            name: 'insumo',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'tipo',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'destino',
-            value: '',
-            error: '',
-        }
-    ];
+    const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
+    const [optionsProducts, setOptionsProducts] = useState<Model[]>([emptyOption]);
+    const [optionsApplicationPhase, setOptionsApplicationPhase] = useState<Model[]>([emptyOption]);
 
-    const getTypeProductFormat = async () => {
-        const dataProducts: Model[] | undefined = await typeProductsFormat();
+    useEffect(() => {
+      setIsLoading(true);
+      
+      const getOutputProduct = async () => {
+        const dataOutputProduct: OutputProductInterface | undefined = await outputProduct(resolvedParams.id);
+        const outputProductAdapt = new OutputProductAdapt(dataOutputProduct!);
 
-        setOptionsProducts(dataProducts!);
+        const outputProductData = outputProductAdapt.externalOutputProductAdapt;
+
+        setModel((prevModel) => {
+          const updateModel = [...prevModel];
+
+          updateModel[0].value = outputProductData?.data_movimentacao;
+          updateModel[1].value = outputProductData?.fazenda.id ?? '';
+          updateModel[1].label = outputProductData?.fazenda.fazenda;
+          updateModel[2].value = outputProductData?.produto.id ?? '';
+          updateModel[2].label = outputProductData?.produto.insumo;
+          updateModel[3].value = outputProductData?.fase_aplicacao.id ?? '';
+          updateModel[3].label = outputProductData?.fase_aplicacao.fase_aplicacao;
+          updateModel[4].value = outputProductData?.hectares;
+          updateModel[5].value = outputProductData?.lote;
+          updateModel[6].value = outputProductData?.total_aplicacao.toString().replace('.', ',');
+
+          return updateModel;
+        });
+
+        setIsLoading(false);
+      }
+
+      getOutputProduct();
+    }, [params]);
+
+    const getFarmFormat = async () => {
+        const dataFarms: Model[] | undefined = await farmsFormat();
+
+        setOptionsFarms(dataFarms!);
+    }
+
+    const getProductFormat = async () => {
+      const dataProducts: Model[] | undefined = await productsFormat();
+
+      setOptionsProducts(dataProducts!);
+    }
+
+    const getAplicationPhaseFormat = async () => {
+      const dataAplicationPhases: Model[] | undefined = await applicationPhasesFormat();
+
+      setOptionsApplicationPhase(dataAplicationPhases!);
     }
 
     useEffect(() => {
-        getTypeProductFormat();
+        getFarmFormat();
+        getProductFormat();
+        getAplicationPhaseFormat();
     }, []);
+
+    const initModel = [
+      {
+          label: '',
+          name: 'data_movimentacao',
+          value: '2001-12-31',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'fazenda',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'produto',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'fase_aplicacao',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'hectares',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'lote',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'total_aplicacao',
+          value: '',
+          error: '',
+      }
+  ];
 
     const [model, setModel] = useState(initModel);
 
@@ -61,7 +142,6 @@ export default function RegisterProduct() {
     }
 
     const changeValues = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        e.preventDefault()
         setModel((prevModel) => {
           const updateModel = [...prevModel];
           updateModel[index].value = e.target.value;
@@ -75,13 +155,13 @@ export default function RegisterProduct() {
     }
 
     const validator = (message: string, index: number) => {
-        if(index < 14) {
-          setModel((prevModel) => {
-            const updateModel = [...prevModel];
-            updateModel[index].error = message;
-            return updateModel;
-          });
-        }
+      if(index < 13) {
+        setModel((prevModel) => {
+          const updateModel = [...prevModel];
+          updateModel[index].error = message;
+          return updateModel;
+        });
+      }
     }
 
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -101,8 +181,7 @@ export default function RegisterProduct() {
     
         setIsLoading(true);
     
-        registerProduct();
-    
+        EditOutputProduct();
       }
     
       const closeAlert = () => {
@@ -111,25 +190,29 @@ export default function RegisterProduct() {
         }, 6000);
       }
     
-      const registerProduct = async () => {
+      const EditOutputProduct = async () => {
         try {
-          const response = await postProduct(
+          const response = await putOutputProduct(
             { 
-              insumo: model[0].value, 
-              tipo: model[1].value, 
-              destino: model[2].value, 
-            });
+              id: resolvedParams.id,
+              data_movimentacao: model[0].value, 
+              fazenda: model[1].value, 
+              produto: model[2].value,
+              fase_aplicacao: model[3].value,
+              hectares: model[4].value,
+              lote: model[5].value,
+              total_aplicacao: parseFloat(model[6].value.replace(',', '.')),
+          });
     
-          if (response.status === 201) {
+          if (response.status === 200) {
             setOpenAlert(true);
-            setMessageAlert('Registrado com sucesso!');
+            setMessageAlert('Editado com sucesso!');
             setIsSuccess(true);
-            cleanFields();
             closeAlert();
           }
         } catch (e: unknown) {
           const error = e as StatusResponse;
-          if (error.response.status === 422) {
+          if (error.response && error.response.status === 422) {
             setOpenAlert(true);
             setMessageAlert('Preencha todos os campos obrigatórios.');
             setIsSuccess(false);
@@ -139,6 +222,7 @@ export default function RegisterProduct() {
             setOpenAlert(true);
             setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
             setIsSuccess(false);
+            console.log(e)
     
             closeAlert();
           }
@@ -149,44 +233,44 @@ export default function RegisterProduct() {
 
     return (
         <Base 
-          title="Cadastro de Produto"
+          title="Edição de saída de produto"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
         >
-          <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
-              <Loading 
-                isOpen={isLoading}
-              />
-              <div className="flex flex-row w-full justify-between z-10 relative">
-                  <IconButton href="/products" className="text-[var(--black2)]">
-                    <ArrowBack />
-                  </IconButton>
-                  <Button 
-                      className="font-semibold w-[200px] h-[56px] z-10 relative"
-                      variant="contained"
-                      type="button"
-                      color="error"
-                      onClick={cleanFields}
+              <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
+                  <Loading 
+                    isOpen={isLoading}
+                  />
+                  <div className="flex flex-row w-full justify-between z-10 relative">
+                      <IconButton href="/output-product">
+                        <ArrowBack className="text-black2" />
+                      </IconButton>
+                      <Button 
+                          className="font-semibold w-[200px] h-[56px] z-10 relative"
+                          variant="contained"
+                          type="button"
+                          color="error"
+                          onClick={cleanFields}
+                      >
+                          Limpar campos
+                      </Button>
+                  </div>
+                  <span className="font-semibold text-black2">
+                      * Campos obrigatórios.
+                  </span>
+                  <form 
+                      className="flex flex-col gap-10 w-full" 
+                      onSubmit={submitForm}
                   >
-                      Limpar campos
-                  </Button>
-              </div>
-              <span className="font-semibold text-[var(--black2)]">
-                  * Campos obrigatórios.
-              </span>
-              <form 
-                  className="flex flex-col gap-10 w-full" 
-                  onSubmit={submitForm}
-              >
-                  <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                    {formFields
-                        .map((value, index) => ( 
+                    <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
+                      {formFields.map((value, index: number) => (
                           value.type === 'select' ? (
                             <Autocomplete
                                 key={index}
                                 disablePortal
-                                options={value.name === 'tipo' ? optionsProduct : destinos}
+                                disabled={value.name === 'unidade_id'}
+                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'produto' ? optionsProducts : optionsApplicationPhase}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {
@@ -268,28 +352,28 @@ export default function RegisterProduct() {
                                 />
                               )
                       ))}
-                  </div>
-                  <div className="flex flex-row justify-between gap-2">
-                    <Button 
-                        className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
-                        variant="contained"
-                        type="button"
-                        href="/products"
-                        style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button 
-                        className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                        variant="contained"
-                        type="submit"
-                        style={{background: "#031B17", color: "#FFFFFF"}}
-                    >
-                        Enviar
-                    </Button>
-                  </div>
-              </form>
-          </div>
+                    </div>
+                    <div className="flex flex-row justify-between">
+                          <Button 
+                            className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
+                            variant="contained"
+                            type="button"
+                            href="/output-product"
+                            style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
+                          >
+                              Cancelar
+                          </Button>
+                          <Button 
+                              className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                              variant="contained"
+                              type="submit"
+                              sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
+                          >
+                              Enviar
+                          </Button>
+                    </div>
+                </form>
+            </div>
         </Base>
     );
 }
