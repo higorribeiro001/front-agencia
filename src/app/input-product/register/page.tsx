@@ -9,6 +9,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { postInputProduct } from "@/app/service/api/inputProducts";
 import { suppliersFormat } from "@/app/service/api/suppliers";
 import { productsFormat } from "@/app/service/api/products";
+import un from "@/data/un.json";
 
 export default function RegisterInputProduct() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
@@ -17,7 +18,7 @@ export default function RegisterInputProduct() {
         .addTextField('n_nf', 'N° NF *', 'text')
         .addTextField('produto', 'Produto *', 'select')
         .addTextField('lote', 'Lote *', 'text')
-        .addTextField('un', 'UN *', 'text')
+        .addTextField('un', 'UN *', 'select')
         .addTextField('qtd', 'Qtd. *', 'text')
         .addTextField('total', 'Total *', 'text')
         .addTextField('valor_unitario', 'Valor Unitário *', 'text')
@@ -242,7 +243,7 @@ export default function RegisterInputProduct() {
                             <Autocomplete
                                 key={index}
                                 disablePortal
-                                options={value.name === 'fornecedor' ? optionsSuppliers : optionsProducts}
+                                options={value.name === 'fornecedor' ? optionsSuppliers : value.name === 'produto' ? optionsProducts : un}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {
