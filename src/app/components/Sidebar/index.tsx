@@ -15,9 +15,10 @@ import financeiro from '../../../../public/assets/financeiro.png';
 import brinco from '../../../../public/assets/brinco.png';
 import pesagem from '../../../../public/assets/pesagem.png';
 import estoque from '../../../../public/assets/estoque.png';
+import contas from '../../../../public/assets/contas.png';
 import temaClaro from '../../../../public/assets/tema-claro.png';
 import temaEscuro from '../../../../public/assets/tema-escuro.png';
-import usuarios from "../../../../public/assets/usuarios.png";
+// import usuarios from "../../../../public/assets/usuarios.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
 import { Divider, IconButton } from "@mui/material";
@@ -193,6 +194,15 @@ export default function Sidebar() {
         {
             icon: <Image
                 className="w-[25px] h-[25px]" 
+                src={contas} 
+                alt="logo"     
+            />,
+            title: 'Plano de Contas',
+            to: '/chart-account'
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
                 src={financeiro} 
                 alt="logo"     
             />,
@@ -205,8 +215,17 @@ export default function Sidebar() {
                         src={home} 
                         alt="logo"     
                     />,
-                    title: 'Plano de Contas',
-                    to: '/chart-account',
+                    title: 'Receitas',
+                    to: '/revenues',
+                },
+                {
+                    icon: <Image
+                        className="w-[25px] h-[25px]" 
+                        src={home} 
+                        alt="logo"     
+                    />,
+                    title: 'Despesas',
+                    to: '/expenses',
                 }
             ]
         },
@@ -248,15 +267,15 @@ export default function Sidebar() {
             title: 'Pesagens',
             to: '/weighings'
         },
-        {
-            icon: <Image
-                className="w-[25px] h-[25px]" 
-                src={usuarios} 
-                alt="logo"     
-            />,
-            title: 'Usuários',
-            to: '/users'
-        }
+        // {
+        //     icon: <Image
+        //         className="w-[25px] h-[25px]" 
+        //         src={usuarios} 
+        //         alt="logo"     
+        //     />,
+        //     title: 'Usuários',
+        //     to: '/users'
+        // }
     ];
 
     const optionsMenuCariri: SidebarInterface[] = [
@@ -519,6 +538,7 @@ export default function Sidebar() {
         setIsOpenChilds1(false);
         setIsOpenChilds2(false);
         setIsOpenChilds3(false);
+        setIsOpenChilds4(false);
         setIsExpanded(!isExpanded);
     }
 
@@ -598,7 +618,7 @@ export default function Sidebar() {
                         key={index}
                     >
                         <div
-                            className={String(pathname).includes(value.to) ? "flex flex-row uppercase p-1 rounded-md bg-secondary mb-2 justify-between items-center" : "flex flex-row uppercase p-1 mb-2 justify-between items-center"}
+                            className={String(pathname).includes(value.to) ? "flex flex-row uppercase p-1 rounded-md bg-secondary mb-2 justify-between items-center" : "flex flex-row uppercase p-1 mb-2 h-[32px] justify-between items-center"}
                         >
                             {value.childs ? (
                                 <div className="flex items-center gap-2 h-[24px]">
@@ -644,10 +664,24 @@ export default function Sidebar() {
                                             )}
                                         </div>
                                     )
+                                ) : value.to === '/stock' ? (
+                                    value.childs && (
+                                        <div>
+                                            {isOpenChilds4 ? (
+                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
+                                                    <KeyboardArrowUpIcon className="text-white" />
+                                                </IconButton>
+                                            ) : (
+                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
+                                                    <KeyboardArrowDownIcon className="text-white" />
+                                                </IconButton>
+                                            )}
+                                        </div>
+                                    )
                                 ) : (
                                     value.childs && (
                                         <div>
-                                            {isOpenChilds3 ? (
+                                            {isOpenChilds4 ? (
                                                 <IconButton onClick={() => handleOpenOptions(value.to)}>
                                                     <KeyboardArrowUpIcon className="text-white" />
                                                 </IconButton>
@@ -677,7 +711,7 @@ export default function Sidebar() {
                             </div>
                         )}
                         {value.to === '/financial' && (
-                            <div className={isOpenChilds2 ? "w-full h-[150px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
+                            <div className={isOpenChilds2 ? "w-full h-[90px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
                                 {isOpenChilds2 && value.childs?.map((child, indexChild) => (
                                     <Link 
                                         key={indexChild}
@@ -692,7 +726,7 @@ export default function Sidebar() {
                             </div>
                         )}
                         {value.to === '/earring' && (
-                            <div className={isOpenChilds3 ? "w-full h-[85px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
+                            <div className={isOpenChilds3 ? "w-full h-[90px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
                                 {isOpenChilds3 && value.childs?.map((child, indexChild) => (
                                     <Link 
                                         key={indexChild}
@@ -707,7 +741,7 @@ export default function Sidebar() {
                             </div>
                         )}
                         {value.to === '/stock' && (
-                            <div className={isOpenChilds4 ? "w-full h-[85px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
+                            <div className={isOpenChilds4 ? "w-full h-[90px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
                                 {isOpenChilds4 && value.childs?.map((child, indexChild) => (
                                     <Link 
                                         key={indexChild}
