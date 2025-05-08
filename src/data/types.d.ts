@@ -723,7 +723,7 @@ interface ProductInterface {
     id: string;
     tipo: TypeProductInterface;
     insumo: string;    
-    destino: string;
+    destino: DestinationInterface;
     data_criacao?: string;
     data_edicao?: string;
 }

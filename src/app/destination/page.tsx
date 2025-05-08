@@ -4,66 +4,67 @@ import { Autocomplete, Button,IconButton, InputAdornment, TextField } from "@mui
 import { Base } from "../components/Base/layout";
 import React, { useEffect, useState } from "react";
 import { Search } from "@mui/icons-material";
-import { farm, farms, farmsFormat } from "../service/api/farms";
-import FarmsAdapt from "../service/adapt/FarmsAdapt";
-import FarmAdapt from "../service/adapt/FarmAdapt";
 import ReplayIcon from '@mui/icons-material/Replay';
-import { AccordionFarm } from "../components/AccordionFarm";
 import { Loading } from "../components/Loading";
+import { destination, destinations, destinationsFormat } from "../service/api/destinations";
+import DestinationAdapt from "../service/adapt/DestinationAdapt";
+import DestinationsAdapt from "../service/adapt/DestinationsAdapt";
+import { AccordionCocho } from "../components/AccordionCocho";
+import { AccordionApplicationPhase } from "../components/AccordionApplicationPhase";
 
-export default function Farm() {
+export default function Destination() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const [rowsFarm, setRowsFarm] = useState<FarmInterface[]>([]);
+    const [rowsDestination, setRowsDestination] = useState<DestinationInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [farmSelected, setFarmSelected] = useState<Model>(emptyOption);
-    const [countFarms, setCountFarms] = useState(0);
-    const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
+    const [destinationSelected, setDestinationSelected] = useState<Model>(emptyOption);
+    const [countDestinations, setCountDestinations] = useState(0);
+    const [optionsDestinations, setOptionsDestinations] = useState<Model[]>([emptyOption]);
 
-    const getFarm = async (id: string) => {
-        const dataFarm = await farm(id);
-        const farmAdapt = new FarmAdapt(dataFarm!);
-        setRowsFarm([farmAdapt.externalFarmAdapt])
+    const getDestination = async (id: string) => {
+        const dataDestination = await destination(id);
+        const destinationAdapt = new DestinationAdapt(dataDestination!);
+        setRowsDestination([destinationAdapt.externalDestinationAdapt])
     }
 
     useEffect(() => {
-        if (farmSelected.value != "") {
-            getFarm(farmSelected.value);
+        if (destinationSelected.value != "") {
+            getDestination(destinationSelected.value);
         } else {
             setCurrentPage(1);
-            getFarms();
+            getDestinations();
         }
-    }, [farmSelected]);
+    }, [destinationSelected]);
 
-    const getFarms = async () => {
-        const dataFarms = await farms(currentPage ?? 1);
-        if (dataFarms?.status === 200) {
-            const farmssAdapt = new FarmsAdapt(dataFarms.data);
-            const dataFarm = farmssAdapt.externalFarmsAdapt;
-            setRowsFarm(prev => {
+    const getDestinations = async () => {
+        const dataDestinations = await destinations(currentPage ?? 1);
+        if (dataDestinations?.status === 200) {
+            const destinationsAdapt = new DestinationsAdapt(dataDestinations.data);
+            const dataDestination = destinationsAdapt.externalDestinationsAdapt;
+            setRowsDestination(prev => {
                 const newIds = new Set(prev.map(item => item.id));
-                const filtered = dataFarm.results.filter(item => !newIds.has(item.id));
+                const filtered = dataDestination.results.filter(item => !newIds.has(item.id));
                 return [...prev, ...filtered];
             });
-            setCountFarms(parseInt(dataFarm.count));
+            setCountDestinations(parseInt(dataDestination.count));
         }
         setIsLoading(false);    
     }
 
-    const getFarmsFormat = async () => {
-        const dataFarms: Model[] | undefined = await farmsFormat();
+    const getDestinationsFormat = async () => {
+        const dataDestinations: Model[] | undefined = await destinationsFormat();
 
-        setOptionsFarms(dataFarms!);
+        setOptionsDestinations(dataDestinations!);
     }
 
     useEffect(() => {
         setIsLoading(true);
 
-        getFarmsFormat();
-        getFarms();
+        getDestinationsFormat();
+        getDestinations();
     }, [currentPage]);
 
     return (
@@ -71,7 +72,7 @@ export default function Farm() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="fazenda"
+            title="destino"
         >
             <div className="animate-fade-left">
                 <Loading 
@@ -81,17 +82,17 @@ export default function Farm() {
                     <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mt-7 mb-8">
                         <Autocomplete
                             disablePortal
-                            options={optionsFarms || []}
+                            options={optionsDestinations || []}
                             className="w-4/5"
-                            value={farmSelected}
+                            value={destinationSelected}
                             onChange={(event, newValue) => {
                                 if (newValue) {
-                                    setFarmSelected(newValue);
+                                    setDestinationSelected(newValue);
                                 }
                             }}
                             onInputChange={(event, inputValue, reason) => {
                                 if (reason === 'clear' || inputValue === '') {
-                                    setFarmSelected(emptyOption);
+                                    setDestinationSelected(emptyOption);
                                 }
                             }}
                             isOptionEqualToValue={(option, value) => option?.value === value?.value}
@@ -137,29 +138,29 @@ export default function Farm() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
-                            href="/farm/register"
+                            href="/destination/register"
                             style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Novo
                         </Button>
                     </div>
                 </div>
-                {countFarms > 0 ?
+                {countDestinations > 0 ?
                     <div className="flex flex-wrap gap-3 w-full h-full">
-                        {rowsFarm.map((value, index) => (
-                            <AccordionFarm key={index} id={value.id} fazenda={value.fazenda} area_ha={value.area_ha} qtd_animais={value.qtd_animais}  />
+                        {rowsDestination.map((value, index) => (
+                            <AccordionApplicationPhase key={index} id={value.id} fase_aplicacao={value.destino} link="destination" />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">
-                        <p>Nenhuma fazenda cadastrada.</p>
+                        <p>Nenhum destino cadastrado.</p>
                     </div>
                 }
-                {countFarms > rowsFarm.length && (
+                {countDestinations > rowsDestination.length && (
                     <div className="flex flex-col w-full justify-content items-center mt-5">
                         <IconButton onClick={() => setCurrentPage(currentPage+1)}>
                             <ReplayIcon className="text-black2" />
                         </IconButton>
-                        <span className="text-black2">Carregar mais fazendas</span>
+                        <span className="text-black2">Carregar mais destinos</span>
                     </div>
                 )}
             </div>

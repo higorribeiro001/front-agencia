@@ -6,9 +6,9 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postProduct } from "@/app/service/api/products";
+import { postProduct, productsFormat } from "@/app/service/api/products";
 import { typeProductsFormat } from "@/app/service/api/typeProducts";
-import destinos from "@/data/destinos.json";
+import { destinationsFormat } from "@/app/service/api/destinations";
 
 export default function RegisterProduct() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
@@ -23,6 +23,7 @@ export default function RegisterProduct() {
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsProduct, setOptionsProducts] = useState<Model[]>([emptyOption]);
+    const [optionsDestination, setOptionsDestination] = useState<Model[]>([emptyOption]);
     const initModel = [
         {
             label: '',
@@ -50,8 +51,15 @@ export default function RegisterProduct() {
         setOptionsProducts(dataProducts!);
     }
 
+    const getDestinationFormat = async () => {
+        const dataDestinations: Model[] | undefined = await destinationsFormat();
+
+        setOptionsDestination(dataDestinations!);
+    }
+
     useEffect(() => {
         getTypeProductFormat();
+        getDestinationFormat();
     }, []);
 
     const [model, setModel] = useState(initModel);
@@ -186,7 +194,7 @@ export default function RegisterProduct() {
                             <Autocomplete
                                 key={index}
                                 disablePortal
-                                options={value.name === 'tipo' ? optionsProduct : destinos}
+                                options={value.name === 'tipo' ? optionsProduct : optionsDestination}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {

@@ -6,16 +6,14 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { farm, putFarm } from "@/app/service/api/farms";
-import FarmAdapt from "@/app/service/adapt/FarmAdapt";
+import { destination, putDestination } from "@/app/service/api/destinations";
+import DestinationAdapt from "@/app/service/adapt/DestinationAdapt";
 
-export default function EditFarm({ params }: { params: Promise<{ id: string }> }) {
+export default function EditDestination({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = React.use(params);
     
     const formFields = new FormBuilder()
-        .addTextField('fazenda', 'Fazenda *', 'text')
-        .addTextField('area_ha', 'Área (HA) *', 'text')
-        .addTextField('qtd_animais', 'Qtd. de Animais', 'number')
+        .addTextField('destino', 'Destino *', 'text')
         .build();
   
     const [isLoading, setIsLoading] = useState(false);
@@ -26,18 +24,16 @@ export default function EditFarm({ params }: { params: Promise<{ id: string }> }
     useEffect(() => {
       setIsLoading(true);
       
-      const getLogistic = async () => {
-        const dataFarm: FarmInterface | undefined = await farm(resolvedParams.id);
-        const farmAdapt = new FarmAdapt(dataFarm!);
+      const getDestination = async () => {
+        const dataDestination: DestinationInterface | undefined = await destination(resolvedParams.id);
+        const destinationAdapt = new DestinationAdapt(dataDestination!);
 
-        const farmData = farmAdapt.externalFarmAdapt;
+        const destinationData = destinationAdapt.externalDestinationAdapt;
 
         setModel((prevModel) => {
           const updateModel = [...prevModel];
 
-          updateModel[0].value = farmData?.fazenda;
-          updateModel[1].value = farmData?.area_ha;
-          updateModel[2].value = farmData?.qtd_animais;
+          updateModel[0].value = destinationData?.destino;
 
           return updateModel;
         });
@@ -45,25 +41,13 @@ export default function EditFarm({ params }: { params: Promise<{ id: string }> }
         setIsLoading(false);
       }
 
-      getLogistic();
+      getDestination();
     }, [params]);
 
     const initModel = [
         {
             label: '',
-            name: 'fazenda',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'area_ha',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'qtd_animais',
+            name: 'destino',
             value: '',
             error: '',
         }
@@ -115,7 +99,7 @@ export default function EditFarm({ params }: { params: Promise<{ id: string }> }
     
         setIsLoading(true);
     
-        EditFarm();
+        EditDestination();
       }
     
       const closeAlert = () => {
@@ -124,14 +108,12 @@ export default function EditFarm({ params }: { params: Promise<{ id: string }> }
         }, 6000);
       }
     
-      const EditFarm = async () => {
+      const EditDestination = async () => {
         try {
-          const response = await putFarm(
+          const response = await putDestination(
             { 
               id: resolvedParams.id,
-              fazenda: model[0].value, 
-              area_ha: model[1].value, 
-              qtd_animais: model[2].value, 
+              destino: model[0].value, 
           });
     
           if (response.status === 200) {
@@ -163,7 +145,7 @@ export default function EditFarm({ params }: { params: Promise<{ id: string }> }
 
     return (
         <Base 
-          title="Edição de Fazenda"
+          title="Edição de Destino"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
@@ -173,7 +155,7 @@ export default function EditFarm({ params }: { params: Promise<{ id: string }> }
                     isOpen={isLoading}
                   />
                   <div className="flex flex-row w-full justify-between z-10 relative">
-                      <IconButton href="/farm">
+                      <IconButton href="/destination">
                         <ArrowBack className="text-black2" />
                       </IconButton>
                       <Button 
@@ -239,7 +221,7 @@ export default function EditFarm({ params }: { params: Promise<{ id: string }> }
                             className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                             variant="contained"
                             type="button"
-                            href="/farm"
+                            href="/destination"
                             style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                           >
                               Cancelar

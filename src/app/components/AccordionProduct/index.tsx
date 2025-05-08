@@ -25,7 +25,7 @@ export function AccordionProduct({id, insumo, tipo, destino}: ProductInterface) 
                         </div>
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Destino:</h3>
-                            <p>{destino}</p>
+                            <p>{destino.destino}</p>
                         </div>
                     </div>
                 </AccordionDetails>

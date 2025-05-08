@@ -10,6 +10,7 @@ import { product, putProduct } from "@/app/service/api/products";
 import ProductAdapt from "@/app/service/adapt/ProductAdapt";
 import { typeProductsFormat } from "@/app/service/api/typeProducts";
 import destinos from "@/data/destinos.json";
+import { destinationsFormat } from "@/app/service/api/destinations";
 
 export default function EditProduct({ params }: { params: Promise<{ id: string }> }) {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
@@ -26,6 +27,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsProducts, setOptionsProducts] = useState<Model[]>([emptyOption]);
+    const [optionsDestination, setOptionsDestination] = useState<Model[]>([emptyOption]);
 
     useEffect(() => {
       setIsLoading(true);
@@ -42,8 +44,8 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
           updateModel[0].value = productData?.insumo;
           updateModel[1].label = productData?.tipo.tipo;
           updateModel[1].value = productData?.tipo.id ?? '';
-          updateModel[2].label = productData?.destino;
-          updateModel[2].value = productData?.destino;
+          updateModel[2].label = productData?.destino.destino;
+          updateModel[2].value = productData?.destino.id;
 
           return updateModel;
         });
@@ -60,8 +62,15 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
         setOptionsProducts(dataProducts!);
     }
 
+    const getDestinationFormat = async () => {
+            const dataDestinations: Model[] | undefined = await destinationsFormat();
+    
+            setOptionsDestination(dataDestinations!);
+        }
+
     useEffect(() => {
         getProductsFormat();
+        getDestinationFormat();
     }, []);
 
     const initModel = [
@@ -216,7 +225,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
                                 key={index}
                                 disablePortal
                                 disabled={value.name === 'unidade_id'}
-                                options={value.name === 'tipo' ? optionsProducts : destinos}
+                                options={value.name === 'tipo' ? optionsProducts : optionsDestination}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {
