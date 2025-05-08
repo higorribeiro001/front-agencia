@@ -937,3 +937,59 @@ interface DestinationsInterface {
     next: number;
     count: string;
 }
+
+interface RevenueInterface {
+    id: string;
+    data_registro: string;
+    fazenda: FarmInterface;
+    grupo: string;
+    conta: ChartAccountInterface;
+    id_pc: string;
+    nota_fiscal: string;
+    descricao: string;
+    numero_boleto: string;
+    data_vencimento: string;
+    data_pagamento: string;
+    valor_recebido: number;
+    valor_total: number;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface RevenueRegisterInterface {
+    data_registro: string;
+    fazenda: string;
+    grupo: string;
+    conta: string;
+    id_pc: string;
+    nota_fiscal: string;
+    descricao: string;
+    numero_boleto: string;
+    data_vencimento: string;
+    data_pagamento: string;
+    valor_recebido: number;
+    valor_total: number;
+}
+
+interface RevenueEditInterface {
+    id: string;
+    data_registro: string;
+    fazenda: string;
+    grupo: string;
+    conta: string;
+    id_pc: string;
+    nota_fiscal: string;
+    descricao: string;
+    numero_boleto: string;
+    data_vencimento: string;
+    data_pagamento: string;
+    valor_recebido: number;
+    valor_total: number;
+}
+
+interface RevenuesInterface {
+    previous: number;
+    results: RevenueInterface[];
+    next: number;
+    count: string;
+}
