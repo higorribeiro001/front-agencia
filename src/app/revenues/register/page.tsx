@@ -10,19 +10,22 @@ import { productsFormat } from "@/app/service/api/products";
 import { farmsFormat } from "@/app/service/api/farms";
 import { applicationPhasesFormat } from "@/app/service/api/applicationPhase";
 import { postRevenue } from "@/app/service/api/revenues";
+import { chartAccountsFormat, chartIdAccountsFormat } from "@/app/service/api/chartAccount";
+import grupo from "@/data/grupo.json";
 
 export default function RegisterRevenue() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const formFields = new FormBuilder()  
         .addTextField('data_registro', 'Data do Registro *', 'date')
         .addTextField('fazenda', 'Fazenda *', 'select')
-        .addTextField('grupo', 'Grupo *', 'select')
-        .addTextField('conta', 'Fase de Aplicação *', 'select')
+        .addTextField('grupo', 'Grupo *', 'text')
+        .addTextField('conta', 'Conta *', 'select')
         .addTextField('id_pc', 'ID PC *', 'select')
         .addTextField('nota_fiscal', 'Nota Fiscal *', 'text')
+        .addTextField('descricao', 'Descrição *', 'text')
         .addTextField('numero_boleto', 'N° Boleto *', 'text')
-        .addTextField('data_vencimento', 'Data de Vencimento *', 'text')
-        .addTextField('data_pagamento', 'Data de Pagamento *', 'text')
+        .addTextField('data_vencimento', 'Data de Vencimento *', 'date')
+        .addTextField('data_pagamento', 'Data de Pagamento *', 'date')
         .addTextField('valor_recebido', 'R$ Valor Recebido *', 'text')
         .addTextField('valor_total', 'R$ Valor Total *', 'text')
         .build();
@@ -32,8 +35,8 @@ export default function RegisterRevenue() {
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
-    const [optionsProducts, setOptionsProducts] = useState<Model[]>([emptyOption]);
-    const [optionsApplicationPhase, setOptionsApplicationPhase] = useState<Model[]>([emptyOption]);
+    const [optionsAccount, setOptionsAccounts] = useState<Model[]>([emptyOption]);
+    const [optionsIdAccount, setOptionsIdAccounts] = useState<Model[]>([emptyOption]);
     const initModel = [
         {
             label: '',
@@ -115,22 +118,22 @@ export default function RegisterRevenue() {
         setOptionsFarms(dataFarms!);
     }
 
-    const getProductFormat = async () => {
-      const dataProducts: Model[] | undefined = await productsFormat();
+    const getAccountsFormat = async () => {
+      const dataAccounts: Model[] | undefined = await chartAccountsFormat();
 
-      setOptionsProducts(dataProducts!);
+      setOptionsAccounts(dataAccounts!);
     }
 
-    const getAplicationPhaseFormat = async () => {
-      const dataAplicationPhases: Model[] | undefined = await applicationPhasesFormat();
+    const getIdAccountsFormat = async () => {
+      const dataIdAccounts: Model[] | undefined = await chartIdAccountsFormat();
 
-      setOptionsApplicationPhase(dataAplicationPhases!);
+      setOptionsIdAccounts(dataIdAccounts!);
     }
 
     useEffect(() => {
         getFarmFormat();
-        getProductFormat();
-        getAplicationPhaseFormat();
+        getAccountsFormat();
+        getIdAccountsFormat();
     }, []);
 
     const [model, setModel] = useState(initModel);
@@ -200,7 +203,12 @@ export default function RegisterRevenue() {
               conta: model[3].value,
               id_pc: model[4].value,
               nota_fiscal: model[5].value,
-              total_aplicacao: parseFloat(model[6].value.replace(',', '.')),
+              descricao: model[6].value,
+              numero_boleto: model[7].value,
+              data_vencimento: model[8].value,
+              data_pagamento: model[9].value,
+              valor_recebido: parseFloat(model[10].value.replace(',', '.')),
+              valor_total: parseFloat(model[11].value.replace(',', '.')),
             });
     
           if (response.status === 201) {
@@ -269,7 +277,7 @@ export default function RegisterRevenue() {
                             <Autocomplete
                                 key={index}
                                 disablePortal
-                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'produto' ? optionsProducts : optionsApplicationPhase}
+                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'conta' ? optionsAccount : value.name === 'id_pc' ? optionsIdAccount : grupo}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {

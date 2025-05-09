@@ -39,6 +39,20 @@ export async function chartAccountsFormat() {
     }
 }
 
+export async function chartIdAccountsFormat() {
+    try {
+        const response: { data: Model[], status: number } = await axios.get(url+`plano-contas/api/v1/id-contas/itens/format/`, configAuth());
+        return response.data;
+    } catch(e: unknown) {
+        const error = e as StatusResponse;
+        if (error.response.status === 401) {
+            deleteCookie('access');
+            setCookie('statusMe', error.response.status);
+            window.location.reload();
+        }
+    }
+}
+
 export async function chartAccount(id: string) {
     try {
         const response: { data: ChartAccountInterface, status: number } = await axios.get(url+`plano-contas/api/v1/${id}/`, configAuth());
