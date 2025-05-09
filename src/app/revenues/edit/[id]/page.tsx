@@ -8,22 +8,27 @@ import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
 import { farmsFormat } from "@/app/service/api/farms";
 import { applicationPhasesFormat } from "@/app/service/api/applicationPhase";
-import { outputProduct, putOutputProduct } from "@/app/service/api/outputProducts";
-import OutputProductAdapt from "@/app/service/adapt/OutputProductAdapt";
 import { productsFormat } from "@/app/service/api/products";
+import { putRevenue, revenue } from "@/app/service/api/revenues";
+import RevenueAdapt from "@/app/service/adapt/RevenueAdapt";
 
-export default function EditOutputProduct({ params }: { params: Promise<{ id: string }> }) {
+export default function EditRevenue({ params }: { params: Promise<{ id: string }> }) {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const resolvedParams = React.use(params);
 
     const formFields = new FormBuilder()  
-        .addTextField('data_movimentacao', 'Data da Movimentação *', 'date')
+        .addTextField('data_registro', 'Data do Registro *', 'date')
         .addTextField('fazenda', 'Fazenda *', 'select')
-        .addTextField('produto', 'Produto *', 'select')
-        .addTextField('fase_aplicacao', 'Fase de Aplicação *', 'select')
-        .addTextField('hectares', 'Hectares *', 'text')
-        .addTextField('lote', 'Lote *', 'text')
-        .addTextField('total_aplicacao', 'R$ Total Aplicação *', 'text')
+        .addTextField('grupo', 'Grupo *', 'text')
+        .addTextField('conta', 'Conta *', 'select')
+        .addTextField('id_pc', 'ID PC *', 'select')
+        .addTextField('nota_fiscal', 'Nota Fiscal *', 'text')
+        .addTextField('descricao', 'Descrição *', 'text')
+        .addTextField('numero_boleto', 'N° Boleto *', 'text')
+        .addTextField('data_vencimento', 'Data de Vencimento *', 'date')
+        .addTextField('data_pagamento', 'Data de Pagamento *', 'date')
+        .addTextField('valor_recebido', 'R$ Valor Recebido *', 'text')
+        .addTextField('valor_total', 'R$ Valor Total *', 'text')
         .build();
   
     const [isLoading, setIsLoading] = useState(false);
@@ -37,25 +42,29 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
     useEffect(() => {
       setIsLoading(true);
       
-      const getOutputProduct = async () => {
-        const dataOutputProduct: OutputProductInterface | undefined = await outputProduct(resolvedParams.id);
-        const outputProductAdapt = new OutputProductAdapt(dataOutputProduct!);
+      const getRevenue = async () => {
+        const dataRevenue: RevenueInterface | undefined = await revenue(resolvedParams.id);
+        const revenueAdapt = new RevenueAdapt(dataRevenue!);
 
-        const outputProductData = outputProductAdapt.externalOutputProductAdapt;
+        const revenueData= revenueAdapt.externalRevenueAdapt;
 
         setModel((prevModel) => {
           const updateModel = [...prevModel];
 
-          updateModel[0].value = outputProductData?.data_movimentacao;
-          updateModel[1].value = outputProductData?.fazenda.id ?? '';
-          updateModel[1].label = outputProductData?.fazenda.fazenda;
-          updateModel[2].value = outputProductData?.produto.id ?? '';
-          updateModel[2].label = outputProductData?.produto.insumo;
-          updateModel[3].value = outputProductData?.fase_aplicacao.id ?? '';
-          updateModel[3].label = outputProductData?.fase_aplicacao.fase_aplicacao;
-          updateModel[4].value = outputProductData?.hectares;
-          updateModel[5].value = outputProductData?.lote;
-          updateModel[6].value = outputProductData?.total_aplicacao.toString().replace('.', ',');
+          updateModel[0].value = revenueData.data_registro;
+          updateModel[1].value = revenueData.fazenda.id ?? '';
+          updateModel[1].label = revenueData.fazenda.fazenda;
+          updateModel[2].value = revenueData.grupo;
+          updateModel[3].value = revenueData.conta.id ?? '';
+          updateModel[3].label = revenueData.conta.descricao;
+          updateModel[4].value = revenueData.id_pc;
+          updateModel[5].value = revenueData.nota_fiscal;
+          updateModel[6].value = revenueData.descricao;
+          updateModel[7].value = revenueData.numero_boleto;
+          updateModel[8].value = revenueData.data_vencimento;
+          updateModel[9].value = revenueData.data_pagamento;
+          updateModel[10].value = revenueData.valor_recebido.toString().replace('.', ',');
+          updateModel[11].value = revenueData.valor_total.toString().replace('.', ',');
 
           return updateModel;
         });
@@ -63,7 +72,7 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
         setIsLoading(false);
       }
 
-      getOutputProduct();
+      getRevenue();
     }, [params]);
 
     const getFarmFormat = async () => {
@@ -91,49 +100,79 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
     }, []);
 
     const initModel = [
-      {
-          label: '',
-          name: 'data_movimentacao',
-          value: '2001-12-31',
-          error: '',
-      },
-      {
-          label: '',
-          name: 'fazenda',
-          value: '',
-          error: '',
-      },
-      {
-          label: '',
-          name: 'produto',
-          value: '',
-          error: '',
-      },
-      {
-          label: '',
-          name: 'fase_aplicacao',
-          value: '',
-          error: '',
-      },
-      {
-          label: '',
-          name: 'hectares',
-          value: '',
-          error: '',
-      },
-      {
-          label: '',
-          name: 'lote',
-          value: '',
-          error: '',
-      },
-      {
-          label: '',
-          name: 'total_aplicacao',
-          value: '',
-          error: '',
-      }
-  ];
+        {
+            label: '',
+            name: 'data_registro',
+            value: '2001-12-31',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'fazenda',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'grupo',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'conta',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'id_pc',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'nota_fiscal',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'descricao',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'numero_boleto',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'data_vencimento',
+            value: '2001-12-31',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'data_pagamento',
+            value: '2001-12-31',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'valor_recebido',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'valor_total',
+            value: '',
+            error: '',
+        },
+    ];
 
     const [model, setModel] = useState(initModel);
 
@@ -181,7 +220,7 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
     
         setIsLoading(true);
     
-        EditOutputProduct();
+        EditRevenue();
       }
     
       const closeAlert = () => {
@@ -190,18 +229,23 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
         }, 6000);
       }
     
-      const EditOutputProduct = async () => {
+      const EditRevenue = async () => {
         try {
-          const response = await putOutputProduct(
+          const response = await putRevenue(
             { 
               id: resolvedParams.id,
-              data_movimentacao: model[0].value, 
+              data_registro: model[0].value, 
               fazenda: model[1].value, 
-              produto: model[2].value,
-              fase_aplicacao: model[3].value,
-              hectares: model[4].value,
-              lote: model[5].value,
-              total_aplicacao: parseFloat(model[6].value.replace(',', '.')),
+              grupo: model[2].value,
+              conta: model[3].value,
+              id_pc: model[4].value,
+              nota_fiscal: model[5].value,
+              descricao: model[6].value,
+              numero_boleto: model[7].value,
+              data_vencimento: model[8].value,
+              data_pagamento: model[9].value,
+              valor_recebido: parseFloat(model[10].value.replace(',', '.')),
+              valor_total: parseFloat(model[11].value.replace(',', '.')),
           });
     
           if (response.status === 200) {
@@ -233,7 +277,7 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
 
     return (
         <Base 
-          title="Edição de saída de produto"
+          title="Edição de receita"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
@@ -243,7 +287,7 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
                     isOpen={isLoading}
                   />
                   <div className="flex flex-row w-full justify-between z-10 relative">
-                      <IconButton href="/output-product">
+                      <IconButton href="/revenues">
                         <ArrowBack className="text-black2" />
                       </IconButton>
                       <Button 
@@ -358,7 +402,7 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
                             className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
                             variant="contained"
                             type="button"
-                            href="/output-product"
+                            href="/revenues"
                             style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
                           >
                               Cancelar

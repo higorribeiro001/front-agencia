@@ -18,15 +18,15 @@ export function AccordionRevenue({id, data_vencimento, conta, data_pagamento, da
                 >
                     <div className="flex flex-row items-center gap-3 overflow-hidden">
                         <h2 className="text-[16px] lg:text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[190px] lg:w-full">
-                            {conta.tipo}
+                            {descricao}
                         </h2>
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Descrição:</h3>
-                            <p>{descricao}</p>
+                            <h3 className="font-semibold">Conta:</h3>
+                            <p>{conta.tipo}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
@@ -93,7 +93,7 @@ export function AccordionRevenue({id, data_vencimento, conta, data_pagamento, da
                 <AccordionActions>
                     <IconButton 
                         className="gap-2 text-foreground"
-                        href={"/output-product/edit/"+id}
+                        href={"/revenues/edit/"+id}
                     >
                         <Edit 
                             fontSize="small"
