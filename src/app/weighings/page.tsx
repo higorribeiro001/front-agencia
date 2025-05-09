@@ -6,64 +6,64 @@ import React, { useEffect, useState } from "react";
 import { Search } from "@mui/icons-material";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Loading } from "../components/Loading";
-import { earring, earrings, earringsFormat } from "../service/api/earrings";
-import EarringAdapt from "../service/adapt/EarringAdapt";
-import EarringsAdapt from "../service/adapt/EarringsAdapt";
-import { AccordionEarring } from "../components/AccordionEarring";
+import { weighing, weighings, weighingsFormat } from "../service/api/weighings";
+import WeighingAdapt from "../service/adapt/WeighingAdapt";
+import WeighingsAdapt from "../service/adapt/WeighingsAdapt";
+import { AccordionWeighing } from "../components/AccordionWeighing";
 
-export default function Earrings() {
+export default function Weighings() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const [rowsEarring, setRowsEarring] = useState<EarringInterface[]>([]);
+    const [rowsWeighing, setRowsWeighing] = useState<WeighingInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [earringSelected, setEarringSelected] = useState<Model>(emptyOption);
-    const [countEarrings, setCountEarrings] = useState(0);
-    const [optionsEarring, setOptionsEarrings] = useState<Model[]>([emptyOption]);
+    const [weighingSelected, setWeighingSelected] = useState<Model>(emptyOption);
+    const [countWeighings, setCountWeighings] = useState(0);
+    const [optionsWeighing, setOptionsWeighings] = useState<Model[]>([emptyOption]);
 
-    const getEarring = async (id: string) => {
-        const dataEarring = await earring(id);
-        const earringAdapt = new EarringAdapt(dataEarring!);
-        setRowsEarring([earringAdapt.externalEarringAdapt])
+    const getWeighing = async (id: string) => {
+        const dataWeighing = await weighing(id);
+        const weighingAdapt = new WeighingAdapt(dataWeighing!);
+        setRowsWeighing([weighingAdapt.externalWeighingAdapt])
     }
 
     useEffect(() => {
-        if (earringSelected.value != "") {
-            getEarring(earringSelected.value);
+        if (weighingSelected.value != "") {
+            getWeighing(weighingSelected.value);
         } else {
             setCurrentPage(1);
-            getEarrings();
+            getWeighings();
         }
-    }, [earringSelected]);
+    }, [weighingSelected]);
 
-    const getEarrings = async () => {
-        const dataEarrings = await earrings(currentPage ?? 1);
-        if (dataEarrings?.status === 200) {
-            const earringsAdapt = new EarringsAdapt(dataEarrings.data);
-            const dataEarring = earringsAdapt.externalEarringsAdapt;
-            setRowsEarring(prev => {
+    const getWeighings = async () => {
+        const dataWeighings = await weighings(currentPage ?? 1);
+        if (dataWeighings?.status === 200) {
+            const weighingsAdapt = new WeighingsAdapt(dataWeighings.data);
+            const dataWeighing = weighingsAdapt.externalWeighingsAdapt;
+            setRowsWeighing(prev => {
                 const newIds = new Set(prev.map(item => item.id));
-                const filtered = dataEarring.results.filter(item => !newIds.has(item.id));
+                const filtered = dataWeighing.results.filter(item => !newIds.has(item.id));
                 return [...prev, ...filtered];
             });
-            setCountEarrings(parseInt(dataEarring.count));
+            setCountWeighings(parseInt(dataWeighing.count));
         }
         setIsLoading(false);    
     }
 
-    const getEarringsFormat = async () => {
-        const dataEearrings: Model[] | undefined = await earringsFormat();
+    const getWeighingsFormat = async () => {
+        const dataWeighings: Model[] | undefined = await weighingsFormat();
 
-        setOptionsEarrings(dataEearrings!);
+        setOptionsWeighings(dataWeighings!);
     }
 
     useEffect(() => {
         setIsLoading(true);
 
-        getEarringsFormat();
-        getEarrings();
+        getWeighingsFormat();
+        getWeighings();
     }, [currentPage]);
 
     return (
@@ -71,7 +71,7 @@ export default function Earrings() {
             openAlert={openAlert}
             isSuccess={isSuccess}
             messageAlert={messageAlert}
-            title="brinco"
+            title="pesagem"
         >
             <div className="animate-fade-left">
                 <Loading 
@@ -81,17 +81,17 @@ export default function Earrings() {
                     <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mt-7 mb-8">
                         <Autocomplete
                             disablePortal
-                            options={optionsEarring || []}
+                            options={optionsWeighing || []}
                             className="w-4/5"
-                            value={earringSelected}
+                            value={weighingSelected}
                             onChange={(event, newValue) => {
                                 if (newValue) {
-                                    setEarringSelected(newValue);
+                                    setWeighingSelected(newValue);
                                 }
                             }}
                             onInputChange={(event, inputValue, reason) => {
                                 if (reason === 'clear' || inputValue === '') {
-                                    setEarringSelected(emptyOption);
+                                    setWeighingSelected(emptyOption);
                                 }
                             }}
                             isOptionEqualToValue={(option, value) => option?.value === value?.value}
@@ -137,29 +137,29 @@ export default function Earrings() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
-                            href="/earrings/register"
+                            href="/weighings/register"
                             style={{background: "#031B17", color: "#FFFFFF"}}
                         >
                             Novo
                         </Button>
                     </div>
                 </div>
-                {countEarrings > 0 ? 
+                {countWeighings > 0 ? 
                     <div className="flex flex-wrap gap-3 w-full h-full">
-                        {rowsEarring.map((value, index) => (
-                            <AccordionEarring key={index} id={value.id} brinco={value.brinco} fazenda={value.fazenda} proprietario={value.proprietario} lote={value.lote} raca={value.raca} sexo={value.sexo} data_entrada={value.data_entrada} valor_entrada={value.valor_entrada} perda_dados={value.perda_dados} />
+                        {rowsWeighing.map((value, index) => (
+                            <AccordionWeighing key={index} id={value.id} data_pesagem={value.data_pesagem} fazenda={value.fazenda} total_kg={value.total_kg} qtd_bois={value.qtd_bois} valor={value.valor} />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">
-                        <p>Nenhum brinco cadastrado.</p>
+                        <p>Nenhuma pesagem cadastrada.</p>
                     </div>
                 }
-                {countEarrings > rowsEarring.length && (
+                {countWeighings > rowsWeighing.length && (
                     <div className="flex flex-col w-full justify-content items-center mt-5">
                         <IconButton onClick={() => setCurrentPage(currentPage+1)}>
                             <ReplayIcon className="text-black2" />
                         </IconButton>
-                        <span className="text-black2">Carregar mais brincos</span>
+                        <span className="text-black2">Carregar mais pesagens</span>
                     </div>
                 )}
             </div>

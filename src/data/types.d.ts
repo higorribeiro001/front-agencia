@@ -1052,3 +1052,38 @@ interface ExpensesInterface {
     next: number;
     count: string;
 }
+
+interface WeighingInterface {
+    id: string;
+    data_pesagem: string;
+    fazenda: FarmInterface;  
+    total_kg: number;
+    qtd_bois: number;
+    valor: number;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface WeighingRegisterInterface {
+    data_pesagem: string;
+    fazenda: string;  
+    total_kg: number;
+    qtd_bois: number;
+    valor: number;
+}
+
+interface WeighingEditInterface {
+    id: string;
+    data_pesagem: string;
+    fazenda: string;  
+    total_kg: number;
+    qtd_bois: number;
+    valor: number;
+}
+
+interface WeighingsInterface {
+    previous: number;
+    results: WeighingInterface[];
+    next: number;
+    count: string;
+}
