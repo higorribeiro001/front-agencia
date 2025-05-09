@@ -993,3 +993,62 @@ interface RevenuesInterface {
     next: number;
     count: string;
 }
+
+interface ExpenseInterface {
+    id: string;
+    data_registro: string;
+    fazenda: FarmInterface;
+    grupo: string;
+    conta: ChartAccountInterface;
+    id_pc: string;
+    nota_fiscal: string;
+    descricao: string;
+    observacao: string;
+    numero_boleto: string;
+    data_vencimento: string;
+    data_pagamento: string;
+    valor_total: number;
+    valor_pago: number;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface ExpenseRegisterInterface {
+    data_registro: string;
+    fazenda: string;
+    grupo: string;
+    conta: string;
+    id_pc: string;
+    nota_fiscal: string;
+    descricao: string;
+    observacao: string;
+    numero_boleto: string;
+    data_vencimento: string;
+    data_pagamento: string;
+    valor_total: number;
+    valor_pago: number;
+}
+
+interface ExpenseEditInterface {
+    id: string;
+    data_registro: string;
+    fazenda: string;
+    grupo: string;
+    conta: string;
+    id_pc: string;
+    nota_fiscal: string;
+    descricao: string;
+    observacao: string;
+    numero_boleto: string;
+    data_vencimento: string;
+    data_pagamento: string;
+    valor_total: number;
+    valor_pago: number;
+}
+
+interface ExpensesInterface {
+    previous: number;
+    results: ExpenseInterface[];
+    next: number;
+    count: string;
+}
