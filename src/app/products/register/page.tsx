@@ -6,7 +6,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
-import { postProduct, productsFormat } from "@/app/service/api/products";
+import { postProduct } from "@/app/service/api/products";
 import { typeProductsFormat } from "@/app/service/api/typeProducts";
 import { destinationsFormat } from "@/app/service/api/destinations";
 

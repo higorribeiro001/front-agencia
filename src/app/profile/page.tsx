@@ -45,7 +45,7 @@ export default function Profile({ params }: { params: Promise<{ id: string }> })
                     <RowInfo title="E-mail:" info={profile?.email ?? ''} />
                     <RowInfo title="Telefone:" info={profile?.phone ?? ''} />
                     <RowInfo title="Papel:" info={profile?.role ?? ''} />
-                    <RowInfo title="Status:" info={profile?.ativo ? 'ativo' : 'inativo'} />
+                    <RowInfo title="Status:" info={profile?.is_active ? 'ativo' : 'inativo'} />
                     <IconButton 
                         className="gap-2 mt-2 w-[120px] flex flex-row justify-start"
                         href={"/profile/edit/"+profile?.id}

@@ -9,7 +9,6 @@ import { ArrowBack } from "@mui/icons-material";
 import { product, putProduct } from "@/app/service/api/products";
 import ProductAdapt from "@/app/service/adapt/ProductAdapt";
 import { typeProductsFormat } from "@/app/service/api/typeProducts";
-import destinos from "@/data/destinos.json";
 import { destinationsFormat } from "@/app/service/api/destinations";
 
 export default function EditProduct({ params }: { params: Promise<{ id: string }> }) {

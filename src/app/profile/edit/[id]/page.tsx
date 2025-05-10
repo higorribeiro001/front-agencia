@@ -67,7 +67,7 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
           updateModel[1].value = userData?.email;
           updateModel[2].value = userData?.phone;
           setRole(userData?.role);
-          setChecked(userData?.ativo);
+          setChecked(userData?.is_active);
 
           return updateModel;
         });
