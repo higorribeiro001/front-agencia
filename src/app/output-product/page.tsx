@@ -15,9 +15,6 @@ export default function OutputProducts() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsOutputProduct, setRowsOutputProduct] = useState<OutputProductInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [outputProductSelected, setOutputProductSelected] = useState<Model>(emptyOption);
     const [countOutputProducts, setCountOutputProducts] = useState(0);
@@ -68,9 +65,6 @@ export default function OutputProducts() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="saída de produto"
         >
             <div className="animate-fade-left">

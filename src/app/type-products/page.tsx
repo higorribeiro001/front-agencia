@@ -15,9 +15,6 @@ export default function TypeProducts() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsTypeProducts, setRowsTypeProducts] = useState<TypeProductInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [typeProductsSelected, setTypeProducts] = useState<Model>(emptyOption);
     const [countTypeProduct, setCountTypeProduct] = useState(0);
@@ -68,9 +65,6 @@ export default function TypeProducts() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="Tipo de Produtos"
         >
             <div className="animate-fade-left">

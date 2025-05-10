@@ -15,9 +15,6 @@ export default function Supplier() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsSupplier, setRowsSupplier] = useState<SupplierInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [supplierSelected, setSupplierSelected] = useState<Model>(emptyOption);
     const [countSupplier, setCountSupplier] = useState(0);
@@ -68,9 +65,6 @@ export default function Supplier() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="Fornecedor"
         >
             <div className="animate-fade-left">

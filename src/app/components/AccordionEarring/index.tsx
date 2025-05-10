@@ -2,7 +2,7 @@ import { Edit } from "@mui/icons-material";
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, IconButton, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export function AccordionEarring({id, brinco, proprietario, fazenda, lote, sexo, raca, data_entrada, valor_entrada, perda_dados}: EarringInterface) {
+export function AccordionEarringOriginal({id, brinco, proprietario, fazenda, lote, sexo, raca, data_entrada, valor_entrada, perda_dados}: EarringInterface) {
     const convertDate = (isoDate: string) => {
         const [year, month, day] = isoDate.split('-');
         return `${day}/${month}/${year}`;

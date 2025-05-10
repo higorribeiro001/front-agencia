@@ -15,9 +15,6 @@ export default function Packaging() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsPackaging, setRowsPackaging] = useState<PackagingInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [packagingSelected, setPackagingSelected] = useState<Model>(emptyOption);
     const [countPackaging, setCountPackaging] = useState(0);
@@ -68,9 +65,6 @@ export default function Packaging() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="Embalagem"
         >
             <div className="animate-fade-left">

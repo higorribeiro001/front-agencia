@@ -15,9 +15,6 @@ export default function Expenses() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsExpense, setRowsExpense] = useState<ExpenseInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [expenseSelected, setExpenseSelected] = useState<Model>(emptyOption);
     const [countExpenses, setCountExpenses] = useState(0);
@@ -68,9 +65,6 @@ export default function Expenses() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="Despesas"
         >
             <div className="animate-fade-left">

@@ -4,11 +4,7 @@ import { Autocomplete, Button,IconButton, InputAdornment, TextField } from "@mui
 import { Base } from "../components/Base/layout";
 import React, { useEffect, useState } from "react";
 import { Search } from "@mui/icons-material";
-import { farm, farms, farmsFormat } from "../service/api/farms";
-import FarmsAdapt from "../service/adapt/FarmsAdapt";
-import FarmAdapt from "../service/adapt/FarmAdapt";
 import ReplayIcon from '@mui/icons-material/Replay';
-import { AccordionFarm } from "../components/AccordionFarm";
 import { Loading } from "../components/Loading";
 import ApplicationPhaseAdapt from "../service/adapt/ApplicationPhaseAdapt";
 import { applicationPhase, applicationPhases, applicationPhasesFormat } from "../service/api/applicationPhase";
@@ -19,9 +15,6 @@ export default function ApplicationPhase() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsApplicationPhase, setRowsApplicationPhase] = useState<ApplicationPhaseInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [applicationPhaseSelected, setApplicationPhaseSelected] = useState<Model>(emptyOption);
     const [countApplicationPhase, setCountApplicationPhase] = useState(0);
@@ -72,9 +65,6 @@ export default function ApplicationPhase() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="fase de aplicação"
         >
             <div className="animate-fade-left">

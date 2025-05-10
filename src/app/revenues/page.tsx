@@ -15,9 +15,6 @@ export default function Revenues() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsRevenue, setRowsRevenue] = useState<RevenueInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [revenueSelected, setRevenueSelected] = useState<Model>(emptyOption);
     const [countRevenues, setCountRevenues] = useState(0);
@@ -68,9 +65,6 @@ export default function Revenues() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="Receitas"
         >
             <div className="animate-fade-left">

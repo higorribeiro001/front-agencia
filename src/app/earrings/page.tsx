@@ -9,15 +9,12 @@ import { Loading } from "../components/Loading";
 import { earring, earrings, earringsFormat } from "../service/api/earrings";
 import EarringAdapt from "../service/adapt/EarringAdapt";
 import EarringsAdapt from "../service/adapt/EarringsAdapt";
-import { AccordionEarring } from "../components/AccordionEarring";
+import { AccordionEarringOriginal } from "../components/AccordionEarring";
 
 export default function Earrings() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsEarring, setRowsEarring] = useState<EarringInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [earringSelected, setEarringSelected] = useState<Model>(emptyOption);
     const [countEarrings, setCountEarrings] = useState(0);
@@ -68,9 +65,6 @@ export default function Earrings() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="brinco"
         >
             <div className="animate-fade-left">
@@ -147,7 +141,7 @@ export default function Earrings() {
                 {countEarrings > 0 ? 
                     <div className="flex flex-wrap gap-3 w-full h-full">
                         {rowsEarring.map((value, index) => (
-                            <AccordionEarring key={index} id={value.id} brinco={value.brinco} fazenda={value.fazenda} proprietario={value.proprietario} lote={value.lote} raca={value.raca} sexo={value.sexo} data_entrada={value.data_entrada} valor_entrada={value.valor_entrada} perda_dados={value.perda_dados} />
+                            <AccordionEarringOriginal key={index} id={value.id} brinco={value.brinco} fazenda={value.fazenda} proprietario={value.proprietario} lote={value.lote} raca={value.raca} sexo={value.sexo} data_entrada={value.data_entrada} valor_entrada={value.valor_entrada} perda_dados={value.perda_dados} />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">

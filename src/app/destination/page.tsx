@@ -9,16 +9,12 @@ import { Loading } from "../components/Loading";
 import { destination, destinations, destinationsFormat } from "../service/api/destinations";
 import DestinationAdapt from "../service/adapt/DestinationAdapt";
 import DestinationsAdapt from "../service/adapt/DestinationsAdapt";
-import { AccordionCocho } from "../components/AccordionCocho";
 import { AccordionApplicationPhase } from "../components/AccordionApplicationPhase";
 
 export default function Destination() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsDestination, setRowsDestination] = useState<DestinationInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [destinationSelected, setDestinationSelected] = useState<Model>(emptyOption);
     const [countDestinations, setCountDestinations] = useState(0);
@@ -69,9 +65,6 @@ export default function Destination() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="destino"
         >
             <div className="animate-fade-left">

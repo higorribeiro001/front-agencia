@@ -15,9 +15,6 @@ export default function Earrings() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsEarring, setRowsEarring] = useState<EarringDropInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [earringSelected, setEarringSelected] = useState<Model>(emptyOption);
     const [countEarrings, setCountEarrings] = useState(0);
@@ -68,9 +65,6 @@ export default function Earrings() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="baixa de brinco"
         >
             <div className="animate-fade-left">

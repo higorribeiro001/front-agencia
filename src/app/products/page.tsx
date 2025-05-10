@@ -15,9 +15,6 @@ export default function Product() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsProduct, setRowsProduct] = useState<ProductInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [productSelected, setProductSelected] = useState<Model>(emptyOption);
     const [countProducts, setCountProducts] = useState(0);
@@ -68,9 +65,6 @@ export default function Product() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="Produtos"
         >
             <div className="animate-fade-left">

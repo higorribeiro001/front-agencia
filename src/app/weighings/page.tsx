@@ -15,9 +15,6 @@ export default function Weighings() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const [rowsWeighing, setRowsWeighing] = useState<WeighingInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [weighingSelected, setWeighingSelected] = useState<Model>(emptyOption);
     const [countWeighings, setCountWeighings] = useState(0);
@@ -68,9 +65,6 @@ export default function Weighings() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="pesagem"
         >
             <div className="animate-fade-left">
