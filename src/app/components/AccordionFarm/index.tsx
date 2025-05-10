@@ -11,6 +11,7 @@ export function AccordionFarm({id, fazenda, area_ha, qtd_animais}: FarmInterface
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel3-content"
                     id="panel3-header"
+                    sx={{ bgcolor: 'var(--card)' }}
                 >
                     <div className="flex flex-row items-center gap-3 overflow-hidden">
                         <TerrainIcon className="text-[24px] lg:text-[32px]"/>

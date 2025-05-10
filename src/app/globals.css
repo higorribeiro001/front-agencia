@@ -5,11 +5,11 @@
 :root {
   --primary: #031B17;
   --secondaryMenu: #052520;
-  --background: #FFFFFF;
+  --background: #eee6e6;
   --foreground: #171717;
   --secondary: #0d5c4f;
   --black2: #020202;
-  --card: #FFFFFF;
+  --card: #f2ebeb;
   --copy: #1E1E1E;
 }
 
