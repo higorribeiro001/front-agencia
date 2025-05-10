@@ -46,7 +46,7 @@ export function AccordionWeighing({id, data_pesagem, fazenda, total_kg, qtd_bois
                 <AccordionActions>
                     <IconButton 
                         className="gap-2 text-foreground"
-                        href={"/earrings/edit/"+id}
+                        href={"/weighings/edit/"+id}
                     >
                         <Edit 
                             fontSize="small"

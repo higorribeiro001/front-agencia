@@ -1,75 +1,47 @@
 "use client"
 
 import { Autocomplete, Button, IconButton, TextField } from "@mui/material";
-import { Base } from "../../../components/Base/layout";
+import { Base } from "../../components/Base/layout";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
 import { farmsFormat } from "@/app/service/api/farms";
-import sexo from "@/data/sexo.json";
-import { putWeighing, weighing } from "@/app/service/api/weighings";
-import WeighingAdapt from "@/app/service/adapt/WeighingAdapt";
+import motivo from "@/data/motivo_baixa.json";
+import { postEarringDrop } from "@/app/service/api/earringDrop";
+import { earringsFormat } from "@/app/service/api/earrings";
 
-export default function EditWeighing({ params }: { params: Promise<{ id: string }> }) {
+export default function RegisterEarring() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const resolvedParams = React.use(params);
-
-    const formFields = new FormBuilder()
-        .addTextField('data_pesagem', 'Data de Pesagem *', 'date')
+    const formFields = new FormBuilder()  
+        .addTextField('brinco', 'Brinco *', 'select')
+        .addTextField('data', 'Data *', 'date')
         .addTextField('fazenda', 'Fazenda *', 'select')
-        .addTextField('total_kg', 'Total (Kg) *', 'text')
-        .addTextField('qtd_bois', 'Qtd. bois *', 'text')
-        .addTextField('valor', 'Valor *', 'text')
+        .addTextField('lote', 'Lote *', 'text')
+        .addTextField('proprietario', 'Proprietário *', 'text')
+        .addTextField('motivo_baixa', 'Motivo baixa *', 'select')
+        .addTextField('descricao', 'Descrição *', 'text')
+        .addTextField('kg_saida', 'Kg saída *', 'text')
+        .addTextField('valor_saida', 'Valor saída *', 'text')
+        .addTextField('valor_entrada', 'Valor de Entrada *', 'text')
         .build();
-  
+
     const [isLoading, setIsLoading] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
-
-    useEffect(() => {
-      setIsLoading(true);
-      
-      const getWeighing = async () => {
-        const dataWeighing: WeighingInterface | undefined = await weighing(resolvedParams.id);
-        const weighingAdapt = new WeighingAdapt(dataWeighing!);
-
-        const cochoData = weighingAdapt.externalWeighingAdapt;
-
-        setModel((prevModel) => {
-          const updateModel = [...prevModel];
-
-          updateModel[0].value = cochoData?.data_pesagem;
-          updateModel[1].value = cochoData?.fazenda.fazenda;
-          updateModel[2].value = String(cochoData?.total_kg).replace('.', ',');
-          updateModel[3].value = String(cochoData?.qtd_bois);
-          updateModel[4].value = String(cochoData?.valor).replace('.', ',');
-
-          return updateModel;
-        });
-
-        setIsLoading(false);
-      }
-
-      getWeighing();
-    }, [params]);
-
-    const getFarmFormat = async () => {
-        const dataChocos: Model[] | undefined = await farmsFormat();
-
-        setOptionsFarms(dataChocos!);
-    }
-
-    useEffect(() => {
-        getFarmFormat();
-    }, []);
-
+    const [optionsEarring, setOptionsEarring] = useState<Model[]>([emptyOption]);
     const initModel = [
         {
             label: '',
-            name: 'data_pesagem',
+            name: 'brinco',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'data',
             value: '2001-12-31',
             error: '',
         },
@@ -81,23 +53,64 @@ export default function EditWeighing({ params }: { params: Promise<{ id: string 
         },
         {
             label: '',
-            name: 'total_kg',
+            name: 'lote',
             value: '',
             error: '',
         },
         {
             label: '',
-            name: 'qtd_bois',
+            name: 'proprietario',
             value: '',
             error: '',
         },
         {
             label: '',
-            name: 'valor',
+            name: 'motivo_baixa',
             value: '',
             error: '',
-        }
+        },
+        {
+            label: '',
+            name: 'descricao',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'kg_saida',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'valor_saida',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'valor_entrada',
+            value: '',
+            error: '',
+        },
     ];
+
+    const getFarmFormat = async () => {
+        const dataChocos: Model[] | undefined = await farmsFormat();
+
+        setOptionsFarms(dataChocos!);
+    }
+
+    const getEarringFormat = async () => {
+        const dataEarrings: Model[] | undefined = await earringsFormat();
+
+        setOptionsEarring(dataEarrings!);
+    }
+
+    useEffect(() => {
+        getFarmFormat();
+        getEarringFormat();
+    }, []);
 
     const [model, setModel] = useState(initModel);
 
@@ -106,6 +119,7 @@ export default function EditWeighing({ params }: { params: Promise<{ id: string 
     }
 
     const changeValues = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        e.preventDefault()
         setModel((prevModel) => {
           const updateModel = [...prevModel];
           updateModel[index].value = e.target.value;
@@ -119,13 +133,13 @@ export default function EditWeighing({ params }: { params: Promise<{ id: string 
     }
 
     const validator = (message: string, index: number) => {
-      if(index < 13) {
-        setModel((prevModel) => {
-          const updateModel = [...prevModel];
-          updateModel[index].error = message;
-          return updateModel;
-        });
-      }
+        if(index < 14) {
+          setModel((prevModel) => {
+            const updateModel = [...prevModel];
+            updateModel[index].error = message;
+            return updateModel;
+          });
+        }
     }
 
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -145,7 +159,8 @@ export default function EditWeighing({ params }: { params: Promise<{ id: string 
     
         setIsLoading(true);
     
-        EditWeighing();
+        registerEarring();
+    
       }
     
       const closeAlert = () => {
@@ -154,27 +169,32 @@ export default function EditWeighing({ params }: { params: Promise<{ id: string 
         }, 6000);
       }
     
-      const EditWeighing = async () => {
+      const registerEarring = async () => {
         try {
-          const response = await putWeighing(
+          const response = await postEarringDrop(
             { 
-              id: resolvedParams.id,
-              data_pesagem: model[0].value, 
-              fazenda: model[1].value,
-              total_kg: parseFloat(model[2].value.replace(',', '.')),
-              qtd_bois: parseInt(model[3].value),
-              valor: parseFloat(model[4].value.replace(',', '.'))
-          });
+              brinco: model[0].value, 
+              data: model[1].value,
+              fazenda: model[2].value,
+              lote: model[3].value,
+              proprietario: model[4].value, 
+              motivo_baixa: model[5].value,
+              descricao: model[6].value,
+              kg_saida: model[7].value,
+              valor_saida: parseFloat(model[8].value.replace(',', '.')),
+              valor_entrada: parseFloat(model[9].value.replace(',', '.')),
+            });
     
-          if (response.status === 200) {
+          if (response.status === 201) {
             setOpenAlert(true);
-            setMessageAlert('Editado com sucesso!');
+            setMessageAlert('Registrado com sucesso!');
             setIsSuccess(true);
+            cleanFields();
             closeAlert();
           }
         } catch (e: unknown) {
           const error = e as StatusResponse;
-          if (error.response && error.response.status === 422) {
+          if (error.response.status === 422) {
             setOpenAlert(true);
             setMessageAlert('Preencha todos os campos obrigatórios.');
             setIsSuccess(false);
@@ -184,7 +204,6 @@ export default function EditWeighing({ params }: { params: Promise<{ id: string 
             setOpenAlert(true);
             setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
             setIsSuccess(false);
-            console.log(e)
     
             closeAlert();
           }
@@ -195,44 +214,44 @@ export default function EditWeighing({ params }: { params: Promise<{ id: string 
 
     return (
         <Base 
-          title="Edição de pesagem"
+          title="Cadastro de Baixa de Brinco"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
         >
-              <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
-                  <Loading 
-                    isOpen={isLoading}
-                  />
-                  <div className="flex flex-row w-full justify-between z-10 relative">
-                      <IconButton href="/weighings">
-                        <ArrowBack className="text-black2" />
-                      </IconButton>
-                      <Button 
-                          className="font-semibold w-[200px] h-[56px] z-10 relative"
-                          variant="contained"
-                          type="button"
-                          color="error"
-                          onClick={cleanFields}
-                      >
-                          Limpar campos
-                      </Button>
-                  </div>
-                  <span className="font-semibold text-black2">
-                      * Campos obrigatórios.
-                  </span>
-                  <form 
-                      className="flex flex-col gap-10 w-full" 
-                      onSubmit={submitForm}
+          <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
+              <Loading 
+                isOpen={isLoading}
+              />
+              <div className="flex flex-row w-full justify-between z-10 relative">
+                  <IconButton href="/earring-drop" className="text-[var(--black2)]">
+                    <ArrowBack />
+                  </IconButton>
+                  <Button 
+                      className="font-semibold w-[200px] h-[56px] z-10 relative"
+                      variant="contained"
+                      type="button"
+                      color="error"
+                      onClick={cleanFields}
                   >
-                    <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                      {formFields.map((value, index: number) => (
+                      Limpar campos
+                  </Button>
+              </div>
+              <span className="font-semibold text-[var(--black2)]">
+                  * Campos obrigatórios.
+              </span>
+              <form 
+                  className="flex flex-col gap-10 w-full" 
+                  onSubmit={submitForm}
+              >
+                  <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
+                    {formFields
+                        .map((value, index) => ( 
                           value.type === 'select' ? (
                             <Autocomplete
                                 key={index}
                                 disablePortal
-                                disabled={value.name === 'unidade_id'}
-                                options={value.name === 'fazenda' ? optionsFarms : sexo}
+                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'brinco' ? optionsEarring : motivo}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {
@@ -314,28 +333,28 @@ export default function EditWeighing({ params }: { params: Promise<{ id: string 
                                 />
                               )
                       ))}
-                    </div>
-                    <div className="flex flex-row justify-between">
-                          <Button 
-                            className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
-                            variant="contained"
-                            type="button"
-                            href="/weighings"
-                            style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
-                          >
-                              Cancelar
-                          </Button>
-                          <Button 
-                              className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                              variant="contained"
-                              type="submit"
-                              sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
-                          >
-                              Enviar
-                          </Button>
-                    </div>
-                </form>
-            </div>
+                  </div>
+                  <div className="flex flex-row justify-between gap-2">
+                    <Button 
+                        className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
+                        variant="contained"
+                        type="button"
+                        href="/earring-drop"
+                        style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button 
+                        className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                        variant="contained"
+                        type="submit"
+                        style={{background: "#031B17", color: "#FFFFFF"}}
+                    >
+                        Enviar
+                    </Button>
+                  </div>
+              </form>
+          </div>
         </Base>
     );
 }

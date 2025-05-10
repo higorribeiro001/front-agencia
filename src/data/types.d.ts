@@ -827,6 +827,56 @@ interface EarringsInterface {
     count: string;
 }
 
+interface EarringDropInterface {
+    id: string;
+    brinco: EarringInterface;
+    data: string;
+    fazenda: FarmInterface;  
+    lote: string;
+    proprietario: string;
+    motivo_baixa: string;
+    descricao: string;
+    kg_saida: string;
+    valor_saida: number;
+    valor_entrada: number;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface EarringDropRegisterInterface {
+    brinco: string;
+    data: string;
+    fazenda: string;  
+    lote: string;
+    proprietario: string;
+    motivo_baixa: string;
+    descricao: string;
+    kg_saida: string;
+    valor_saida: number;
+    valor_entrada: number;
+}
+
+interface EarringDropEditInterface {
+    id: string;
+    brinco: string;
+    data: string;
+    fazenda: string;  
+    lote: string;
+    proprietario: string;
+    motivo_baixa: string;
+    descricao: string;
+    kg_saida: string;
+    valor_saida: number;
+    valor_entrada: number;
+}
+
+interface EarringDropsInterface {
+    previous: number;
+    results: EarringDropInterface[];
+    next: number;
+    count: string;
+}
+
 interface InputProductInterface {
     id: string;
     fornecedor: SupplierInterface;

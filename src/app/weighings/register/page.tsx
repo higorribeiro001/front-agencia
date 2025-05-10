@@ -29,7 +29,7 @@ export default function RegisterWeighing() {
         {
             label: '',
             name: 'data_pesagem',
-            value: '',
+            value: '2001-12-31',
             error: '',
         },
         {

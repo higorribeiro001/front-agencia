@@ -1,0 +1,26 @@
+[
+    {
+        "label": "Consumo interno",
+        "value": "Consumo interno",
+        "name": "",        
+        "error": ""
+    },
+    {
+        "label": "Morte",
+        "value": "Morte",
+        "name": "",        
+        "error": ""
+    },
+    {
+        "label": "Permuta",
+        "value": "Permuta",
+        "name": "",        
+        "error": ""
+    },
+    {
+        "label": "Venda",
+        "value": "Venda",
+        "name": "",        
+        "error": ""
+    }
+]
