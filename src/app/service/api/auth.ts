@@ -9,7 +9,7 @@ const configAuth = () => {
         headers: { 
             'Accept': 'application/json', 
             'Authorization': 'Bearer '+token, 
-            // "ngrok-skip-browser-warning": "69420",
+            "ngrok-skip-browser-warning": true,
         }}
 }
 
@@ -29,7 +29,7 @@ export async function login(email: string, password: string) {
 export async function me() {
     try {
         const response: { data: UserInterface, status: number } = await axios.get(url+'auth/api/v1/profile', configAuth());
-    
+        console.log(response.data)
         if (response.status === 200) {
             setCookie('role', response.data.role);
             return response.data;

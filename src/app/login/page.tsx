@@ -10,7 +10,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import React, { ChangeEvent, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import FormBuilder from "../service/forms/FormBuilder";
-import { login, me } from "../service/api/auth";
+import { login } from "../service/api/auth";
 import AlertApp from "../components/AlertApp";
 import { useRouter } from "next/navigation";
 
@@ -100,10 +100,7 @@ export default function Login() {
         setIsSuccess(true);
         
         closeAlert();
-        const user = await me();
-        if (user) {
-          router.replace(user.role === 'admin' ? '/farm' : `${user.role}`);
-        }
+        router.replace('/farm');
       }
     } catch (e: unknown) {
       const error = e as StatusResponse;
