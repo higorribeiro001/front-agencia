@@ -4,7 +4,7 @@ import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const configAuth = () => {
     const token = getCookie('access');
-    return {headers: { 'Accept': 'application/json', 'Authorization': 'Bearer '+token, "ngrok-skip-browser-warning": true}}
+    return {headers: { 'Accept': 'application/json', 'Authorization': 'Bearer '+token, "ngrok-skip-browser-warning": "69420"}}
 }
 
 export async function logistics(page: number, unidade_id: string) {
