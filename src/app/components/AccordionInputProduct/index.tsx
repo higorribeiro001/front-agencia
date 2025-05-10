@@ -10,7 +10,7 @@ export function AccordionInputProduct({id, fornecedor, n_nf, produto, lote, un, 
 
     return (
         <div className="animate-fade-up w-full lg:w-[32%]">
-            <Accordion className="p-2 bg-[var(--card)] text-[var(--foreground)]">
+            <Accordion className="p-2 bg-[var(--card)] text-[var(--foreground)]" sx={{ bgcolor: 'var(--card)' }}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel3-content"
