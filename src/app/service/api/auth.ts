@@ -9,7 +9,7 @@ const configAuth = () => {
         headers: { 
             'Accept': 'application/json', 
             'Authorization': 'Bearer '+token, 
-            // "ngrok-skip-browser-warning": true,
+            "ngrok-skip-browser-warning": true,
         }}
 }
 
