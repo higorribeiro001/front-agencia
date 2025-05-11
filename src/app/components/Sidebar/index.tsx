@@ -39,6 +39,8 @@ export default function Sidebar() {
     const [isOpenChilds4, setIsOpenChilds4] = useState(false);
 
     const handleOpenOptions = (option: string) => {
+        setIsExpanded(true);
+
         if (option === '/product') {
             setIsOpenChilds1(!isOpenChilds1);
         }

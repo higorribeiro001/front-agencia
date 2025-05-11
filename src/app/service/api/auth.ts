@@ -13,12 +13,20 @@ const configAuth = () => {
         }}
 }
 
+const bodyLogout = () => {
+    const refresh = getCookie('refresh');
+    return {
+        refresh: refresh
+    };
+}
+
 export async function login(email: string, password: string) {
     const response: { data: { access: string, refresh: string }, status: number } = await axios.post(url+'auth/api/v1/login/', { email, password }, config);
 
     if (response.status === 200) {
         deleteCookie('statusMe');
         setCookie('access', response.data['access']);
+        setCookie('refresh', response.data['refresh']);
         const user = await me();
         setCookie('role', user?.role);
     } 
@@ -28,7 +36,7 @@ export async function login(email: string, password: string) {
 
 export async function me() {
     try {
-        const response: { data: UserInterface, status: number } = await axios.get(url+'auth/api/v1/profile', configAuth());
+        const response: { data: UserInterface, status: number } = await axios.get(url+'auth/api/v1/profile/', configAuth());
         console.log(response.data)
         if (response.status === 200) {
             setCookie('role', response.data.role);
@@ -46,10 +54,11 @@ export async function me() {
 }
 
 export async function logout() {
-    const response: { status: number } = await axios.post(url+'auth/api/v1/logout', configAuth());
+    const response: { status: number } = await axios.post(url+'auth/api/v1/logout/', bodyLogout(), configAuth());
 
     if (response.status === 200) {
         deleteCookie('access');
+        deleteCookie('refresh');
         deleteCookie('role');
         window.location.reload();
     }
