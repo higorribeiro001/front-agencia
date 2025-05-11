@@ -197,7 +197,7 @@ export default function RegisterPackaging() {
                         className="border-[1px] border-solid font-semibold w-[200px] h-[56px]"
                         variant="contained"
                         type="button"
-                        sx={{ bgcolor: 'var(--background)', color: 'var(--black2)', borderColor: 'var(--black2)' }}
+                        sx={{ bgcolor: 'var(--background)', color: 'var(--black2)', border: 'var(--black2) 1px solid' }}
                         href="/packaging"
                         
                     >
