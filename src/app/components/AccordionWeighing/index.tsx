@@ -50,11 +50,11 @@ export function AccordionWeighing({id, data_pesagem, fazenda, total_kg, qtd_bois
                     >
                         <Edit 
                             fontSize="small"
-                            color="inherit" 
+                            sx={{ color: 'var(--black2)' }} 
                         /> 
                         <Typography 
                             className="font-semibold text-[16px]"
-                            color="inherit"
+                            sx={{ color: 'var(--black2)' }}
                         >
                             Editar
                         </Typography>

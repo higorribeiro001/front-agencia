@@ -67,11 +67,11 @@ export function AccordionOutputProduct({id, data_movimentacao, fazenda, produto,
                     >
                         <Edit 
                             fontSize="small"
-                            color="inherit" 
+                            sx={{ color: 'var(--black2)' }} 
                         /> 
                         <Typography 
                             className="font-semibold text-[16px]"
-                            color="inherit"
+                            sx={{ color: 'var(--black2)' }}
                         >
                             Editar
                         </Typography>

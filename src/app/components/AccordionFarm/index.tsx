@@ -38,11 +38,11 @@ export function AccordionFarm({id, fazenda, area_ha, qtd_animais}: FarmInterface
                     >
                         <Edit 
                             fontSize="small"
-                            color="inherit" 
+                            sx={{ color: 'var(--black2)' }} 
                         /> 
                         <Typography 
                             className="font-semibold text-[16px]"
-                            color="inherit"
+                            sx={{ color: 'var(--black2)' }}
                         >
                             Editar
                         </Typography>

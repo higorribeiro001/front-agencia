@@ -21,7 +21,7 @@ import temaEscuro from '../../../../public/assets/tema-escuro.png';
 // import usuarios from "../../../../public/assets/usuarios.png";
 import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
-import { Divider, IconButton } from "@mui/material";
+import { Divider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { logout, me } from "@/app/service/api/auth";
 import AlertApp from "../AlertApp";
@@ -614,8 +614,9 @@ export default function Sidebar() {
             <div className="max-h-[800px] overflow-x-auto">
                 {optionsMenu?.map((value, index) => (
                     <div
-                        className={isExpanded ? "w-full transition-all flex flex-col" : "w-[33px] transition-all overflow-hidden"}
+                        className={isExpanded ? "w-full transition-all flex flex-col cursor-pointer" : "w-[33px] transition-all overflow-hidden cursor-pointer"}
                         key={index}
+                        onClick={() => handleOpenOptions(value.to)}
                     >
                         <div
                             className={String(pathname).includes(value.to) ? "flex flex-row uppercase p-1 rounded-md bg-secondary mb-2 justify-between items-center" : "flex flex-row uppercase p-1 mb-2 h-[32px] justify-between items-center"}
@@ -640,13 +641,9 @@ export default function Sidebar() {
                                     value.childs && (
                                         <div>
                                             {isOpenChilds1 ? (
-                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
-                                                    <KeyboardArrowUpIcon className="text-white" />
-                                                </IconButton>
+                                                <KeyboardArrowUpIcon className="text-white" />
                                             ) : (
-                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
-                                                    <KeyboardArrowDownIcon className="text-white" />
-                                                </IconButton>
+                                                <KeyboardArrowDownIcon className="text-white" />
                                             )}
                                         </div>
                                     )
@@ -654,13 +651,9 @@ export default function Sidebar() {
                                     value.childs && (
                                         <div>
                                             {isOpenChilds2 ? (
-                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
-                                                    <KeyboardArrowUpIcon className="text-white" />
-                                                </IconButton>
+                                                <KeyboardArrowUpIcon className="text-white" />
                                             ) : (
-                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
-                                                    <KeyboardArrowDownIcon className="text-white" />
-                                                </IconButton>
+                                                <KeyboardArrowDownIcon className="text-white" />
                                             )}
                                         </div>
                                     )
@@ -668,13 +661,9 @@ export default function Sidebar() {
                                     value.childs && (
                                         <div>
                                             {isOpenChilds4 ? (
-                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
-                                                    <KeyboardArrowUpIcon className="text-white" />
-                                                </IconButton>
+                                                <KeyboardArrowUpIcon className="text-white" />
                                             ) : (
-                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
-                                                    <KeyboardArrowDownIcon className="text-white" />
-                                                </IconButton>
+                                                <KeyboardArrowDownIcon className="text-white" />
                                             )}
                                         </div>
                                     )
@@ -682,13 +671,9 @@ export default function Sidebar() {
                                     value.childs && (
                                         <div>
                                             {isOpenChilds4 ? (
-                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
-                                                    <KeyboardArrowUpIcon className="text-white" />
-                                                </IconButton>
+                                                <KeyboardArrowUpIcon className="text-white" />
                                             ) : (
-                                                <IconButton onClick={() => handleOpenOptions(value.to)}>
-                                                    <KeyboardArrowDownIcon className="text-white" />
-                                                </IconButton>
+                                                <KeyboardArrowDownIcon className="text-white" />
                                             )}
                                         </div>
                                     )

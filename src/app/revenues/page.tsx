@@ -131,8 +131,9 @@ export default function Revenues() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
+                            sx={{ bgcolor: 'var(--primary)', color: 'var(--foreground)' }}
                             href="/revenues/register"
-                            style={{background: "#031B17", color: "#FFFFFF"}}
+                            
                         >
                             Novo
                         </Button>

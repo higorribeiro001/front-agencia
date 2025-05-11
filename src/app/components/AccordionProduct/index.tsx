@@ -36,11 +36,11 @@ export function AccordionProduct({id, insumo, tipo, destino}: ProductInterface) 
                     >
                         <Edit 
                             fontSize="small"
-                            color="inherit" 
+                            sx={{ color: 'var(--black2)' }} 
                         /> 
                         <Typography 
                             className="font-semibold text-[16px]"
-                            color="inherit"
+                            sx={{ color: 'var(--black2)' }}
                         >
                             Editar
                         </Typography>

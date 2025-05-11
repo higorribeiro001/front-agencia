@@ -5,7 +5,7 @@
 :root {
   --primary: #031B17;
   --secondaryMenu: #052520;
-  --background: #eee6e6;
+  --background: #FFFFFF;
   --foreground: #171717;
   --secondary: #0d5c4f;
   --black2: #020202;
@@ -14,8 +14,8 @@
 }
 
 .dark {
-  --primary: #031B17;
-  --secondaryMenu: #052520;
+  --primary: #04231d;
+  --secondaryMenu: #07332c;
   --background: #121212;
   --foreground: #FFFFFF;
   --secondary: #0d5c4f;

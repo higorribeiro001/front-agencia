@@ -24,14 +24,14 @@ export function AccordionApplicationPhase({id, fase_aplicacao, link}: Applicatio
                     >
                         <Edit 
                             fontSize="small"
-                            color="inherit" 
+                            sx={{ color: 'var(--black2)' }} 
                         /> 
-                        <Typography 
-                            className="font-semibold text-[16px]"
-                            color="inherit"
-                        >
-                            Editar
-                        </Typography>
+                            <Typography 
+                                className="font-semibold text-[16px]"
+                                sx={{ color: 'var(--black2)' }}
+                            >
+                                Editar
+                            </Typography>
                     </IconButton>
                 </AccordionActions>
             </Accordion>

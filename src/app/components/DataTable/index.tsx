@@ -38,7 +38,7 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                             variant="contained"
                             type="button"
                             href={hrefRegister}
-                            style={{background: "#031B17", color: "#FFFFFF"}}
+                            
                         >
                             Cadastrar
                         </Button>) : (
@@ -47,7 +47,7 @@ export const DataTable = ({handleSearch, rows, columns, isLoading, pages, handle
                             variant="contained"
                             type="button"
                             onClick={funcOpenDialog}
-                            style={{background: "#031B17", color: "#FFFFFF"}}
+                            
                         >
                             Cadastrar
                         </Button>

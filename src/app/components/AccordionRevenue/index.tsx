@@ -97,11 +97,11 @@ export function AccordionRevenue({id, data_vencimento, conta, data_pagamento, da
                     >
                         <Edit 
                             fontSize="small"
-                            color="inherit" 
+                            sx={{ color: 'var(--black2)' }} 
                         /> 
                         <Typography 
                             className="font-semibold text-[16px]"
-                            color="inherit"
+                            sx={{ color: 'var(--black2)' }}
                         >
                             Editar
                         </Typography>

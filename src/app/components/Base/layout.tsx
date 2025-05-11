@@ -26,7 +26,7 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
             <Sidebar />
             <div className="px-5 lg:px-10 py-5 overflow-auto flex flex-col justify-between w-full z-[1] gap-3">
                 <div className="flex flex-col animate-fade-left transition-all mb-8">
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-between gap-2">
                         <h1 className="text-black2 text-[24px] lg:text-[30px] font-semibold">FAZENDA SÃO JOSÉ</h1>
                         {uploadFile && (
                             <Button

@@ -1,21 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const protectedPageRoutes = [
-    '/home',
-    '/cariri',
+    '/application-phase',
+    '/chart-account',
     '/category',
     '/client',
+    '/cocho',
+    '/destination',
     '/driver',
-    '/home',
-    '/juazeiro',
+    '/earring-drop',
+    '/earrings',
+    '/earrings-drop',
+    '/expenses',
+    '/farm',
+    '/input-product',
+    '/output-product',
+    '/packaging',
     '/petrolina',
     '/plate',
+    '/products',
     '/profile',
-    '/route',
+    '/revenues',
     '/seller',
+    '/supplier',
     '/transport',
-    '/users',
+    '/type-products',
     '/vehicle',
+    '/weighings',
 ];
 
 // const adminPageRoutes = [

@@ -18,7 +18,7 @@ export const Breadcrumb = ({options}: BreadcrumbsInterface) => {
                     <Link 
                         key={index}
                         underline="hover" 
-                        color="inherit" 
+                        sx={{ color: 'var(--black2)' }} 
                         href={value.href}
                     >
                         {value.page}

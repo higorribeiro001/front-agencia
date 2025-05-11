@@ -212,7 +212,7 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
                   />
                   <div className="flex flex-row w-full justify-between z-10 relative">
                       <IconButton href="/profile">
-                        <ArrowBack color="inherit" />
+                        <ArrowBack sx={{ color: 'var(--black2)' }} />
                       </IconButton>
                       <Button 
                           className="font-semibold w-[200px] h-[56px] z-10 relative"
@@ -266,13 +266,13 @@ export default function EditUser({ params }: { params: Promise<{ id: string }> }
                       <div className="my-3 pl-3 flex flex-row gap-1">
                         <Link href={`/profile/reset-password/${resolvedParams.id}`}>Trocar senha?</Link>
                       </div>
-                      <div className="flex flex-row justify-between">
+                      <div className="flex flex-row justify-between gap-2">
                             <Button 
-                              className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
+                              className="border-[1px] border-solid font-semibold w-[200px] h-[56px]"
                               variant="contained"
                               type="button"
                               href="/profile"
-                              style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
+                              
                             >
                                 Cancelar
                             </Button>

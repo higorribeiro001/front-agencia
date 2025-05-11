@@ -279,11 +279,12 @@ export default function RegisterProduct() {
                   </div>
                   <div className="flex flex-row justify-between gap-2">
                     <Button 
-                        className="bg-white border-[1px] border-solid border-gray-600 z-[1] text-gray-600 font-semibold w-[200px] h-[56px]"
+                        className="border-[1px] border-solid font-semibold w-[200px] h-[56px]"
                         variant="contained"
                         type="button"
+                        sx={{ bgcolor: 'var(--background)', color: 'var(--black2)', borderColor: 'var(--black2)' }}
                         href="/products"
-                        style={{background: "white", color: "#4B5563", border: "1px solid #4B5563"}}
+                        
                     >
                         Cancelar
                     </Button>
@@ -291,7 +292,7 @@ export default function RegisterProduct() {
                         className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
                         variant="contained"
                         type="submit"
-                        style={{background: "#031B17", color: "#FFFFFF"}}
+                        
                     >
                         Enviar
                     </Button>

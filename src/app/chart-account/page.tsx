@@ -131,8 +131,9 @@ export default function ChartAccount() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
+                            sx={{ bgcolor: 'var(--primary)', color: 'var(--foreground)' }}
                             href="/chart-account/register"
-                            style={{background: "#031B17", color: "#FFFFFF"}}
+                            
                         >
                             Novo
                         </Button>
