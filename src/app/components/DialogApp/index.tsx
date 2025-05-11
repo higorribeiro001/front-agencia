@@ -10,7 +10,7 @@ export const DialogApp = ({isOpen, title, content, func, handleClose}: DialogInt
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="alert-dialog-title" className="bg-card text-black2">
+            <DialogTitle id="alert-dialog-title" className="bg-card text-black2" sx={{ color: 'var(--black2)' }}>
                 {title}
             </DialogTitle>
             <DialogContent className="bg-card text-black2">
