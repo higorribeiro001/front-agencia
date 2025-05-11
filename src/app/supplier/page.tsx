@@ -131,7 +131,7 @@ export default function Supplier() {
                             className="bg-primary text-white font-semibold w-1/5 h-[56px]"
                             variant="contained"
                             type="button"
-                            sx={{ bgcolor: 'var(--primary)', color: 'var(--foreground)' }}
+                            sx={{ bgcolor: 'var(--primary)', color: '#FFFFFF' }}
                             href="/supplier/register"
                             
                         >

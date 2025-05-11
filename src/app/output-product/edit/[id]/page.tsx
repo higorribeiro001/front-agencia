@@ -358,7 +358,7 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
                             className="border-[1px] border-solid font-semibold w-[200px] h-[56px]"
                             variant="contained"
                             type="button"
-                            sx={{ bgcolor: 'var(--background)', color: 'var(--black2)', borderColor: 'var(--black2)' }}
+                            sx={{ bgcolor: 'var(--background)', color: 'var(--black2)', border: 'var(--black2) 1px solid' }}
                             href="/output-product"
                             
                           >
@@ -368,7 +368,7 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
                               className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
                               variant="contained"
                               type="submit"
-                              sx={{bgcolor: "#031B17", color: '#FFFFFF'}}
+                              sx={{bgcolor: "var(--primary)", color: '#FFFFFF'}}
                           >
                               Enviar
                           </Button>

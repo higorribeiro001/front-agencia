@@ -278,11 +278,11 @@ export default function RegisterChartAccount() {
                         Cancelar
                     </Button>
                     <Button 
-                        className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                        variant="contained"
-                        type="submit"
-                        
-                    >
+                              className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                              variant="contained"
+                              type="submit"
+                              sx={{bgcolor: "var(--primary)", color: '#FFFFFF'}}
+                          >
                         Enviar
                     </Button>
                   </div>
