@@ -10,6 +10,8 @@ import { farmsFormat } from "@/app/service/api/farms";
 import { earring, putEarring } from "@/app/service/api/earrings";
 import EarringAdapt from "@/app/service/adapt/EarringAdapt";
 import sexo from "@/data/sexo.json";
+import sim_nao from "@/data/sim_nao.json";
+import { ownersFormat } from "@/app/service/api/owners";
 
 export default function EditEarring({ params }: { params: Promise<{ id: string }> }) {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
@@ -17,14 +19,15 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
 
     const formFields = new FormBuilder()
         .addTextField('brinco', 'Brinco *', 'text')
-        .addTextField('proprietario', 'Proprietário *', 'text')
+        .addTextField('proprietario', 'Proprietário *', 'select')
         .addTextField('fazenda', 'Fazenda *', 'select')
         .addTextField('lote', 'Lote *', 'text')
         .addTextField('sexo', 'Sexo *', 'select')
         .addTextField('raca', 'Raça *', 'text')
         .addTextField('data_entrada', 'Data de Entrada *', 'date')
         .addTextField('valor_entrada', 'Valor de Entrada *', 'text')
-        .addTextField('perda_dados', 'Perda de Dados *', 'text')
+        .addTextField('kg_entrada', 'Kg de Entrada *', 'text')
+        .addTextField('perda_dados', 'Perda de Dados *', 'select')
         .build();
   
     const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +35,7 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
+    const [optionsOwners, setOptionsOwners] = useState<Model[]>([emptyOption]);
 
     useEffect(() => {
       setIsLoading(true);
@@ -46,7 +50,8 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
           const updateModel = [...prevModel];
 
           updateModel[0].value = cochoData?.brinco;
-          updateModel[1].value = cochoData?.proprietario;
+          updateModel[1].value = cochoData?.proprietario?.id ?? '';
+          updateModel[1].label = cochoData?.proprietario.proprietario;
           updateModel[2].value = cochoData?.fazenda.id ?? '';
           updateModel[2].label = cochoData?.fazenda.fazenda;
           updateModel[3].value = cochoData?.lote;
@@ -55,7 +60,8 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
           updateModel[5].value = cochoData?.raca;
           updateModel[6].value = cochoData?.data_entrada;
           updateModel[7].value = String(cochoData?.valor_entrada).replace('.', ',');
-          updateModel[8].value = cochoData?.perda_dados;
+          updateModel[8].value = String(cochoData?.kg_entrada).replace('.', ',');
+          updateModel[9].value = cochoData?.perda_dados;
 
           return updateModel;
         });
@@ -72,8 +78,15 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
         setOptionsFarms(dataChocos!);
     }
 
+    const getOwnerFormat = async () => {
+        const dataOwners: Model[] | undefined = await ownersFormat();
+
+        setOptionsOwners(dataOwners!);
+    }
+
     useEffect(() => {
         getFarmFormat();
+        getOwnerFormat();
     }, []);
 
     const initModel = [
@@ -122,6 +135,12 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
         {
             label: '',
             name: 'valor_entrada',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'kg_entrada',
             value: '',
             error: '',
         },
@@ -201,7 +220,8 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
               raca: model[5].value,
               data_entrada: model[6].value,
               valor_entrada: parseFloat(model[7].value.replace(',', '.')),
-              perda_dados: model[8].value
+              kg_entrada: parseFloat(model[8].value.replace(',', '.')),
+              perda_dados: model[9].value
           });
     
           if (response.status === 200) {
@@ -270,7 +290,7 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
                                 key={index}
                                 disablePortal
                                 disabled={value.name === 'unidade_id'}
-                                options={value.name === 'fazenda' ? optionsFarms : sexo}
+                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'proprietario' ? optionsOwners : value.name === 'perda_dados' ? sim_nao : sexo}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {

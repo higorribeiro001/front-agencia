@@ -18,12 +18,9 @@ export default function RegisterEarring() {
         .addTextField('data', 'Data *', 'date')
         .addTextField('fazenda', 'Fazenda *', 'select')
         .addTextField('lote', 'Lote *', 'text')
-        .addTextField('proprietario', 'Proprietário *', 'text')
         .addTextField('motivo_baixa', 'Motivo baixa *', 'select')
-        .addTextField('descricao', 'Descrição *', 'text')
         .addTextField('kg_saida', 'Kg saída *', 'text')
         .addTextField('valor_saida', 'Valor saída *', 'text')
-        .addTextField('valor_entrada', 'Valor de Entrada *', 'text')
         .build();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -59,19 +56,7 @@ export default function RegisterEarring() {
         },
         {
             label: '',
-            name: 'proprietario',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
             name: 'motivo_baixa',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'descricao',
             value: '',
             error: '',
         },
@@ -84,12 +69,6 @@ export default function RegisterEarring() {
         {
             label: '',
             name: 'valor_saida',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'valor_entrada',
             value: '',
             error: '',
         },
@@ -177,12 +156,9 @@ export default function RegisterEarring() {
               data: model[1].value,
               fazenda: model[2].value,
               lote: model[3].value,
-              proprietario: model[4].value, 
-              motivo_baixa: model[5].value,
-              descricao: model[6].value,
-              kg_saida: model[7].value,
-              valor_saida: parseFloat(model[8].value.replace(',', '.')),
-              valor_entrada: parseFloat(model[9].value.replace(',', '.')),
+              motivo_baixa: model[4].value,
+              kg_saida: model[5].value,
+              valor_saida: parseFloat(model[6].value.replace(',', '.')),
             });
     
           if (response.status === 201) {

@@ -6,66 +6,66 @@ import React, { useEffect, useState } from "react";
 import { Search } from "@mui/icons-material";
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Loading } from "../components/Loading";
-import { earringDrop, earringDrops, earringDropsFormat } from "../service/api/earringDrop";
-import EarringDropsAdapt from "../service/adapt/EarringDropsAdapt";
-import EarringDropAdapt from "../service/adapt/EarringDropAdapt";
-import { AccordionEarringDrop } from "../components/AccordionEarringDrop";
+import { owner, owners, ownersFormat } from "../service/api/owners";
+import OwnerAdapt from "../service/adapt/OwnerAdapt";
+import OwnersAdapt from "../service/adapt/OwnersAdapt";
+import { AccordionOwner } from "../components/AccordionOwner";
 
-export default function Earrings() {
+export default function Owner() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const [rowsEarring, setRowsEarring] = useState<EarringDropInterface[]>([]);
+    const [rowsOwner, setRowsOwner] = useState<OwnerInterface[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [earringSelected, setEarringSelected] = useState<Model>(emptyOption);
-    const [countEarrings, setCountEarrings] = useState(0);
-    const [optionsEarring, setOptionsEarrings] = useState<Model[]>([emptyOption]);
+    const [ownerSelected, setOwnerSelected] = useState<Model>(emptyOption);
+    const [countOwners, setCountOwners] = useState(0);
+    const [optionsowners, setOptionsOwners] = useState<Model[]>([emptyOption]);
 
-    const getEarring = async (id: string) => {
-        const dataEarring = await earringDrop(id);
-        const earringAdapt = new EarringDropAdapt(dataEarring!);
-        setRowsEarring([earringAdapt.externalEarringDropAdapt])
+    const getOwner = async (id: string) => {
+        const dataOwner = await owner(id);
+        const ownerAdapt = new OwnerAdapt(dataOwner!);
+        setRowsOwner([ownerAdapt.externalOwnerAdapt])
     }
 
     useEffect(() => {
-        if (earringSelected.value != "") {
-            getEarring(earringSelected.value);
+        if (ownerSelected.value != "") {
+            getOwner(ownerSelected.value);
         } else {
             setCurrentPage(1);
-            getEarrings();
+            getOwners();
         }
-    }, [earringSelected]);
+    }, [ownerSelected]);
 
-    const getEarrings = async () => {
-        const dataEarrings = await earringDrops(currentPage ?? 1);
-        if (dataEarrings?.status === 200) {
-            const earringsAdapt = new EarringDropsAdapt(dataEarrings.data);
-            const dataEarring = earringsAdapt.externalEarringDropsAdapt;
-            setRowsEarring(prev => {
+    const getOwners = async () => {
+        const dataOwners = await owners(currentPage ?? 1);
+        if (dataOwners?.status === 200) {
+            const ownerssAdapt = new OwnersAdapt(dataOwners.data);
+            const dataOwner = ownerssAdapt.externalOwnersAdapt;
+            setRowsOwner(prev => {
                 const newIds = new Set(prev.map(item => item.id));
-                const filtered = dataEarring.results.filter(item => !newIds.has(item.id));
+                const filtered = dataOwner.results.filter(item => !newIds.has(item.id));
                 return [...prev, ...filtered];
             });
-            setCountEarrings(parseInt(dataEarring.count));
+            setCountOwners(parseInt(dataOwner.count));
         }
         setIsLoading(false);    
     }
 
-    const getEarringsFormat = async () => {
-        const dataEearrings: Model[] | undefined = await earringDropsFormat();
+    const getOwnersFormat = async () => {
+        const dataOwners: Model[] | undefined = await ownersFormat();
 
-        setOptionsEarrings(dataEearrings!);
+        setOptionsOwners(dataOwners!);
     }
 
     useEffect(() => {
         setIsLoading(true);
 
-        getEarringsFormat();
-        getEarrings();
+        getOwnersFormat();
+        getOwners();
     }, [currentPage]);
 
     return (
         <Base
-            title="baixa de brinco"
+            title="Proprietário"
         >
             <div className="animate-fade-left">
                 <Loading 
@@ -75,17 +75,17 @@ export default function Earrings() {
                     <div className="w-full lg:w-2/3 flex flex-row justify-between gap-5 mt-7 mb-8">
                         <Autocomplete
                             disablePortal
-                            options={optionsEarring || []}
+                            options={optionsowners || []}
                             className="w-4/5"
-                            value={earringSelected}
+                            value={ownerSelected}
                             onChange={(event, newValue) => {
                                 if (newValue) {
-                                    setEarringSelected(newValue);
+                                    setOwnerSelected(newValue);
                                 }
                             }}
                             onInputChange={(event, inputValue, reason) => {
                                 if (reason === 'clear' || inputValue === '') {
-                                    setEarringSelected(emptyOption);
+                                    setOwnerSelected(emptyOption);
                                 }
                             }}
                             isOptionEqualToValue={(option, value) => option?.value === value?.value}
@@ -132,29 +132,29 @@ export default function Earrings() {
                             variant="contained"
                             type="button"
                             sx={{ bgcolor: 'var(--primary)', color: '#FFFFFF' }}
-                            href="/earring-drop/register"
+                            href="/owner/register"
                             
                         >
                             Novo
                         </Button>
                     </div>
                 </div>
-                {countEarrings > 0 ? 
+                {countOwners > 0 ?
                     <div className="flex flex-wrap gap-3 w-full h-full">
-                        {rowsEarring.map((value, index) => (
-                            <AccordionEarringDrop key={index} id={value.id} brinco={value.brinco} fazenda={value.fazenda} lote={value.lote} data={value.data} motivo_baixa={value.motivo_baixa} kg_saida={value.kg_saida} valor_saida={value.valor_saida} />
+                        {rowsOwner.map((value, index) => (
+                            <AccordionOwner key={index} id={value.id} proprietario={value.proprietario} />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">
-                        <p>Nenhuma baixa de brinco cadastrado.</p>
+                        <p>Nenhuma proprietário cadastrada.</p>
                     </div>
                 }
-                {countEarrings > rowsEarring.length && (
+                {countOwners > rowsOwner.length && (
                     <div className="flex flex-col w-full justify-content items-center mt-5">
                         <IconButton onClick={() => setCurrentPage(currentPage+1)}>
                             <ReplayIcon className="text-black2" />
                         </IconButton>
-                        <span className="text-black2">Carregar mais baixas de brincos</span>
+                        <span className="text-black2">Carregar mais proprietários</span>
                     </div>
                 )}
             </div>

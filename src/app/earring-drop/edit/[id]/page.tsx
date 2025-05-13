@@ -21,12 +21,9 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
         .addTextField('data', 'Data *', 'date')
         .addTextField('fazenda', 'Fazenda *', 'select')
         .addTextField('lote', 'Lote *', 'text')
-        .addTextField('proprietario', 'Proprietário *', 'text')
         .addTextField('motivo_baixa', 'Motivo baixa *', 'select')
-        .addTextField('descricao', 'Descrição *', 'text')
         .addTextField('kg_saida', 'Kg saída *', 'text')
         .addTextField('valor_saida', 'Valor saída *', 'text')
-        .addTextField('valor_entrada', 'Valor de Entrada *', 'text')
         .build();
   
     const [isLoading, setIsLoading] = useState(false);
@@ -54,13 +51,10 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
           updateModel[2].value = cochoData?.fazenda.id ?? '';
           updateModel[2].label = cochoData?.fazenda.fazenda;
           updateModel[3].value = cochoData?.lote;
-          updateModel[4].value = cochoData?.proprietario;
-          updateModel[5].value = cochoData?.motivo_baixa;
-          updateModel[5].label = cochoData?.motivo_baixa;
-          updateModel[6].value = cochoData?.descricao;
-          updateModel[7].value = String(cochoData?.kg_saida).replace('.', ',');
-          updateModel[8].value = String(cochoData?.valor_saida).replace('.', ',');
-          updateModel[9].value = String(cochoData?.valor_entrada).replace('.', ',');
+          updateModel[4].value = cochoData?.motivo_baixa;
+          updateModel[4].label = cochoData?.motivo_baixa;
+          updateModel[5].value = String(cochoData?.kg_saida).replace('.', ',');
+          updateModel[6].value = String(cochoData?.valor_saida).replace('.', ',');
 
           return updateModel;
         });
@@ -115,19 +109,7 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
         },
         {
             label: '',
-            name: 'proprietario',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
             name: 'motivo_baixa',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'descricao',
             value: '',
             error: '',
         },
@@ -140,12 +122,6 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
         {
             label: '',
             name: 'valor_saida',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'valor_entrada',
             value: '',
             error: '',
         },
@@ -215,12 +191,9 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
               data: model[1].value,
               fazenda: model[2].value,
               lote: model[3].value,
-              proprietario: model[4].value, 
-              motivo_baixa: model[5].value,
-              descricao: model[6].value,
-              kg_saida: model[7].value,
-              valor_saida: parseFloat(model[8].value.replace(',', '.')),
-              valor_entrada: parseFloat(model[9].value.replace(',', '.')),
+              motivo_baixa: model[4].value,
+              kg_saida: model[5].value,
+              valor_saida: parseFloat(model[6].value.replace(',', '.')),
           });
     
           if (response.status === 200) {

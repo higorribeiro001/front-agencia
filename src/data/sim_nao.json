@@ -2,11 +2,13 @@
     {
         "label": "sim",
         "value": "sim",
+        "name": "",
         "error": ""
     },
     {
         "label": "não",
         "value": "não",
+        "name": "",
         "error": ""
     }
 ]

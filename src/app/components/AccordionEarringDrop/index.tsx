@@ -2,7 +2,7 @@ import { Edit } from "@mui/icons-material";
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, IconButton, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export function AccordionEarringDrop({id, brinco, data, fazenda, lote, proprietario, motivo_baixa, descricao, kg_saida, valor_saida, valor_entrada}: EarringDropInterface) {
+export function AccordionEarringDrop({id, brinco, data, fazenda, lote, motivo_baixa, kg_saida, valor_saida}: EarringDropInterface) {
     const convertDate = (isoDate: string) => {
         const [year, month, day] = isoDate.split('-');
         return `${day}/${month}/${year}`;
@@ -23,12 +23,6 @@ export function AccordionEarringDrop({id, brinco, data, fazenda, lote, proprieta
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Proprietário:</h3>
-                            <p>{proprietario}</p>
-                        </div>
-                    </div>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Data:</h3>
@@ -55,12 +49,6 @@ export function AccordionEarringDrop({id, brinco, data, fazenda, lote, proprieta
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Descrição:</h3>
-                            <p>{descricao}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Kg saída:</h3>
                             <p>{String(kg_saida).replace('.', ',')}</p>
                         </div>
@@ -69,12 +57,6 @@ export function AccordionEarringDrop({id, brinco, data, fazenda, lote, proprieta
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Valor saída:</h3>
                             <p>{String(valor_saida).replace('.', ',')}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Valor de Entrada:</h3>
-                            <p>{String(valor_entrada).replace('.', ',')}</p>
                         </div>
                     </div>
                 </AccordionDetails>
