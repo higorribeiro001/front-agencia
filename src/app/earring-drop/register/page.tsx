@@ -19,6 +19,7 @@ export default function RegisterEarring() {
         .addTextField('fazenda', 'Fazenda *', 'select')
         .addTextField('lote', 'Lote *', 'text')
         .addTextField('motivo_baixa', 'Motivo baixa *', 'select')
+        .addTextField('descricao', 'Descrição *', 'text')
         .addTextField('kg_saida', 'Kg saída *', 'text')
         .addTextField('valor_saida', 'Valor saída *', 'text')
         .build();
@@ -57,6 +58,12 @@ export default function RegisterEarring() {
         {
             label: '',
             name: 'motivo_baixa',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'descricao',
             value: '',
             error: '',
         },
@@ -157,8 +164,9 @@ export default function RegisterEarring() {
               fazenda: model[2].value,
               lote: model[3].value,
               motivo_baixa: model[4].value,
-              kg_saida: model[5].value,
-              valor_saida: parseFloat(model[6].value.replace(',', '.')),
+              descricao: model[5].value,
+              kg_saida: model[6].value,
+              valor_saida: parseFloat(model[7].value.replace(',', '.')),
             });
     
           if (response.status === 201) {

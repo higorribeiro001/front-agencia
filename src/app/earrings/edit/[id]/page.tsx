@@ -56,7 +56,7 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
           updateModel[2].label = cochoData?.fazenda.fazenda;
           updateModel[3].value = cochoData?.lote;
           updateModel[4].value = cochoData?.sexo;
-          updateModel[4].label = cochoData?.sexo;
+          updateModel[4].label = sexo.filter((item) => item.value === cochoData?.sexo)[0].label;
           updateModel[5].value = cochoData?.raca;
           updateModel[6].value = cochoData?.data_entrada;
           updateModel[7].value = String(cochoData?.valor_entrada).replace('.', ',');

@@ -26,7 +26,7 @@ export function AccordionEarringOriginal({id, brinco, proprietario, fazenda, lot
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Proprietário:</h3>
-                            <p>{proprietario.proprietario}</p>
+                            <p>{proprietario?.proprietario ?? ''}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">

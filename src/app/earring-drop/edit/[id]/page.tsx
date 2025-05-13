@@ -22,6 +22,7 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
         .addTextField('fazenda', 'Fazenda *', 'select')
         .addTextField('lote', 'Lote *', 'text')
         .addTextField('motivo_baixa', 'Motivo baixa *', 'select')
+        .addTextField('descricao', 'Descrição *', 'text')
         .addTextField('kg_saida', 'Kg saída *', 'text')
         .addTextField('valor_saida', 'Valor saída *', 'text')
         .build();
@@ -53,8 +54,9 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
           updateModel[3].value = cochoData?.lote;
           updateModel[4].value = cochoData?.motivo_baixa;
           updateModel[4].label = cochoData?.motivo_baixa;
-          updateModel[5].value = String(cochoData?.kg_saida).replace('.', ',');
-          updateModel[6].value = String(cochoData?.valor_saida).replace('.', ',');
+          updateModel[5].value = cochoData?.descricao;
+          updateModel[6].value = String(cochoData?.kg_saida).replace('.', ',');
+          updateModel[7].value = String(cochoData?.valor_saida).replace('.', ',');
 
           return updateModel;
         });
@@ -110,6 +112,12 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
         {
             label: '',
             name: 'motivo_baixa',
+            value: '',
+            error: '',
+        },
+        {
+            label: '',
+            name: 'descricao',
             value: '',
             error: '',
         },
@@ -192,8 +200,9 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
               fazenda: model[2].value,
               lote: model[3].value,
               motivo_baixa: model[4].value,
-              kg_saida: model[5].value,
-              valor_saida: parseFloat(model[6].value.replace(',', '.')),
+              descricao: model[5].value,
+              kg_saida: model[6].value,
+              valor_saida: parseFloat(model[7].value.replace(',', '.')),
           });
     
           if (response.status === 200) {

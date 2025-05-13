@@ -860,6 +860,7 @@ interface EarringDropInterface {
     fazenda: FarmInterface;  
     lote: string;
     motivo_baixa: string;
+    descricao: string;
     kg_saida: string;
     valor_saida: number;
     data_criacao?: string;
@@ -872,6 +873,7 @@ interface EarringDropRegisterInterface {
     fazenda: string;  
     lote: string;
     motivo_baixa: string;
+    descricao: string;
     kg_saida: string;
     valor_saida: number;
 }
@@ -883,6 +885,7 @@ interface EarringDropEditInterface {
     fazenda: string;  
     lote: string;
     motivo_baixa: string;
+    descricao: string;
     kg_saida: string;
     valor_saida: number;
 }
