@@ -13,6 +13,7 @@ import embalagem from '../../../../public/assets/embalagem.png';
 import produto from '../../../../public/assets/produto.png';
 import financeiro from '../../../../public/assets/financeiro.png';
 import brinco from '../../../../public/assets/brinco.png';
+import proprietario from '../../../../public/assets/proprietario.png';
 import pesagem from '../../../../public/assets/pesagem.png';
 import estoque from '../../../../public/assets/estoque.png';
 import contas from '../../../../public/assets/contas.png';
@@ -230,6 +231,15 @@ export default function Sidebar() {
                     to: '/expenses',
                 }
             ]
+        },
+        {
+            icon: <Image
+                className="w-[25px] h-[25px]" 
+                src={proprietario} 
+                alt="logo"     
+            />,
+            title: 'Proprietário',
+            to: '/owner',
         },
         {
             icon: <Image

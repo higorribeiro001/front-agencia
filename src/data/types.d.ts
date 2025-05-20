@@ -783,13 +783,14 @@ interface ChartAccountsInterface {
 interface EarringInterface {
     id: string;
     brinco: string;
-    proprietario: string;
+    proprietario: OwnerInterface;
     fazenda: FarmInterface;  
     lote: string;
     sexo: string;
     raca: string;
     data_entrada: string;
     valor_entrada: number;
+    kg_entrada: number;
     perda_dados: string;
     data_criacao?: string;
     data_edicao?: string;
@@ -804,6 +805,7 @@ interface EarringRegisterInterface {
     raca: string;
     data_entrada: string;
     valor_entrada: number;
+    kg_entrada: number;
     perda_dados: string;
 }
 
@@ -817,6 +819,7 @@ interface EarringEditInterface {
     raca: string;
     data_entrada: string;
     valor_entrada: number;
+    kg_entrada: number;
     perda_dados: string;
 }
 
@@ -827,18 +830,39 @@ interface EarringsInterface {
     count: string;
 }
 
+interface OwnerInterface {
+    id: string;
+    proprietario: string;
+    data_criacao?: string;
+    data_edicao?: string;
+}
+
+interface OwnerRegisterInterface {
+    proprietario: string;
+}
+
+interface OwnerEditInterface {
+    id: string;
+    proprietario: string;
+}
+
+interface OwnersInterface {
+    previous: number;
+    results: OwnerInterface[];
+    next: number;
+    count: string;
+}
+
 interface EarringDropInterface {
     id: string;
     brinco: EarringInterface;
     data: string;
     fazenda: FarmInterface;  
     lote: string;
-    proprietario: string;
     motivo_baixa: string;
     descricao: string;
     kg_saida: string;
     valor_saida: number;
-    valor_entrada: number;
     data_criacao?: string;
     data_edicao?: string;
 }
@@ -848,12 +872,10 @@ interface EarringDropRegisterInterface {
     data: string;
     fazenda: string;  
     lote: string;
-    proprietario: string;
     motivo_baixa: string;
     descricao: string;
     kg_saida: string;
     valor_saida: number;
-    valor_entrada: number;
 }
 
 interface EarringDropEditInterface {
@@ -862,12 +884,10 @@ interface EarringDropEditInterface {
     data: string;
     fazenda: string;  
     lote: string;
-    proprietario: string;
     motivo_baixa: string;
     descricao: string;
     kg_saida: string;
     valor_saida: number;
-    valor_entrada: number;
 }
 
 interface EarringDropsInterface {

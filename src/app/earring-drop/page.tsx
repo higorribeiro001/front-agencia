@@ -142,7 +142,7 @@ export default function Earrings() {
                 {countEarrings > 0 ? 
                     <div className="flex flex-wrap gap-3 w-full h-full">
                         {rowsEarring.map((value, index) => (
-                            <AccordionEarringDrop key={index} id={value.id} brinco={value.brinco} fazenda={value.fazenda} proprietario={value.proprietario} lote={value.lote} data={value.data} motivo_baixa={value.motivo_baixa} descricao={value.descricao} valor_entrada={value.valor_entrada} kg_saida={value.kg_saida} valor_saida={value.valor_saida} />
+                            <AccordionEarringDrop key={index} id={value.id} brinco={value.brinco} descricao={value.descricao} fazenda={value.fazenda} lote={value.lote} data={value.data} motivo_baixa={value.motivo_baixa} kg_saida={value.kg_saida} valor_saida={value.valor_saida} />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">

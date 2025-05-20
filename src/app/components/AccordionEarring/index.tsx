@@ -2,7 +2,7 @@ import { Edit } from "@mui/icons-material";
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, IconButton, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export function AccordionEarringOriginal({id, brinco, proprietario, fazenda, lote, sexo, raca, data_entrada, valor_entrada, perda_dados}: EarringInterface) {
+export function AccordionEarringOriginal({id, brinco, proprietario, fazenda, lote, sexo, raca, data_entrada, valor_entrada, kg_entrada, perda_dados}: EarringInterface) {
     const convertDate = (isoDate: string) => {
         const [year, month, day] = isoDate.split('-');
         return `${day}/${month}/${year}`;
@@ -26,7 +26,7 @@ export function AccordionEarringOriginal({id, brinco, proprietario, fazenda, lot
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Proprietário:</h3>
-                            <p>{proprietario}</p>
+                            <p>{proprietario?.proprietario ?? ''}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
@@ -63,6 +63,12 @@ export function AccordionEarringOriginal({id, brinco, proprietario, fazenda, lot
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Valor de Entrada:</h3>
                             <p>{String(valor_entrada).replace('.', ',')}</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-2 w-full">
+                        <div className="flex flex-row gap-1">
+                            <h3 className="font-semibold">Kg de Entrada:</h3>
+                            <p>{String(kg_entrada).replace('.', ',')}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">

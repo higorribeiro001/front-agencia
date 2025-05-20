@@ -1,13 +1,13 @@
 [
     {
-        "label": "Masculino",
-        "value": "Masculino",
+        "label": "Macho",
+        "value": "Macho",
         "name": "",        
         "error": ""
     },
     {
-        "label": "Feminino",
-        "value": "Feminino",
+        "label": "Fêmea",
+        "value": "Fêmea",
         "name": "",        
         "error": ""
     }
