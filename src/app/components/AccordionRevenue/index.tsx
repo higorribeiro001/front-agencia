@@ -16,10 +16,11 @@ export function AccordionRevenue({id, data_vencimento, conta, data_pagamento, da
                     aria-controls="panel3-content"
                     id="panel3-header"
                 >
-                    <div className="flex flex-row items-center gap-3 overflow-hidden">
+                    <div className="flex flex-col gap-3 overflow-hidden">
                         <h2 className="text-[16px] lg:text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[190px] lg:w-full">
                             {descricao}
                         </h2>
+                        <p>Data vencimento: {convertDate(data_vencimento ?? '')}</p>
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -73,20 +74,14 @@ export function AccordionRevenue({id, data_vencimento, conta, data_pagamento, da
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Data Vencimento:</h3>
-                            <p>{convertDate(data_vencimento)}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Data Pagamento:</h3>
-                            <p>{convertDate(data_pagamento)}</p>
+                            <p>{convertDate(data_pagamento ?? '')}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Data Registro:</h3>
-                            <p>{convertDate(data_registro)}</p>
+                            <p>{convertDate(data_registro ?? '')}</p>
                         </div>
                     </div>
                 </AccordionDetails>
