@@ -86,7 +86,7 @@ export function AccordionExpense({id, data_vencimento, conta, data_pagamento, da
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Data Pagamento:</h3>
-                            <p>{convertDate(data_pagamento ?? '')}</p>
+                            <p>{convertDate(data_pagamento)}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
