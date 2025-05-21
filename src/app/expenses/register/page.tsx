@@ -7,7 +7,7 @@ import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
 import { farmsFormat } from "@/app/service/api/farms";
-import { chartAccountsFormat, chartIdAccountsFormat } from "@/app/service/api/chartAccount";
+import { chartAccountsFormat } from "@/app/service/api/chartAccount";
 import grupo from "@/data/grupo.json";
 import { postExpense } from "@/app/service/api/expenses";
 
@@ -16,9 +16,8 @@ export default function RegisterExpense() {
     const formFields = new FormBuilder()  
         .addTextField('data_registro', 'Data do Registro *', 'date')
         .addTextField('fazenda', 'Fazenda *', 'select')
-        .addTextField('grupo', 'Grupo *', 'text')
+        .addTextField('grupo', 'Grupo *', 'select')
         .addTextField('conta', 'Conta *', 'select')
-        .addTextField('id_pc', 'ID PC *', 'select')
         .addTextField('nota_fiscal', 'Nota Fiscal *', 'text')
         .addTextField('descricao', 'Descrição *', 'text')
         .addTextField('observacao', 'Observação *', 'text')
@@ -26,7 +25,7 @@ export default function RegisterExpense() {
         .addTextField('data_vencimento', 'Data de Vencimento *', 'date')
         .addTextField('data_pagamento', 'Data de Pagamento *', 'date')
         .addTextField('valor_total', 'R$ Valor Total *', 'text')
-        .addTextField('valor_pago', 'R$ Valor Pago *', 'text')
+        .addTextField('val,or_pago', 'R$ Valor Pago *', 'text')
         .build();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +34,6 @@ export default function RegisterExpense() {
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
     const [optionsAccount, setOptionsAccounts] = useState<Model[]>([emptyOption]);
-    const [optionsIdAccount, setOptionsIdAccounts] = useState<Model[]>([emptyOption]);
     const initModel = [
         {
             label: '',
@@ -58,12 +56,6 @@ export default function RegisterExpense() {
         {
             label: '',
             name: 'conta',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'id_pc',
             value: '',
             error: '',
         },
@@ -123,25 +115,23 @@ export default function RegisterExpense() {
         setOptionsFarms(dataFarms!);
     }
 
-    const getAccountsFormat = async () => {
-      const dataAccounts: Model[] | undefined = await chartAccountsFormat();
+    const getAccountsFormat = async (value?: string) => {
+      const dataAccounts: Model[] | undefined = await chartAccountsFormat(value ?? '');
 
       setOptionsAccounts(dataAccounts!);
-    }
-
-    const getIdAccountsFormat = async () => {
-      const dataIdAccounts: Model[] | undefined = await chartIdAccountsFormat();
-
-      setOptionsIdAccounts(dataIdAccounts!);
     }
 
     useEffect(() => {
         getFarmFormat();
         getAccountsFormat();
-        getIdAccountsFormat();
     }, []);
 
+    
     const [model, setModel] = useState(initModel);
+    
+    useEffect(() => {
+      getAccountsFormat(model[2].value);
+    }, [model[2].value]);
 
     const cleanFields = () => {
       setModel(initModel);
@@ -204,17 +194,15 @@ export default function RegisterExpense() {
             { 
               data_registro: model[0].value, 
               fazenda: model[1].value, 
-              grupo: model[2].value,
               conta: model[3].value,
-              id_pc: model[4].value,
-              nota_fiscal: model[5].value,
-              descricao: model[6].value,
-              observacao: model[7].value,
-              numero_boleto: model[8].value,
-              data_vencimento: model[9].value,
-              data_pagamento: model[10].value,
-              valor_total: parseFloat(model[11].value.replace(',', '.')),
-              valor_pago: parseFloat(model[12].value.replace(',', '.')),
+              nota_fiscal: model[4].value,
+              descricao: model[5].value,
+              observacao: model[6].value,
+              numero_boleto: model[7].value,
+              data_vencimento: model[8].value,
+              data_pagamento: model[9].value,
+              valor_total: parseFloat(model[10].value.replace(',', '.')),
+              valor_pago: parseFloat(model[11].value.replace(',', '.')),
             });
     
           if (response.status === 201) {
@@ -283,7 +271,7 @@ export default function RegisterExpense() {
                             <Autocomplete
                                 key={index}
                                 disablePortal
-                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'conta' ? optionsAccount : value.name === 'id_pc' ? optionsIdAccount : grupo}
+                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'conta' ? optionsAccount : grupo}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {

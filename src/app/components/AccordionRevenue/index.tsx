@@ -2,7 +2,7 @@ import { Edit } from "@mui/icons-material";
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, IconButton, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export function AccordionRevenue({id, data_vencimento, conta, data_pagamento, data_registro, descricao, fazenda, grupo, id_pc, nota_fiscal, numero_boleto, valor_recebido, valor_total}: RevenueInterface) {
+export function AccordionRevenue({id, data_vencimento, conta, data_pagamento, data_registro, descricao, fazenda, nota_fiscal, numero_boleto, valor_recebido, valor_total}: RevenueInterface) {
     const convertDate = (isoDate: string) => {
         const [year, month, day] = isoDate.split('-');
         return `${day}/${month}/${year}`;
@@ -32,20 +32,8 @@ export function AccordionRevenue({id, data_vencimento, conta, data_pagamento, da
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">ID PC:</h3>
-                            <p>{id_pc}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Fazenda:</h3>
                             <p>{fazenda.fazenda}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">Grupo:</h3>
-                            <p>{grupo}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">
@@ -81,7 +69,7 @@ export function AccordionRevenue({id, data_vencimento, conta, data_pagamento, da
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Data Registro:</h3>
-                            <p>{convertDate(data_registro ?? '')}</p>
+                            <p>{data_registro ? convertDate(data_registro) : ''}</p>
                         </div>
                     </div>
                 </AccordionDetails>

@@ -2,7 +2,7 @@ import { Edit } from "@mui/icons-material";
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, IconButton, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export function AccordionExpense({id, data_vencimento, conta, data_pagamento, data_registro, descricao, observacao, fazenda, grupo, id_pc, nota_fiscal, numero_boleto, valor_total, valor_pago}: ExpenseInterface) {
+export function AccordionExpense({id, data_vencimento, conta, data_pagamento, data_registro, descricao, observacao, fazenda, nota_fiscal, numero_boleto, valor_total, valor_pago}: ExpenseInterface) {
     const convertDate = (isoDate: string) => {
         const [year, month, day] = isoDate.split('-');
         return `${day}/${month}/${year}`;
@@ -31,12 +31,6 @@ export function AccordionExpense({id, data_vencimento, conta, data_pagamento, da
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">ID PC:</h3>
-                            <p>{id_pc}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Fazenda:</h3>
                             <p>{fazenda.fazenda}</p>
                         </div>
@@ -44,7 +38,7 @@ export function AccordionExpense({id, data_vencimento, conta, data_pagamento, da
                     <div className="flex flex-col gap-2 w-full">
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Grupo:</h3>
-                            <p>{grupo}</p>
+                            <p>{conta.grupo}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2 w-full">

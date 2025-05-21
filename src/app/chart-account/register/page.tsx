@@ -8,12 +8,13 @@ import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
 import { postChartAccount } from "@/app/service/api/chartAccount";
 import tiposPlano from "@/data/tipos_plano_contas.json";
+import grupo from "@/data/grupo.json";
 
 export default function RegisterChartAccount() {
     const formFields = new FormBuilder()  
         .addTextField('id_contas', 'ID de Contas *', 'text')
         .addTextField('tipo', 'Tipo *', 'select')
-        .addTextField('grupo', 'Grupo *', 'text')
+        .addTextField('grupo', 'Grupo *', 'select')
         .addTextField('descricao', 'Descrição *', 'text')
         .build();
 
@@ -183,7 +184,7 @@ export default function RegisterChartAccount() {
                                 key={index}
                                 disablePortal
                                 disabled={value.name === 'unidade_id'}
-                                options={tiposPlano}
+                                options={value.name === 'tipo' ? tiposPlano : grupo}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {

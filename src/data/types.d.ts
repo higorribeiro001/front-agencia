@@ -1012,9 +1012,7 @@ interface RevenueInterface {
     id: string;
     data_registro: string;
     fazenda: FarmInterface;
-    grupo: string;
     conta: ChartAccountInterface;
-    id_pc: string;
     nota_fiscal: string;
     descricao: string;
     numero_boleto: string;
@@ -1029,9 +1027,7 @@ interface RevenueInterface {
 interface RevenueRegisterInterface {
     data_registro: string;
     fazenda: string;
-    grupo: string;
     conta: string;
-    id_pc: string;
     nota_fiscal: string;
     descricao: string;
     numero_boleto: string;
@@ -1045,9 +1041,7 @@ interface RevenueEditInterface {
     id: string;
     data_registro: string;
     fazenda: string;
-    grupo: string;
     conta: string;
-    id_pc: string;
     nota_fiscal: string;
     descricao: string;
     numero_boleto: string;
@@ -1068,9 +1062,7 @@ interface ExpenseInterface {
     id: string;
     data_registro: string;
     fazenda: FarmInterface;
-    grupo: string;
     conta: ChartAccountInterface;
-    id_pc: string;
     nota_fiscal: string;
     descricao: string;
     observacao: string;
@@ -1086,9 +1078,7 @@ interface ExpenseInterface {
 interface ExpenseRegisterInterface {
     data_registro: string;
     fazenda: string;
-    grupo: string;
     conta: string;
-    id_pc: string;
     nota_fiscal: string;
     descricao: string;
     observacao: string;
@@ -1103,9 +1093,7 @@ interface ExpenseEditInterface {
     id: string;
     data_registro: string;
     fazenda: string;
-    grupo: string;
     conta: string;
-    id_pc: string;
     nota_fiscal: string;
     descricao: string;
     observacao: string;

@@ -7,10 +7,10 @@ import FormBuilder from "@/app/service/forms/FormBuilder";
 import { Loading } from "@/app/components/Loading";
 import { ArrowBack } from "@mui/icons-material";
 import { farmsFormat } from "@/app/service/api/farms";
-import { applicationPhasesFormat } from "@/app/service/api/applicationPhase";
-import { productsFormat } from "@/app/service/api/products";
 import { putRevenue, revenue } from "@/app/service/api/revenues";
 import RevenueAdapt from "@/app/service/adapt/RevenueAdapt";
+import grupo from "@/data/grupo.json";
+import { chartAccountsFormat } from "@/app/service/api/chartAccount";
 
 export default function EditRevenue({ params }: { params: Promise<{ id: string }> }) {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
@@ -19,9 +19,8 @@ export default function EditRevenue({ params }: { params: Promise<{ id: string }
     const formFields = new FormBuilder()  
         .addTextField('data_registro', 'Data do Registro *', 'date')
         .addTextField('fazenda', 'Fazenda *', 'select')
-        .addTextField('grupo', 'Grupo *', 'text')
+        .addTextField('grupo', 'Grupo *', 'select')
         .addTextField('conta', 'Conta *', 'select')
-        .addTextField('id_pc', 'ID PC *', 'select')
         .addTextField('nota_fiscal', 'Nota Fiscal *', 'text')
         .addTextField('descricao', 'Descrição *', 'text')
         .addTextField('numero_boleto', 'N° Boleto *', 'text')
@@ -36,8 +35,7 @@ export default function EditRevenue({ params }: { params: Promise<{ id: string }
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
-    const [optionsProducts, setOptionsProducts] = useState<Model[]>([emptyOption]);
-    const [optionsApplicationPhase, setOptionsApplicationPhase] = useState<Model[]>([emptyOption]);
+    const [optionsAccount, setOptionsAccounts] = useState<Model[]>([emptyOption]);
 
     useEffect(() => {
       setIsLoading(true);
@@ -51,20 +49,20 @@ export default function EditRevenue({ params }: { params: Promise<{ id: string }
         setModel((prevModel) => {
           const updateModel = [...prevModel];
 
-          updateModel[0].value = revenueData.data_registro;
+          updateModel[0].value = revenueData.data_registro ?? '';
           updateModel[1].value = revenueData.fazenda.id ?? '';
           updateModel[1].label = revenueData.fazenda.fazenda;
-          updateModel[2].value = revenueData.grupo;
+          updateModel[2].value = revenueData.conta.grupo;
+          updateModel[2].label = revenueData.conta.grupo;
           updateModel[3].value = revenueData.conta.id ?? '';
-          updateModel[3].label = revenueData.conta.descricao;
-          updateModel[4].value = revenueData.id_pc;
-          updateModel[5].value = revenueData.nota_fiscal;
-          updateModel[6].value = revenueData.descricao;
-          updateModel[7].value = revenueData.numero_boleto;
-          updateModel[8].value = revenueData.data_vencimento;
-          updateModel[9].value = revenueData.data_pagamento;
-          updateModel[10].value = revenueData.valor_recebido.toString().replace('.', ',');
-          updateModel[11].value = revenueData.valor_total.toString().replace('.', ',');
+          updateModel[3].label = revenueData.conta.id_contas;
+          updateModel[4].value = revenueData.nota_fiscal;
+          updateModel[5].value = revenueData.descricao;
+          updateModel[6].value = revenueData.numero_boleto;
+          updateModel[7].value = revenueData.data_vencimento;
+          updateModel[8].value = revenueData.data_pagamento;
+          updateModel[9].value = revenueData.valor_recebido.toString().replace('.', ',');
+          updateModel[10].value = revenueData.valor_total.toString().replace('.', ',');
 
           return updateModel;
         });
@@ -81,22 +79,15 @@ export default function EditRevenue({ params }: { params: Promise<{ id: string }
         setOptionsFarms(dataFarms!);
     }
 
-    const getProductFormat = async () => {
-      const dataProducts: Model[] | undefined = await productsFormat();
+    const getAccountsFormat = async (value?: string) => {
+      const dataAccounts: Model[] | undefined = await chartAccountsFormat(value ?? '');
 
-      setOptionsProducts(dataProducts!);
-    }
-
-    const getAplicationPhaseFormat = async () => {
-      const dataAplicationPhases: Model[] | undefined = await applicationPhasesFormat();
-
-      setOptionsApplicationPhase(dataAplicationPhases!);
+      setOptionsAccounts(dataAccounts!);
     }
 
     useEffect(() => {
         getFarmFormat();
-        getProductFormat();
-        getAplicationPhaseFormat();
+        getAccountsFormat();
     }, []);
 
     const initModel = [
@@ -121,12 +112,6 @@ export default function EditRevenue({ params }: { params: Promise<{ id: string }
         {
             label: '',
             name: 'conta',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'id_pc',
             value: '',
             error: '',
         },
@@ -175,6 +160,10 @@ export default function EditRevenue({ params }: { params: Promise<{ id: string }
     ];
 
     const [model, setModel] = useState(initModel);
+
+    useEffect(() => {
+      getAccountsFormat(model[2].value);
+    }, [model[2].value]);
 
     const cleanFields = () => {
       setModel(initModel);
@@ -236,16 +225,14 @@ export default function EditRevenue({ params }: { params: Promise<{ id: string }
               id: resolvedParams.id,
               data_registro: model[0].value, 
               fazenda: model[1].value, 
-              grupo: model[2].value,
               conta: model[3].value,
-              id_pc: model[4].value,
-              nota_fiscal: model[5].value,
-              descricao: model[6].value,
-              numero_boleto: model[7].value,
-              data_vencimento: model[8].value,
-              data_pagamento: model[9].value,
-              valor_recebido: parseFloat(model[10].value.replace(',', '.')),
-              valor_total: parseFloat(model[11].value.replace(',', '.')),
+              nota_fiscal: model[4].value,
+              descricao: model[5].value,
+              numero_boleto: model[6].value,
+              data_vencimento: model[7].value,
+              data_pagamento: model[8].value,
+              valor_recebido: parseFloat(model[9].value.replace(',', '.')),
+              valor_total: parseFloat(model[10].value.replace(',', '.')),
           });
     
           if (response.status === 200) {
@@ -314,7 +301,7 @@ export default function EditRevenue({ params }: { params: Promise<{ id: string }
                                 key={index}
                                 disablePortal
                                 disabled={value.name === 'unidade_id'}
-                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'produto' ? optionsProducts : optionsApplicationPhase}
+                                options={value.name === 'fazenda' ? optionsFarms : value.name === 'conta' ? optionsAccount : grupo}
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {

@@ -25,9 +25,9 @@ export async function chartAccounts(page: number) {
     }
 }
 
-export async function chartAccountsFormat() {
+export async function chartAccountsFormat(grupo: string) {
     try {
-        const response: { data: Model[], status: number } = await axios.get(url+`plano-contas/api/v1/itens/format/`, configAuth());
+        const response: { data: Model[], status: number } = await axios.post(url+`plano-contas/api/v1/itens/format/`, { grupo }, configAuth());
         return response.data;
     } catch(e: unknown) {
         const error = e as StatusResponse;

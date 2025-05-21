@@ -9,6 +9,7 @@ import { ArrowBack } from "@mui/icons-material";
 import tiposPlano from "@/data/tipos_plano_contas.json";
 import ChartAccountAdapt from "@/app/service/adapt/ChartAccountAdapt";
 import { chartAccount, putChartAccount } from "@/app/service/api/chartAccount";
+import grupo from "@/data/grupo.json";
 
 export default function EditChartAccount({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = React.use(params);
@@ -16,7 +17,7 @@ export default function EditChartAccount({ params }: { params: Promise<{ id: str
     const formFields = new FormBuilder()
       .addTextField('id_contas', 'ID de Contas *', 'text')
       .addTextField('tipo', 'Tipo *', 'select')
-      .addTextField('grupo', 'Grupo *', 'text')
+      .addTextField('grupo', 'Grupo *', 'select')
       .addTextField('descricao', 'Descrição *', 'text')
       .build();
   
@@ -212,7 +213,7 @@ export default function EditChartAccount({ params }: { params: Promise<{ id: str
                                 key={index}
                                 disablePortal
                                 disabled={value.name === 'unidade_id'}
-                                options={tiposPlano}
+                                options={value.name === 'tipo' ? tiposPlano : grupo }
                                 className="w-full lg:w-[49%]"
                                 value={model[index]} 
                                 onChange={(event, newValue) => {
