@@ -51,7 +51,7 @@ export default function ChartAccount() {
     }
 
     const getChartAccountsFormat = async () => {
-        const dataChartAccounts: Model[] | undefined = await chartAccountsFormat();
+        const dataChartAccounts: Model[] | undefined = await chartAccountsFormat('');
 
         setOptionsChartAccounts(dataChartAccounts!);
     }
