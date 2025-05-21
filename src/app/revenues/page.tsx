@@ -142,7 +142,7 @@ export default function Revenues() {
                 {countRevenues > 0 ? 
                     <div className="flex flex-wrap gap-3 w-full h-full">
                         {rowsRevenue.map((value, index) => (
-                            <AccordionRevenue key={index} id={value.id} data_vencimento={value.data_vencimento} data_pagamento={value.data_pagamento} data_registro={value.data_registro} conta={value.conta} id_pc={value.id_pc} descricao={value.descricao} fazenda={value.fazenda} grupo={value.grupo} nota_fiscal={value.nota_fiscal} numero_boleto={value.numero_boleto} valor_recebido={value.valor_recebido} valor_total={value.valor_total} />
+                            <AccordionRevenue key={index} id={value.id} data_vencimento={value.data_vencimento} data_pagamento={value.data_pagamento} data_registro={value.data_registro} conta={value.conta} descricao={value.descricao} fazenda={value.fazenda} nota_fiscal={value.nota_fiscal} numero_boleto={value.numero_boleto} valor_recebido={value.valor_recebido} valor_total={value.valor_total} />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">
