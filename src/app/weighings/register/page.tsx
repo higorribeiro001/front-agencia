@@ -25,11 +25,12 @@ export default function RegisterWeighing() {
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
+    const currentDate = new Date().toISOString().split('T')[0];
     const initModel = [
         {
             label: '',
             name: 'data_pesagem',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
         {

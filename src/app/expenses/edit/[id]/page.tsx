@@ -92,11 +92,13 @@ export default function EditExpense({ params }: { params: Promise<{ id: string }
         getAccountsFormat();
     }, []);
 
+    const currentDate = new Date().toISOString().split('T')[0];
+
     const initModel = [
         {
             label: '',
             name: 'data_registro',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
         {
@@ -150,13 +152,13 @@ export default function EditExpense({ params }: { params: Promise<{ id: string }
         {
             label: '',
             name: 'data_vencimento',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
         {
             label: '',
             name: 'data_pagamento',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
         {

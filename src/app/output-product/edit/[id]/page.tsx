@@ -90,11 +90,13 @@ export default function EditOutputProduct({ params }: { params: Promise<{ id: st
         getAplicationPhaseFormat();
     }, []);
 
+    const currentDate = new Date().toISOString().split('T')[0];
+
     const initModel = [
       {
           label: '',
           name: 'data_movimentacao',
-          value: '2001-12-31',
+          value: currentDate,
           error: '',
       },
       {

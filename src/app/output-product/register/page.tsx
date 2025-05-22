@@ -30,11 +30,12 @@ export default function RegisterOutputProduct() {
     const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
     const [optionsProducts, setOptionsProducts] = useState<Model[]>([emptyOption]);
     const [optionsApplicationPhase, setOptionsApplicationPhase] = useState<Model[]>([emptyOption]);
+    const currentDate = new Date().toISOString().split('T')[0];
     const initModel = [
         {
             label: '',
             name: 'data_movimentacao',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
         {

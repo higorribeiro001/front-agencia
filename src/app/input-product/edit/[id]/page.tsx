@@ -84,6 +84,8 @@ export default function EditInputProduct({ params }: { params: Promise<{ id: str
         getProductFormat();
     }, []);
 
+    const currentDate = new Date().toISOString().split('T')[0];
+
     const initModel = [
         {
             label: '',
@@ -136,7 +138,7 @@ export default function EditInputProduct({ params }: { params: Promise<{ id: str
         {
             label: '',
             name: 'data_vencimento',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
     ];

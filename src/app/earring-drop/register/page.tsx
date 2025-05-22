@@ -30,6 +30,7 @@ export default function RegisterEarring() {
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsFarms, setOptionsFarms] = useState<Model[]>([emptyOption]);
     const [optionsEarring, setOptionsEarring] = useState<Model[]>([emptyOption]);
+    const currentDate = new Date().toISOString().split('T')[0];
     const initModel = [
         {
             label: '',
@@ -40,7 +41,7 @@ export default function RegisterEarring() {
         {
             label: '',
             name: 'data',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
         {

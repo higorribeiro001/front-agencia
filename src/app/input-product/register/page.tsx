@@ -31,6 +31,7 @@ export default function RegisterInputProduct() {
     const [messageAlert, setMessageAlert] = useState('');
     const [optionsSuppliers, setOptionsSuppliers] = useState<Model[]>([emptyOption]);
     const [optionsProducts, setOptionsProducts] = useState<Model[]>([emptyOption]);
+    const currentDate = new Date().toISOString().split('T')[0];
     const initModel = [
         {
             label: '',
@@ -83,7 +84,7 @@ export default function RegisterInputProduct() {
         {
             label: '',
             name: 'data_vencimento',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
     ];

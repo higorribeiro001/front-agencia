@@ -89,6 +89,8 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
         getOwnerFormat();
     }, []);
 
+    const currentDate = new Date().toISOString().split('T')[0];
+
     const initModel = [
         {
             label: '',
@@ -129,7 +131,7 @@ export default function EditEarring({ params }: { params: Promise<{ id: string }
         {
             label: '',
             name: 'data_entrada',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
         {

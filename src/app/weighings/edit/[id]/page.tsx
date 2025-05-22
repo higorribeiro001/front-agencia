@@ -66,11 +66,13 @@ export default function EditWeighing({ params }: { params: Promise<{ id: string 
         getFarmFormat();
     }, []);
 
+    const currentDate = new Date().toISOString().split('T')[0];
+
     const initModel = [
         {
             label: '',
             name: 'data_pesagem',
-            value: '2001-12-31',
+            value: currentDate,
             error: '',
         },
         {
