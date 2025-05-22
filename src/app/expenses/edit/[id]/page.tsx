@@ -56,7 +56,7 @@ export default function EditExpense({ params }: { params: Promise<{ id: string }
           updateModel[2].value = expenseData.conta.grupo;
           updateModel[2].label = expenseData.conta.grupo;
           updateModel[3].value = expenseData.conta.id ?? '';
-          updateModel[3].label = expenseData.conta.id_contas;
+          updateModel[3].label = expenseData.conta.descricao;
           updateModel[4].value = expenseData.nota_fiscal;
           updateModel[5].value = expenseData.descricao;
           updateModel[6].value = expenseData.observacao;

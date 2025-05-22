@@ -55,7 +55,7 @@ export default function EditRevenue({ params }: { params: Promise<{ id: string }
           updateModel[2].value = revenueData.conta.grupo;
           updateModel[2].label = revenueData.conta.grupo;
           updateModel[3].value = revenueData.conta.id ?? '';
-          updateModel[3].label = revenueData.conta.id_contas;
+          updateModel[3].label = revenueData.conta.descricao;
           updateModel[4].value = revenueData.nota_fiscal;
           updateModel[5].value = revenueData.descricao;
           updateModel[6].value = revenueData.numero_boleto;
