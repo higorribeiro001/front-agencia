@@ -84,7 +84,7 @@ export default function Sidebar() {
     const optionsMenuAdmin: SidebarInterface[] = [
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={fazenda} 
                 alt="logo"     
             />,
@@ -93,7 +93,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={vaca} 
                 alt="logo"     
             />,
@@ -102,7 +102,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={fases} 
                 alt="logo"     
             />,
@@ -111,7 +111,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={fornecedor} 
                 alt="logo"     
             />,
@@ -120,7 +120,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={produto} 
                 alt="logo"     
             />,
@@ -158,7 +158,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={estoque} 
                 alt="logo"     
             />,
@@ -187,7 +187,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={embalagem} 
                 alt="logo"     
             />,
@@ -196,7 +196,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={contas} 
                 alt="logo"     
             />,
@@ -205,7 +205,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={financeiro} 
                 alt="logo"     
             />,
@@ -234,7 +234,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={proprietario} 
                 alt="logo"     
             />,
@@ -243,7 +243,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={brinco} 
                 alt="logo"     
             />,
@@ -272,7 +272,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={pesagem} 
                 alt="logo"     
             />,
@@ -293,7 +293,7 @@ export default function Sidebar() {
     const optionsMenuCariri: SidebarInterface[] = [
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={fazenda} 
                 alt="logo"     
             />,
@@ -302,7 +302,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -311,7 +311,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -320,7 +320,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -329,7 +329,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -338,7 +338,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -347,7 +347,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -356,7 +356,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -365,7 +365,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -377,7 +377,7 @@ export default function Sidebar() {
     const optionsMenuJuazeiro: SidebarInterface[] = [
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={fazenda} 
                 alt="logo"     
             />,
@@ -386,7 +386,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -395,7 +395,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -404,7 +404,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -413,7 +413,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -422,7 +422,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -431,7 +431,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -440,7 +440,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -449,7 +449,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -461,7 +461,7 @@ export default function Sidebar() {
     const optionsMenuPetrolina: SidebarInterface[] = [
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]"
                 src={fazenda} 
                 alt="logo"     
             />,
@@ -470,7 +470,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -479,7 +479,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -488,7 +488,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -497,7 +497,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -506,7 +506,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -515,7 +515,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -524,7 +524,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -533,7 +533,7 @@ export default function Sidebar() {
         },
         {
             icon: <Image
-                className="w-[25px] h-[25px]" 
+                className="w-[15px] h-[15px]" 
                 src={home} 
                 alt="logo"     
             />,
@@ -598,7 +598,7 @@ export default function Sidebar() {
     }, [role])
 
     return (
-        <div className={isExpanded ? "flex flex-col justify-between w-[300px] bg-primary h-screen px-4 py-6 overflow-hidden transition-all fixed lg:relative z-[999]" : "flex flex-col justify-between w-[72px] bg-primary h-screen px-4 py-6 overflow-hidden  transition-all"}>
+        <div className={isExpanded ? "flex flex-col justify-between w-[300px] bg-primary h-screen px-4 py-6 overflow-hidden transition-all fixed lg:relative z-[999]" : "flex flex-col justify-between items-center w-[105px] bg-primary h-screen px-4 py-6 overflow-hidden  transition-all"}>
             <DialogApp 
                 isOpen={openDialog}
                 title="Sair"
@@ -626,29 +626,48 @@ export default function Sidebar() {
             <div className="max-h-[800px] overflow-x-auto">
                 {optionsMenu?.map((value, index) => (
                     <div
-                        className={isExpanded ? "w-full transition-all flex flex-col cursor-pointer" : "w-[33px] transition-all overflow-hidden cursor-pointer"}
+                        className={isExpanded ? "w-full transition-all flex flex-col cursor-pointer" : "w-[58px] h-[52px] flex justify-center items-center transition-all overflow-hidden cursor-pointer"}
                         key={index}
                         onClick={() => handleOpenOptions(value.to)}
                     >
                         <div
-                            className={String(pathname).includes(value.to) ? "flex flex-row uppercase p-1 rounded-md bg-secondary mb-2 justify-between items-center" : "flex flex-row uppercase p-1 mb-2 h-[32px] justify-between items-center"}
+                            className={String(pathname).includes(value.to) ? "flex flex-row uppercase p-1 rounded-md bg-secondary mb-2 justify-between items-center" : "flex flex-row uppercase p-1 mb-2 justify-between items-center"}
                         >
                             {value.childs ? (
-                                <div className="flex items-center gap-2 h-[24px]">
+                                <div className={isExpanded 
+                                    ? "flex items-center gap-2 h-[24px]" 
+                                    : "flex flex-col items-center justify-center gap-1 py-2"}
+                                >
                                     {value.icon}
-                                    <p className="text-background font-medium text-white">{value.title}</p>
+                                    <p className={
+                                        isExpanded 
+                                            ? "text-background font-medium text-white" 
+                                            : "text-white text-[7px] text-center"
+                                    }>
+                                        {value.title}
+                                    </p>
                                 </div>
                             ) : (
                                 <Link 
                                     href={value.to}
                                 >
-                                    <div className="flex items-center gap-2 h-[24px]">
+                                    <div className={isExpanded 
+                                        ? "flex items-center gap-2 h-[24px]" 
+                                        : "flex w-[57px] rounded flex-col items-center justify-center gap-1 py-2"}
+                                    >
                                         {value.icon}
-                                        <p className="text-background font-medium text-white">{value.title}</p>
+                                        <p className={
+                                            isExpanded 
+                                                ? "text-background font-medium text-white" 
+                                                : "text-white text-[7px] text-center"
+                                        }>
+                                            {value.title}
+                                        </p>
                                     </div>
                                 </Link>
                             )}
-                            <div key={index}>
+                            {isExpanded && (
+                                <div key={index}>
                                 {value.to === '/product' ? (
                                     value.childs && (
                                         <div>
@@ -691,6 +710,7 @@ export default function Sidebar() {
                                     )
                                 )}
                             </div>
+                            )}
                         </div>
                         {value.to === '/product' && (
                             <div className={isOpenChilds1 ? "w-full h-[120px] transition-all flex-col bg-secondaryMenu px-6 py-2 mb-5 gap-2" : "h-0 p-0 transition-all flex-col bg-secondaryMenu m-0"}>
@@ -762,8 +782,9 @@ export default function Sidebar() {
             />
             <div className="flex flex-col">
                 <Divider className="bg-white" />
-                <div
-                    className={isExpanded ? "w-full transition-all" : "w-[30px] transition-all overflow-hidden"}
+                <div className="flex flex-col h-[120px] items-center">
+                {/* <div
+                    className={isExpanded ? "w-full transition-all" : "w-[58px] transition-all overflow-hidden"}
                 >
                     <div
                         className={ pathname === '/profile' ? "uppercase p-1 rounded-md bg-secondary mt-6 mb-2" : "uppercase p-1 mt-6 mb-2"}
@@ -771,54 +792,74 @@ export default function Sidebar() {
                         <Link 
                             href={'/profile'}
                         >
-                            <div className="flex gap-2 h-[24px]">
+                            <div className={isExpanded 
+                                ? "flex items-center gap-2 h-[24px]" 
+                                : "flex flex-col items-center justify-center gap-1 py-2"}
+                            >
                                 <Image
-                                    className="w-[25px] h-[25px]" 
+                                    className="w-[15px] h-[15px]" 
                                     src={perfil} 
                                     alt="logo"     
                                 />
-                                <p className="text-background font-medium text-white">PERFIL</p>
+                                <p className={
+                                    isExpanded 
+                                        ? "text-background font-medium text-white" 
+                                        : "text-white text-[7px] text-center"
+                                }>PERFIL</p>
                             </div>
                         </Link>
                     </div>
-                </div>
+                </div> */}
                 <div
-                    className={isExpanded ? "w-full transition-all mb-2" : "w-[30px] transition-all overflow-hidden mb-2"}
+                    className={isExpanded ? "w-full transition-all mb-2" : "w-[58px] transition-all overflow-hidden mb-2"}
                 >
                     <div
                         className="uppercase p-1"
                     >
                         <button 
-                            className="flex gap-2 h-[24px]"
+                            className={isExpanded 
+                                ? "flex items-center gap-2 h-[24px]" 
+                                : "flex flex-col items-center justify-center gap-1 py-2"}
                             onClick={toggleTheme}
                         >
                             <Image
-                                className="w-[25px] h-[25px]" 
+                                className="w-[15px] h-[15px]" 
                                 src={isDark ? temaClaro : temaEscuro} 
                                 alt="logo"     
                             />
-                            <p className="text-background font-medium text-white">{isDark ? 'MODO CLARO' : 'MODO ESCURO'}</p>
+                            <p className={
+                                isExpanded 
+                                    ? "text-background font-medium text-white" 
+                                    : "text-white text-[7px] text-center"
+                            }>{isDark ? 'MODO CLARO' : 'MODO ESCURO'}</p>
                         </button>
                     </div>
                 </div>
                 <div
-                    className={isExpanded ? "w-full transition-all" : "w-[30px] transition-all overflow-hidden"}
+                    className={isExpanded ? "w-full transition-all" : "w-[58px] transition-all overflow-hidden"}
                 >
                     <div
-                        className={ pathname === '/logout' ? "uppercase p-1 rounded-md bg-secondary" : "uppercase p-1"}
+                        className={ pathname === '/logout' ? "flex justify-center items-center uppercase p-1 rounded-md bg-secondary" : "flex justify-center items-center uppercase p-1"}
                     >
                         <button 
-                            className="flex gap-2 h-[24px]"
+                            className={isExpanded 
+                                ? "flex items-center gap-2 h-[24px]" 
+                                : "flex flex-col items-center justify-center gap-1 py-2"}
                             onClick={handleDialog}
                         >
                             <Image
-                                className="w-[25px] h-[25px]" 
+                                className="w-[15px] h-[15px]" 
                                 src={sair} 
                                 alt="logo"     
                             />
-                            <p className="text-background font-medium text-white">SAIR</p>
+                            <p className={
+                                isExpanded 
+                                    ? "text-background font-medium text-white" 
+                                    : "text-white text-[7px] text-center"
+                            }>SAIR</p>
                         </button>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
