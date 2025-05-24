@@ -20,7 +20,7 @@ import contas from '../../../../public/assets/contas.png';
 import temaClaro from '../../../../public/assets/tema-claro.png';
 import temaEscuro from '../../../../public/assets/tema-escuro.png';
 // import usuarios from "../../../../public/assets/usuarios.png";
-import perfil from "../../../../public/assets/perfil.png";
+// import perfil from "../../../../public/assets/perfil.png";
 import sair from "../../../../public/assets/sair.png";
 import { Divider } from "@mui/material";
 import { useEffect, useState } from "react";
