@@ -9,7 +9,8 @@ import { ArrowBack } from "@mui/icons-material";
 import { farmsFormat } from "@/app/service/api/farms";
 import motivo from "@/data/motivo_baixa.json";
 import { postEarringDrop } from "@/app/service/api/earringDrop";
-import { earringsFormat } from "@/app/service/api/earrings";
+import { earring, earringsFormat } from "@/app/service/api/earrings";
+import EarringAdapt from "@/app/service/adapt/EarringAdapt";
 
 export default function RegisterEarring() {
     const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
@@ -100,6 +101,31 @@ export default function RegisterEarring() {
     }, []);
 
     const [model, setModel] = useState(initModel);
+
+    useEffect(() => {
+      const getEarring = async () => {
+        const dataEarring: EarringInterface | undefined = await earring(model[0].value);
+        const earringAdapt = new EarringAdapt(dataEarring!);
+
+        const cochoData = earringAdapt.externalEarringAdapt;
+
+        setModel((prevModel) => {
+          const updateModel = [...prevModel];
+
+          updateModel[2].value = cochoData?.fazenda?.id ?? '';
+          updateModel[2].label = cochoData?.fazenda?.fazenda ?? '';
+          updateModel[3].value = cochoData?.lote ?? '';
+
+          return updateModel;
+        });
+
+        setIsLoading(false);
+      }
+
+      if (model[0].value) {
+        getEarring();
+      }
+    }, [model[0].value]);
 
     const cleanFields = () => {
       setModel(initModel);
