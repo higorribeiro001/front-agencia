@@ -18,7 +18,7 @@ export function AccordionEarringOriginal({id, brinco, proprietario, fazenda, lot
                 >
                     <div className="flex flex-row items-center gap-3 overflow-hidden">
                         <h2 className="text-[16px] lg:text-[22px] font-bold truncate whitespace-nowrap overflow-hidden w-[190px] lg:w-full">
-                            {brinco}
+                            {brinco} - {proprietario?.proprietario ?? ''}
                         </h2>
                     </div>
                 </AccordionSummary>

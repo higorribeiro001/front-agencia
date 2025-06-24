@@ -2,7 +2,7 @@ import { Edit } from "@mui/icons-material";
 import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, IconButton, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export function AccordionChartAccount({id, id_contas, tipo, grupo, descricao}: ChartAccountInterface) {
+export function AccordionChartAccount({id, tipo, grupo, descricao}: ChartAccountInterface) {
     return (
         <div className="animate-fade-up w-full lg:w-[32%]">
             <Accordion className="p-2 bg-[var(--card)] text-[var(--foreground)]" sx={{ bgcolor: 'var(--card)', color: 'var(--foreground)' }}>
@@ -19,10 +19,6 @@ export function AccordionChartAccount({id, id_contas, tipo, grupo, descricao}: C
                 </AccordionSummary>
                 <AccordionDetails>
                     <div className="flex flex-col gap-2 w-full">
-                        <div className="flex flex-row gap-1">
-                            <h3 className="font-semibold">ID de Contas:</h3>
-                            <p>{id_contas}</p>
-                        </div>
                         <div className="flex flex-row gap-1">
                             <h3 className="font-semibold">Tipo:</h3>
                             <p>{tipo}</p>

@@ -15,7 +15,6 @@ export default function EditChartAccount({ params }: { params: Promise<{ id: str
     const resolvedParams = React.use(params);
 
     const formFields = new FormBuilder()
-      .addTextField('id_contas', 'ID de Contas *', 'text')
       .addTextField('tipo', 'Tipo *', 'select')
       .addTextField('grupo', 'Grupo *', 'select')
       .addTextField('descricao', 'Descrição *', 'text')
@@ -38,11 +37,10 @@ export default function EditChartAccount({ params }: { params: Promise<{ id: str
         setModel((prevModel) => {
           const updateModel = [...prevModel];
 
-          updateModel[0].value = chartAccountData?.id_contas;
-          updateModel[1].label = chartAccountData?.tipo;
-          updateModel[1].value = chartAccountData?.tipo;
-          updateModel[2].value = chartAccountData?.grupo;
-          updateModel[3].value = chartAccountData?.descricao;
+          updateModel[0].label = chartAccountData?.tipo;
+          updateModel[0].value = chartAccountData?.tipo;
+          updateModel[1].value = chartAccountData?.grupo;
+          updateModel[2].value = chartAccountData?.descricao;
 
           return updateModel;
         });
@@ -54,12 +52,6 @@ export default function EditChartAccount({ params }: { params: Promise<{ id: str
     }, [params]);
 
     const initModel = [
-        {
-            label: '',
-            name: 'id_contas',
-            value: '',
-            error: '',
-        },
         {
             label: '',
             name: 'tipo',
@@ -141,10 +133,9 @@ export default function EditChartAccount({ params }: { params: Promise<{ id: str
           const response = await putChartAccount(
             { 
               id: resolvedParams.id,
-              id_contas: model[0].value, 
-              tipo: model[1].value, 
-              grupo: model[2].value, 
-              descricao: model[3].value, 
+              tipo: model[0].value, 
+              grupo: model[1].value, 
+              descricao: model[2].value, 
           });
     
           if (response.status === 200) {

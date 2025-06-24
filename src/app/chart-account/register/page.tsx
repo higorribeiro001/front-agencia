@@ -12,7 +12,6 @@ import grupo from "@/data/grupo.json";
 
 export default function RegisterChartAccount() {
     const formFields = new FormBuilder()  
-        .addTextField('id_contas', 'ID de Contas *', 'text')
         .addTextField('tipo', 'Tipo *', 'select')
         .addTextField('grupo', 'Grupo *', 'select')
         .addTextField('descricao', 'Descrição *', 'text')
@@ -23,12 +22,6 @@ export default function RegisterChartAccount() {
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
     const initModel = [
-        {
-            label: '',
-            name: 'id_contas',
-            value: '',
-            error: '',
-        },
         {
             label: '',
             name: 'tipo',
@@ -111,10 +104,9 @@ export default function RegisterChartAccount() {
         try {
           const response = await postChartAccount(
             { 
-              id_contas: model[0].value, 
-              tipo: model[1].value, 
-              grupo: model[2].value, 
-              descricao: model[3].value, 
+              tipo: model[0].value, 
+              grupo: model[1].value, 
+              descricao: model[2].value, 
             });
     
           if (response.status === 201) {

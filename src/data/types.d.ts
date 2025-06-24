@@ -750,7 +750,7 @@ interface ProductsInterface {
 
 interface ChartAccountInterface {
     id: string;
-    id_contas: string;    
+    // id_contas: string;    
     tipo: string;
     grupo: string;
     descricao: string;
@@ -759,7 +759,7 @@ interface ChartAccountInterface {
 }
 
 interface ChartAccountRegisterInterface {
-    id_contas: string;    
+    // id_contas: string;    
     tipo: string;
     grupo: string;
     descricao: string;
@@ -767,7 +767,7 @@ interface ChartAccountRegisterInterface {
 
 interface ChartAccountEditInterface {
     id: string;
-    id_contas: string;    
+    // id_contas: string;    
     tipo: string;
     grupo: string;
     descricao: string;

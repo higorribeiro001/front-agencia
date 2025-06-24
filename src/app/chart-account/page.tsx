@@ -142,7 +142,7 @@ export default function ChartAccount() {
                 {countChartAccounts > 0 ?
                     <div className="flex flex-wrap gap-3 w-full h-full">
                         {rowsChartAccount.map((value, index) => (
-                            <AccordionChartAccount key={index} id={value.id} id_contas={value.id_contas} tipo={value.tipo} grupo={value.grupo} descricao={value.descricao}  />
+                            <AccordionChartAccount key={index} id={value.id} tipo={value.tipo} grupo={value.grupo} descricao={value.descricao}  />
                         ))}
                     </div>
                     : <div className="flex w-full h-full justify-center items-center mt-16 text-black2">
