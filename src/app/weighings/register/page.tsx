@@ -17,7 +17,7 @@ export default function RegisterWeighing() {
         .addTextField('fazenda', 'Fazenda *', 'select')
         .addTextField('total_kg', 'Total (Kg) *', 'text')
         .addTextField('qtd_bois', 'Qtd. bois *', 'text')
-        .addTextField('valor', 'Valor *', 'text')
+        .addTextField('valor', 'Valor@   *', 'text')
         .build();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -166,7 +166,7 @@ export default function RegisterWeighing() {
 
     return (
         <Base 
-          title="Cadastro de Brinco"
+          title="Cadastro de Pesagem"
           openAlert={openAlert}
           isSuccess={isSuccess}
           messageAlert={messageAlert}
