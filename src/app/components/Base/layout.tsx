@@ -55,7 +55,7 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
                     {children}
                 </div>
                 <footer className="flex justify-center mt-12 w-full">
-                    <span className="text-gray-600 text-center text-[14px]">© fazenda sao jose | 2025</span>
+                    <span className="text-gray-600 text-center text-[14px]">© agencia | 2025</span>
                 </footer>
             </div>
         </div>

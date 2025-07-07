@@ -1,36 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedPageRoutes = [
-    '/application-phase',
-    '/chart-account',
-    '/category',
-    '/client',
-    '/cocho',
-    '/destination',
-    '/driver',
-    '/earring-drop',
-    '/earrings',
-    '/earrings-drop',
-    '/expenses',
-    '/farm',
-    '/input-product',
-    '/output-product',
-    '/packaging',
-    '/petrolina',
-    '/plate',
-    '/products',
-    '/profile',
-    '/revenues',
-    '/seller',
-    '/supplier',
-    '/transport',
-    '/type-products',
-    '/vehicle',
-    '/weighings',
-];
+const protectedPageRoutes = ['/home'];
 
 // const adminPageRoutes = [
-//     '/edit-mdf'
+//     '/register'
 // ]
 
 export default async function middleware(req: NextRequest) {
@@ -54,10 +27,6 @@ export default async function middleware(req: NextRequest) {
     //         return NextResponse.redirect(new URL('/not-access', req.url));
     //     }
     // }
-
-    if (pathname === '/') {
-        return NextResponse.redirect(new URL('/login', req.url));
-    }
 
     return NextResponse.next();
 }
