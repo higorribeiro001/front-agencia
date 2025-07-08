@@ -7,6 +7,8 @@ import { AppProvider, type Navigation } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { Autocomplete, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Search } from '@mui/icons-material';
 
 const NAVIGATION: Navigation = [
   {
@@ -89,7 +91,61 @@ export default function DashboardLayoutFullScreen() {
       theme={demoTheme}
     >
       <DashboardLayout>
-        <div id="map" className='w-full h-full' />
+        <div className="flex justify-center w-[80%] absolute z-50 p-3 mx-8 px-14">
+          <Autocomplete
+            disablePortal
+            options={[]}
+            className="w-full"
+            value={{label: '', value: ''}}
+            onChange={(event, newValue) => {
+                if (newValue) {
+                }
+            }}
+            onInputChange={(event, inputValue, reason) => {
+                if (reason === 'clear' || inputValue === '') {
+                }
+            }}
+            isOptionEqualToValue={(option, value) => option?.value === value?.value}
+            getOptionLabel={(option) => option?.label || ''}
+            renderInput={(params) => (
+                <TextField
+                {...params}
+                placeholder="pesquise..."
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                    '& fieldset': { borderColor: 'var(--black2)' },
+                    '&:hover fieldset': { borderColor: 'var(--black2)' },
+                    '&.Mui-focused fieldset': { borderColor: 'var(--black2)' },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                    color: 'var(--black2)',
+                    '&::placeholder': {
+                        color: 'var(--black2)',
+                        opacity: 1,
+                    },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: 'var(--black2)',
+                      '&.Mui-focused': {
+                          color: 'var(--black2)',
+                      },
+                    },
+                }}
+                InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                    <InputAdornment position="start">
+                        <IconButton>
+                            <Search className="text-black2" />
+                        </IconButton>
+                    </InputAdornment>
+                    ),
+                }}
+                />
+              )}
+          />
+        </div>
+        <div id="map" className='w-full h-full z-40' />
       </DashboardLayout>
     </AppProvider>
   );
