@@ -56,7 +56,11 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
                 </div>
                 <footer className="flex justify-center mt-12 w-full">
                     <span className="text-gray-600 text-center text-[14px]">© agencia | 2025</span>
-                </footer>
+                </footer><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="/>
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     ></script>
             </div>
         </div>
     );
