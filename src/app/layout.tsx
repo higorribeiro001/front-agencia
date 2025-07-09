@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fazenda São José",
-  description: "Sistema voltado ao Agro para gerenciamento de recursos da fazenda São José",
+  title: "Vaiali",
+  description: "Agende sua viagem agora memsmo.",
 };
 
 export default function RootLayout({

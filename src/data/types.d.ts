@@ -1145,3 +1145,8 @@ interface WeighingsInterface {
     next: number;
     count: string;
 }
+
+interface ColumnSearchTripInterface {
+    label: string;
+    typeInput: string;
+}
