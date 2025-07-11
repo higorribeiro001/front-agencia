@@ -1,54 +1,20 @@
-import Sidebar from "../Sidebar";
 import AlertApp from "../AlertApp";
-import { Button, Divider, styled } from "@mui/material";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Divider } from "@mui/material";
 
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-});
-
-export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messageAlert, title, uploadFile, handleUpload}) => {
+export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messageAlert, title}) => {
     return (
-        <div className="flex flex-row w-full bg-background h-screen overflow-hidden z-[998]">
+        <div className="flex flex-row w-full h-screen overflow-hidden z-[998]">
             <AlertApp 
                 isOpen={openAlert!}
                 isSuccess={isSuccess!}
                 message={messageAlert!}
             />
-            <Sidebar />
             <div className="px-5 lg:px-10 py-5 overflow-auto flex flex-col justify-between w-full z-[1] gap-3">
                 <div className="flex flex-col animate-fade-left transition-all mb-8">
                     <div className="flex flex-row justify-between gap-2">
-                        <h1 className="text-black2 text-[24px] lg:text-[30px] font-semibold">FAZENDA SÃO JOSÉ</h1>
-                        {uploadFile && (
-                            <Button
-                                component="label"
-                                role={undefined}
-                                variant="contained"
-                                tabIndex={-1}
-                                startIcon={<CloudUploadIcon />}
-                                className="bg-primary"
-                                sx={{bgcolor: "#FB3A04"}}
-                            >
-                                Importar arquivo
-                                <VisuallyHiddenInput
-                                    type="file"
-                                    accept=".pdf, application/pdf"
-                                    onChange={handleUpload}
-                                    multiple
-                                />
-                            </Button>
-                        )}
+                        <h1 className="text-[24px] lg:text-[30px] font-semibold">Vaiali</h1>
                     </div>
-                    <p className="uppercase mb-5 text-foreground">{title}</p>
+                    <p className="uppercase mb-5">{title}</p>
                     <Divider className="bg-black2" />
                 </div>
                 <div className="flex-grow">
@@ -56,11 +22,12 @@ export const Base: React.FC<BaseProps> = ({children, openAlert, isSuccess, messa
                 </div>
                 <footer className="flex justify-center mt-12 w-full">
                     <span className="text-gray-600 text-center text-[14px]">© agencia | 2025</span>
-                </footer><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="/>
-      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     ></script>
+                </footer>
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+                    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="/>
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+                ></script>
             </div>
         </div>
     );

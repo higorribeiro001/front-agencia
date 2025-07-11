@@ -8,7 +8,7 @@ export default function Home() {
     return (
         <div className="flex w-full h-full">
             <Image src={fundo} alt="Fundo" className="w-full h-full z-40" style={{ width: "100%", height: "100%" }} />
-            <div className="w-full h-full z-50 flex flex-col items-center justify-between p-16 absolute">
+            <div className="w-full h-full z-50 flex flex-col items-center justify-end gap-10 p-16 absolute">
                 <Image src={logo} alt="Fundo" className="z-40" width={350} height={450} />
                 <Box
                     sx={{

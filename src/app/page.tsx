@@ -1,26 +1,18 @@
 'use client';
 
-import React from 'react';
-import { AppProvider } from '@toolpad/core/AppProvider';
-import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-// import Maps from './components/Maps';
+import React, { useEffect, useState } from 'react';
 import Home from './components/Home';
-import { demoTheme, NAVIGATION } from './utils';
 
 export default function DashboardLayoutFullScreen() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+  
   return (
-    <AppProvider
-      navigation={NAVIGATION}
-      theme={demoTheme}
-      branding={{
-        logo: '',
-        title: 'Vaiali', 
-      }}
-    >
-      <DashboardLayout>
-        {/* <Maps /> */}
-        <Home />
-      </DashboardLayout>
-    </AppProvider>
+    <Home />
   );
 }

@@ -1,34 +1,5 @@
+import React from 'react';
 import { createTheme } from '@mui/material/styles';
-import MapIcon from '@mui/icons-material/Map';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { type Navigation } from "@toolpad/core/AppProvider";
-
-export const NAVIGATION: Navigation = [
-  {
-    segment: '',
-    title: 'Viagem',
-    icon: <MapIcon />
-  },
-  {
-    segment: 'gerencia',
-    title: 'Gerenciamento',
-    icon: <SettingsIcon />,
-    children: [
-      {
-        segment: 'viagens',
-        title: 'Viagens',
-      },
-      {
-        segment: 'cadastrar',
-        title: 'Cadastrar viagem',
-      },
-      {
-        segment: 'editar',
-        title: 'Editar viagem',
-      }
-    ]
-  },
-];
 
 export const demoTheme = createTheme({
   cssVariables: {
