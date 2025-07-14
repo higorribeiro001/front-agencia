@@ -7,7 +7,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { type Navigation } from "@toolpad/core/AppProvider";
 import { Home } from '@mui/icons-material';
 import { demoTheme } from '../utils';
-import { usePathname } from 'next/navigation';
 
 const NAVIGATION: Navigation = [
     {
@@ -42,9 +41,6 @@ const NAVIGATION: Navigation = [
 ];
 
 export function AppClientWrapper({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
-    const activeSegment = pathname.split('/')[1] || '';
-
     return (
         <AppProvider
             theme={demoTheme}
