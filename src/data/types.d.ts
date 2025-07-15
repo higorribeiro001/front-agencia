@@ -1150,3 +1150,31 @@ interface ColumnSearchTripInterface {
     label: string;
     typeInput: string;
 }
+
+interface GeoInterface {
+    lat: number;
+    lng: number;
+}
+
+interface ResponseGeo {
+    data: GeoInterface;
+    status: number;
+}
+
+interface Trip {
+    id?: string;
+    titulo: string;
+    descricao: string;
+    dias: number;
+    valor: number;
+    avaliacao: number;
+    latitude: number;
+    longitude: number;
+    data: string;
+    vagas: number;
+}
+
+interface ImageTrip {
+    filename: string;
+    url: string;
+}
