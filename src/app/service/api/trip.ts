@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { deleteCookie, getCookie, setCookie } from 'cookies-next';
+import { deleteCookie, setCookie } from 'cookies-next';
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 const configAuth = () => {

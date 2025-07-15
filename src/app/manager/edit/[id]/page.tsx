@@ -5,281 +5,348 @@ import { Base } from "@/app/components/Base/layout";
 import { Loading } from "@/app/components/Loading";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { ArrowBack } from "@mui/icons-material";
-import { Autocomplete, Button, IconButton, TextField } from "@mui/material";
+import { Button, IconButton, styled, TextField } from "@mui/material";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { putTrip, trip } from "@/app/service/api/trip";
+import { getLocation } from "@/app/service/api/location";
+import TripAdapt from "@/app/service/adapt/TripAdapt";
+
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
 
 export default function EditTrip({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = React.use(params);
-    const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
-    const formFields = new FormBuilder()  
-        .addTextField('fazenda', 'Fazenda *', 'select')
-        .addTextField('cocho', 'Cocho *', 'text')
-        .build();
-        
-    const [isLoading, setIsLoading] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
-    const [options, setOptions] = useState<Model[]>([emptyOption]);
+  const formFields = new FormBuilder()  
+    .addTextField('titulo', 'Título *', 'text')
+    .addTextField('descricao', 'Descrição *', 'text')
+    .addTextField('dias', 'Dias *', 'number')
+    .addTextField('valor', 'Valor (R$) *', 'text')
+    .addTextField('avaliacao', 'Avaliação (0 a 5) *', 'number')
+    .addTextField('cep', 'CEP', 'text')
+    .addTextField('data', 'Data *', 'date')
+    .addTextField('vagas', 'Vagas *', 'number')
+    .build();
+      
+  const [isLoading, setIsLoading] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [messageAlert, setMessageAlert] = useState('');
+  const [lat, setLat] = useState(0.0);
+  const [long, setLong] = useState(0.0);
+  const [imageUpload, setImageUpload] = useState<File>()
 
-    const initModel = [
-        {
-            label: '',
-            name: 'fazenda',
-            value: '',
-            error: '',
-        },
-        {
-            label: '',
-            name: 'cocho',
-            value: '',
-            error: '',
-        }
-    ];
-    const [model, setModel] = useState(initModel);
+  const initModel = [
+      {
+          label: '',
+          name: 'titulo',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'descricao',
+          value: '',
+          error: '',
+      }
+      ,
+      {
+          label: '',
+          name: 'dias',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'valor',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'avaliacao',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'cep',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'data',
+          value: '',
+          error: '',
+      },
+      {
+          label: '',
+          name: 'vagas',
+          value: '',
+          error: '',
+      }
+  ];
 
-    const getOptionsFormat = async () => {
-        // const data: Model[] | undefined = await farmsFormat();
+  const [model, setModel] = useState(initModel);
 
-        // setOptions(data!);
+  const getTrip = async () => {
+    const response = await trip(resolvedParams.id);
+
+    const tripAdapt = new TripAdapt(response!);
+
+    const tripData = tripAdapt.externalTripAdapt;
+
+    setModel((prevModel) => {
+      const updateModel = [...prevModel];
+
+      updateModel[0].value = tripData?.titulo ?? '';
+      updateModel[1].value = tripData?.descricao ?? '';
+      updateModel[2].value = String(tripData?.dias) ?? '';
+      updateModel[3].value = String(tripData?.valor) ?? '';
+      updateModel[4].value = String(tripData?.avaliacao) ?? '';
+      updateModel[6].value = tripData?.data ?? '';
+      updateModel[7].value = String(tripData?.vagas) ?? '';
+
+      return updateModel;
+    });
+
+    setLat(tripData?.latitude);
+    setLong(tripData?.longitude);
+  }
+
+  const getGeo = async () => {
+    const response = await getLocation(model[5].value);
+
+    const data = response.data as GeoInterface;
+
+    setLat(data.lat);
+    setLong(data.lng);
+  }
+
+  useEffect(() => {
+    getTrip();
+  }, []);
+
+  useEffect(() => {
+    if (model[5].value !== '') {
+      getGeo();
     }
+  }, [model[5].value]);
 
-    useEffect(() => {
-        getOptionsFormat();
-    }, []);
+  const cleanFields = () => {
+    setModel(initModel);
+  }
 
-    const cleanFields = () => {
-      setModel(initModel);
-    }
-
-    const changeValues = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        e.preventDefault()
-        setModel((prevModel) => {
-          const updateModel = [...prevModel];
-          updateModel[index].value = e.target.value;
-          if (updateModel[index].value === '') {
-            updateModel[index].error = `Campo ${model[index].label} obrigatório.`;
-          } else {
-            updateModel[index].error = '';
-          }
-          return updateModel;
-        });
-    }
-
-    const validator = (message: string, index: number) => {
-        setModel((prevModel) => {
+  const changeValues = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+      e.preventDefault()
+      setModel((prevModel) => {
         const updateModel = [...prevModel];
-        updateModel[index].error = message;
+        updateModel[index].value = e.target.value;
+        if (updateModel[index].value === '') {
+          updateModel[index].error = `Campo ${model[index].label} obrigatório.`;
+        } else {
+          updateModel[index].error = '';
+        }
         return updateModel;
-        });
-    }
+      });
+  }
 
-    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-    
-        for (let i=0; i < model.length; i++) {
-          if (model[i].value === '') {
-            validator(`Campo ${model[i].label} obrigatório.`, i);
-          } else {
-            validator('', i);
-          }
-    
-          if (model[i].error !== '') {
-            return;
-          }
+  const validator = (message: string, index: number) => {
+      setModel((prevModel) => {
+      const updateModel = [...prevModel];
+      updateModel[index].error = message;
+      return updateModel;
+      });
+  }
+
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+  
+      for (let i=0; i < model.length; i++) {
+        if (model[i].value === '' && i !== 5) {
+          validator(`Campo ${model[i].label} obrigatório.`, i);
+        } else {
+          validator('', i);
         }
-    
-        setIsLoading(true);
-    
-        editTrip();
-    
-      }
-    
-      const closeAlert = () => {
-        setTimeout(() => {
-          setOpenAlert(false);
-        }, 6000);
-      }
-    
-      const editTrip = async () => {
-        try {
-        //   const response = await putCocho(
-        //     { 
-        //       fazenda: model[0].value, 
-        //       cocho: model[1].value, 
-        //     });
-    
-        //   if (response.status === 200) {
-        //     setOpenAlert(true);
-        //     setMessageAlert('Editado com sucesso!');
-        //     setIsSuccess(true);
-        //     cleanFields();
-        //     closeAlert();
-        //   }
-        } catch (e: unknown) {
-          const error = e as StatusResponse;
-          if (error.response.status === 422) {
-            setOpenAlert(true);
-            setMessageAlert('Preencha todos os campos obrigatórios.');
-            setIsSuccess(false);
-    
-            closeAlert();
-          } else {
-            setOpenAlert(true);
-            setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
-            setIsSuccess(false);
-    
-            closeAlert();
-          }
-        } finally {
-          setIsLoading(false);
+  
+        if (model[i].error !== '') {
+          return;
         }
+      }
+  
+      setIsLoading(true);
+  
+      editTrip();
+  
     }
-    
-    return (
-        <Base 
-          title="Edição de viagem"
-          openAlert={openAlert}
-          isSuccess={isSuccess}
-          messageAlert={messageAlert}
-        >
-          <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
-              <Loading 
-                isOpen={isLoading}
-              />
-              <div className="flex flex-row w-full justify-between z-10 relative">
-                  <IconButton href="/cocho" className="text-[var(--black2)]">
-                    <ArrowBack />
-                  </IconButton>
+  
+    const closeAlert = () => {
+      setTimeout(() => {
+        setOpenAlert(false);
+      }, 6000);
+    }
+  
+    const editTrip = async () => {
+      try {
+        const response = await putTrip(
+          { 
+            id: resolvedParams.id,
+            titulo: model[0].value, 
+            descricao: model[1].value, 
+            dias: parseInt(model[2].value), 
+            valor: parseFloat(model[3].value.replace(',', '.')), 
+            avaliacao: parseInt(model[4].value), 
+            latitude: lat, 
+            longitude: long, 
+            data: model[6].value, 
+            vagas: parseInt(model[7].value), 
+          });
+  
+        if (response.status === 200) {
+          setOpenAlert(true);
+          setMessageAlert('Editado com sucesso!');
+          setIsSuccess(true);
+          cleanFields();
+          closeAlert();
+        }
+      } catch (e: unknown) {
+        const error = e as StatusResponse;
+        if (error.response.status === 422) {
+          setOpenAlert(true);
+          setMessageAlert('Preencha todos os campos obrigatórios.');
+          setIsSuccess(false);
+  
+          closeAlert();
+        } else {
+          setOpenAlert(true);
+          setMessageAlert('Erro inesperado, por favor aguardo e tente novamente mais tarde.');
+          setIsSuccess(false);
+  
+          closeAlert();
+        }
+      } finally {
+        setIsLoading(false);
+      }
+  }
+  
+  return (
+      <Base 
+        title="Edição de viagem"
+        openAlert={openAlert}
+        isSuccess={isSuccess}
+        messageAlert={messageAlert}
+      >
+        <div className="flex flex-col gap-6 w-full h-full z-10 relative animate-fade-up">
+            <Loading 
+              isOpen={isLoading}
+            />
+            <div className="flex flex-row w-full justify-between z-10 relative">
+                <IconButton href="/manager/trip">
+                  <ArrowBack />
+                </IconButton>
+                <Button 
+                    className="font-semibold w-[200px] h-[56px] z-10 relative"
+                    variant="contained"
+                    type="button"
+                    color="error"
+                    onClick={cleanFields}
+                >
+                    Limpar campos
+                </Button>
+            </div>
+            <span className="font-semibold text-[var(--black2)]">
+                * Campos obrigatórios.
+            </span>
+            <form 
+                className="flex flex-col gap-10 w-full" 
+                onSubmit={submitForm}
+            >
+                <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
+                  <div className="flex flex-col gap-2">
+                    <Button
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                        className="bg-primary w-[400px] h-[56px]"
+                        sx={{bgcolor: "var(--primary)"}}
+                    >
+                        Buscar imagem
+                        <VisuallyHiddenInput
+                            type="file"
+                            accept="image/jpeg, image/png, image/jpg"
+                            onChange={(event) => setImageUpload(event.target.files![0])}
+                            multiple
+                        />
+                    </Button>
+                    <span>{ imageUpload?.name ?? '' }</span>
+                  </div>
+                  {formFields
+                      .map((value, index) => ( 
+                        <TextField
+                          key={index}
+                          className="w-full lg:w-[49%]"
+                          label={value.label} 
+                          variant="outlined"
+                          type={value.type}
+                          error={model[index].error !== '' ? true : false}
+                          helperText={model[index].error}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
+                          value={model[index].value}
+                          sx={{
+                                '& .MuiOutlinedInput-root': {
+                                '& fieldset': { borderColor: 'var(--black2)' },
+                                '&:hover fieldset': { borderColor: 'var(--black2)' },
+                                '&.Mui-focused fieldset': { borderColor: 'var(--black2)' },
+                                },
+                                '& .MuiOutlinedInput-input': {
+                                color: 'var(--black2)',
+                                '&::placeholder': {
+                                    color: 'var(--black2)',
+                                    opacity: 1,
+                                },
+                                },
+                                '& .MuiInputLabel-root': {
+                                color: 'var(--black2)',
+                                '&.Mui-focused': {
+                                    color: 'var(--black2)',
+                                },
+                                },
+                            }}
+                        />
+                    ))}
+                </div>
+                <div className="flex flex-row justify-between gap-2">
                   <Button 
-                      className="font-semibold w-[200px] h-[56px] z-10 relative"
-                      variant="contained"
+                      className="border-[1px] border-solid font-semibold w-[200px] h-[56px]"
+                      variant="outlined"
                       type="button"
-                      color="error"
-                      onClick={cleanFields}
+                      sx={{ borderColor: 'var(--primary)', color: 'var(--primary)' }}
+                      href="/manager/trip"
                   >
-                      Limpar campos
+                      Cancelar
                   </Button>
-              </div>
-              <span className="font-semibold text-[var(--black2)]">
-                  * Campos obrigatórios.
-              </span>
-              <form 
-                  className="flex flex-col gap-10 w-full" 
-                  onSubmit={submitForm}
-              >
-                  <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                    {formFields
-                        .map((value, index) => ( 
-                          value.type === 'select' ? (
-                            <Autocomplete
-                                key={index}
-                                disablePortal
-                                disabled={value.name === 'unidade_id'}
-                                options={options}
-                                className="w-full lg:w-[49%]"
-                                value={model[index]} 
-                                onChange={(event, newValue) => {
-                                  if (newValue) {
-                                    setModel((prevModel) => {
-                                      const updateModel = [...prevModel];
-                                      updateModel[index] = { 
-                                        label: newValue.label,
-                                        name: updateModel[index].name,
-                                        value: newValue.value, 
-                                        error: ''
-                                      };
-                                      return updateModel;
-                                    });
-                                  }
-                                }}
-                                isOptionEqualToValue={(option, value) => option?.value === value?.value}
-                                renderInput={(params) => 
-                                  <TextField 
-                                    {...params} 
-                                    label={value.label} 
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
-                                    value={model[index].value}
-                                    error={model[index].error !== '' ? true : false}
-                                    helperText={model[index].error}
-                                    sx={{
-                                        '& .MuiOutlinedInput-root': {
-                                        '& fieldset': { borderColor: 'var(--black2)' },
-                                        '&:hover fieldset': { borderColor: 'var(--black2)' },
-                                        '&.Mui-focused fieldset': { borderColor: 'var(--black2)' },
-                                        },
-                                        '& .MuiOutlinedInput-input': {
-                                        color: 'var(--black2)',
-                                        '&::placeholder': {
-                                            color: 'var(--black2)',
-                                            opacity: 1,
-                                        },
-                                        },
-                                        '& .MuiInputLabel-root': {
-                                        color: 'var(--black2)',
-                                        '&.Mui-focused': {
-                                            color: 'var(--black2)',
-                                        },
-                                        },
-                                    }}
-                                  />
-                                }
-                              />) : (
-                                <TextField
-                                  key={index}
-                                  className="w-full lg:w-[49%]"
-                                  label={value.label} 
-                                  variant="outlined"
-                                  type={value.type}
-                                  error={model[index].error !== '' ? true : false}
-                                  helperText={model[index].error}
-                                  onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
-                                  value={model[index].value}
-                                  sx={{
-                                        '& .MuiOutlinedInput-root': {
-                                        '& fieldset': { borderColor: 'var(--black2)' },
-                                        '&:hover fieldset': { borderColor: 'var(--black2)' },
-                                        '&.Mui-focused fieldset': { borderColor: 'var(--black2)' },
-                                        },
-                                        '& .MuiOutlinedInput-input': {
-                                        color: 'var(--black2)',
-                                        '&::placeholder': {
-                                            color: 'var(--black2)',
-                                            opacity: 1,
-                                        },
-                                        },
-                                        '& .MuiInputLabel-root': {
-                                        color: 'var(--black2)',
-                                        '&.Mui-focused': {
-                                            color: 'var(--black2)',
-                                        },
-                                        },
-                                    }}
-                                />
-                              )
-                      ))}
-                  </div>
-                  <div className="flex flex-row justify-between gap-2">
-                    <Button 
-                        className="border-[1px] border-solid font-semibold w-[200px] h-[56px]"
-                        variant="contained"
-                        type="button"
-                        sx={{ bgcolor: 'var(--background)', color: 'var(--black2)', border: 'var(--black2) 1px solid' }}
-                        href="/cocho"
-                        
-                    >
-                        Cancelar
-                    </Button>
-                    <Button 
-                        className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
-                        variant="contained"
-                        type="submit"
-                        sx={{bgcolor: "var(--primary)", color: '#FFFFFF'}}
-                    >
-                        Enviar
-                    </Button>
-                  </div>
-              </form>
-          </div>
-        </Base>
-    );
+                  <Button 
+                    className="bg-primary font-semibold w-[200px] h-[56px] z-[1]"
+                    variant="contained"
+                    type="submit"
+                    sx={{bgcolor: "var(--primary)", color: '#FFFFFF'}}
+                  >
+                      Enviar
+                  </Button>
+                </div>
+            </form>
+        </div>
+      </Base>
+  );
 }

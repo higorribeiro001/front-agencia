@@ -94,6 +94,7 @@ export default function RegisterTrip() {
             error: '',
         }
     ];
+    
     const [model, setModel] = useState(initModel);
 
     const getGeo = async () => {
@@ -244,23 +245,26 @@ export default function RegisterTrip() {
                   onSubmit={submitForm}
               >
                   <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                    <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon />}
-                        className="bg-primary w-[400px] h-[56px]"
-                        sx={{bgcolor: "var(--primary)"}}
-                    >
-                        Buscar imagem
-                        <VisuallyHiddenInput
-                            type="file"
-                            accept="image/jpeg, image/png, image/jpg"
-                            onChange={(event) => setImageUpload(event.target.files![0])}
-                            multiple
-                        />
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                      <Button
+                          component="label"
+                          role={undefined}
+                          variant="contained"
+                          tabIndex={-1}
+                          startIcon={<CloudUploadIcon />}
+                          className="bg-primary w-[400px] h-[56px]"
+                          sx={{bgcolor: "var(--primary)"}}
+                      >
+                          Buscar imagem
+                          <VisuallyHiddenInput
+                              type="file"
+                              accept="image/jpeg, image/png, image/jpg"
+                              onChange={(event) => setImageUpload(event.target.files![0])}
+                              multiple
+                          />
+                      </Button>
+                      <span>{ imageUpload?.name ?? '' }</span>
+                    </div>
                     {formFields
                       .map((value, index) => ( 
                         <TextField

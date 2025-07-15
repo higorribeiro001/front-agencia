@@ -36,7 +36,7 @@ export default function CardTrip() {
                         </div>
                         <span className="my-2 text-[22px]">R$ 600,00</span>
                         <button className="rounded border-[0.5px] border-primary border-solid text-primary font-medium p-2 hover:bg-primary hover:text-white transition-all duration-500">
-                            SABER MAIS
+                            EDITAR
                         </button>
                     </div>
                 </div>
