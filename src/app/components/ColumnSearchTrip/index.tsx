@@ -1,6 +1,5 @@
 import { DirectionsBusFilled } from "@mui/icons-material";
 import { Autocomplete, IconButton, InputAdornment, TextField } from "@mui/material";
-import { ChangeEvent } from "react";
 
 export default function ColumnSearchTrip({ label, typeInput }: ColumnSearchTripInterface) {
     return (
@@ -9,7 +8,7 @@ export default function ColumnSearchTrip({ label, typeInput }: ColumnSearchTripI
             {typeInput === 'select' ? (
                 <Autocomplete
                     disablePortal
-                    options={[]}
+                    options={[{label: '', value: ''}]}
                     className="w-full"
                     value={{label: '', value: ''}}
                     onChange={(event, newValue) => {

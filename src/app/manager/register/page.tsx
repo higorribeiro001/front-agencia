@@ -7,7 +7,7 @@ import { getLocation } from "@/app/service/api/location";
 import { postTrip } from "@/app/service/api/trip";
 import FormBuilder from "@/app/service/forms/FormBuilder";
 import { ArrowBack } from "@mui/icons-material";
-import { Autocomplete, Button, IconButton, styled, TextField } from "@mui/material";
+import { Button, IconButton, styled, TextField } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
@@ -24,7 +24,6 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 export default function RegisterTrip() {
-    const emptyOption = {"label": "", "value": "", "error": "", "name": ""};
     const formFields = new FormBuilder()  
         .addTextField('titulo', 'Título *', 'text')
         .addTextField('descricao', 'Descrição *', 'text')
@@ -40,7 +39,6 @@ export default function RegisterTrip() {
     const [openAlert, setOpenAlert] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [messageAlert, setMessageAlert] = useState('');
-    const [options, setOptions] = useState<Model[]>([emptyOption]);
     const [lat, setLat] = useState(0.0);
     const [long, setLong] = useState(0.0);
     const [imageUpload, setImageUpload] = useState<File>()
@@ -183,7 +181,7 @@ export default function RegisterTrip() {
     
           if (response.status === 201) {
             const formData = new FormData();
-            formData.append('id', response?.data?.id!);
+            formData.append('id', response?.data?.id ?? '');
             formData.append('foto', imageUpload!);
             
             await postImageTrip(formData);
@@ -264,53 +262,18 @@ export default function RegisterTrip() {
                         />
                     </Button>
                     {formFields
-                        .map((value, index) => ( 
-                          value.type === 'select' ? (
-                            <Autocomplete
-                                key={index}
-                                disablePortal
-                                disabled={value.name === 'unidade_id'}
-                                options={options}
-                                className="w-full lg:w-[49%]"
-                                value={model[index]} 
-                                onChange={(event, newValue) => {
-                                  if (newValue) {
-                                    setModel((prevModel) => {
-                                      const updateModel = [...prevModel];
-                                      updateModel[index] = { 
-                                        label: newValue.label,
-                                        name: updateModel[index].name,
-                                        value: newValue.value, 
-                                        error: ''
-                                      };
-                                      return updateModel;
-                                    });
-                                  }
-                                }}
-                                isOptionEqualToValue={(option, value) => option?.value === value?.value}
-                                renderInput={(params) => 
-                                  <TextField 
-                                    {...params} 
-                                    label={value.label} 
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)} 
-                                    value={model[index].value}
-                                    error={model[index].error !== '' ? true : false}
-                                    helperText={model[index].error}
-                                  />
-                                }
-                              />) : (
-                                <TextField
-                                  key={index}
-                                  className="w-full lg:w-[49%]"
-                                  label={value.label} 
-                                  variant="outlined"
-                                  type={value.type}
-                                  error={model[index].error !== '' ? true : false}
-                                  helperText={model[index].error}
-                                  onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
-                                  value={model[index].value}
-                                />
-                              )
+                      .map((value, index) => ( 
+                        <TextField
+                          key={index}
+                          className="w-full lg:w-[49%]"
+                          label={value.label} 
+                          variant="outlined"
+                          type={value.type}
+                          error={model[index].error !== '' ? true : false}
+                          helperText={model[index].error}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
+                          value={model[index].value}
+                        />
                       ))}
                   </div>
                   <div className="flex flex-row justify-between gap-2">

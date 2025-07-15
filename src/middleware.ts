@@ -22,9 +22,9 @@ export default async function middleware(req: NextRequest) {
         }
     }
 
-    if (pathname === '/') {
-        return NextResponse.redirect(new URL('/home', req.url));
-    }
+    // if (pathname === '/') {
+    //     return NextResponse.redirect(new URL('/home', req.url));
+    // }
 
     // if (isAdminPageRoute) {
     //     if (role !== 'admin') {
