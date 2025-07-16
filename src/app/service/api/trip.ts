@@ -49,7 +49,7 @@ export async function postTrip(dataTrip: Trip) {
     return response;
 }
 
-export async function putTrip(dataTrip: Trip) {
-    const response: { data: LogisticRegisterInterface, status: number } = await axios.put(url+`/api/v1/viagens/${dataTrip.id}/`, dataTrip, configAuth());
+export async function patchTrip(dataTrip: Trip) {
+    const response: { data: LogisticRegisterInterface, status: number } = await axios.patch(url+`/api/v1/viagens/${dataTrip.id}/`, dataTrip, configAuth());
     return response;
 }

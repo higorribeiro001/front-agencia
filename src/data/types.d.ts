@@ -1172,6 +1172,7 @@ interface Trip {
     longitude: number;
     data: string;
     vagas: number;
+    FotoViagems?: ImageTrip[]
 }
 
 interface ImageTrip {

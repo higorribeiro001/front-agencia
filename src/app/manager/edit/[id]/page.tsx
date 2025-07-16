@@ -7,7 +7,7 @@ import FormBuilder from "@/app/service/forms/FormBuilder";
 import { ArrowBack } from "@mui/icons-material";
 import { Button, IconButton, styled, TextField } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { putTrip, trip } from "@/app/service/api/trip";
+import { patchTrip, trip } from "@/app/service/api/trip";
 import { getLocation } from "@/app/service/api/location";
 import TripAdapt from "@/app/service/adapt/TripAdapt";
 
@@ -113,7 +113,7 @@ export default function EditTrip({ params }: { params: Promise<{ id: string }> }
       updateModel[2].value = String(tripData?.dias) ?? '';
       updateModel[3].value = String(tripData?.valor) ?? '';
       updateModel[4].value = String(tripData?.avaliacao) ?? '';
-      updateModel[6].value = tripData?.data ?? '';
+      updateModel[6].value = tripData?.data.split('T')[0] ?? '';
       updateModel[7].value = String(tripData?.vagas) ?? '';
 
       return updateModel;
@@ -197,7 +197,7 @@ export default function EditTrip({ params }: { params: Promise<{ id: string }> }
   
     const editTrip = async () => {
       try {
-        const response = await putTrip(
+        const response = await patchTrip(
           { 
             id: resolvedParams.id,
             titulo: model[0].value, 
@@ -215,7 +215,6 @@ export default function EditTrip({ params }: { params: Promise<{ id: string }> }
           setOpenAlert(true);
           setMessageAlert('Editado com sucesso!');
           setIsSuccess(true);
-          cleanFields();
           closeAlert();
         }
       } catch (e: unknown) {
@@ -263,7 +262,7 @@ export default function EditTrip({ params }: { params: Promise<{ id: string }> }
                     Limpar campos
                 </Button>
             </div>
-            <span className="font-semibold text-[var(--black2)]">
+            <span className="font-semibold">
                 * Campos obrigatórios.
             </span>
             <form 
@@ -271,14 +270,14 @@ export default function EditTrip({ params }: { params: Promise<{ id: string }> }
                 onSubmit={submitForm}
             >
                 <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 w-[49%]">
                     <Button
                         component="label"
                         role={undefined}
                         variant="contained"
                         tabIndex={-1}
                         startIcon={<CloudUploadIcon />}
-                        className="bg-primary w-[400px] h-[56px]"
+                        className="bg-primary w-full h-[56px]"
                         sx={{bgcolor: "var(--primary)"}}
                     >
                         Buscar imagem
@@ -303,26 +302,6 @@ export default function EditTrip({ params }: { params: Promise<{ id: string }> }
                           helperText={model[index].error}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => changeValues(e, index)}
                           value={model[index].value}
-                          sx={{
-                                '& .MuiOutlinedInput-root': {
-                                '& fieldset': { borderColor: 'var(--black2)' },
-                                '&:hover fieldset': { borderColor: 'var(--black2)' },
-                                '&.Mui-focused fieldset': { borderColor: 'var(--black2)' },
-                                },
-                                '& .MuiOutlinedInput-input': {
-                                color: 'var(--black2)',
-                                '&::placeholder': {
-                                    color: 'var(--black2)',
-                                    opacity: 1,
-                                },
-                                },
-                                '& .MuiInputLabel-root': {
-                                color: 'var(--black2)',
-                                '&.Mui-focused': {
-                                    color: 'var(--black2)',
-                                },
-                                },
-                            }}
                         />
                     ))}
                 </div>
