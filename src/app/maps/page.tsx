@@ -1,5 +1,7 @@
 "use client"
 
+export const dynamic = "force-dynamic"; 
+
 import React, { useEffect, useRef, useState } from 'react';
 import { Autocomplete, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
@@ -106,7 +108,9 @@ export default function Maps() {
     }
     
     useEffect(() => {
-        getTrips();
+        if (typeof window !== 'undefined') {
+            getTrips();
+        }
     }, []);
 
     useEffect(() => {
