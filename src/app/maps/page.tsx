@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import React, { useEffect, useRef, useState } from 'react';
 import { Autocomplete, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
-import L from 'leaflet';
+// import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { trip, trips } from '../service/api/trip';
 import TripsAdapt from '../service/adapt/TripsAdapt';
@@ -31,7 +31,7 @@ export default function Maps() {
         return `${day}/${month}/${year}`;
     }
 
-    const initMap = (tripData: Trip[]) => {
+    const initMap = (tripData: Trip[], L: typeof import('leaflet')) => {
         if (mapRef.current) return;
         const map = L.map('map').setView([lat, lng], zoom);
         mapRef.current = map;
@@ -43,16 +43,17 @@ export default function Maps() {
         for (const trip of tripData) {
             if (!trip.latitude || !trip.longitude) continue;
             
-            const customIcon = generateMarker(trip);
+            const customIcon = generateMarker(trip, L);
 
             L.marker([trip.latitude, trip.longitude], { icon: customIcon }).addTo(map);
         }
     }
 
     const getTrips = async () => {
+        const L = await import('leaflet');
+
         const response = await trips();
         const tripAdapt = new TripsAdapt(response?.data ?? []);
-    
         const tripData = tripAdapt.externalTripsAdapt;
 
         const listTrip = tripData.map(t => ({
@@ -64,10 +65,13 @@ export default function Maps() {
 
         setOptionsTrip(listTrip);
 
-        initMap(tripData);
-    }
+        initMap(tripData, L);
+    };
     
-    const generateMarker = ({ id, titulo, descricao, valor, avaliacao, data, vagas, FotoViagems }: Trip) => {
+    const generateMarker = (
+        { id, titulo, descricao, valor, avaliacao, data, vagas, FotoViagems }: Trip,
+        L: typeof import('leaflet')
+    ) => {
         const starsHtml = Array.from({ length: avaliacao }, () => '⭐').join('');
         const photoUrl = FotoViagems?.[0]?.url ?? '';
 
