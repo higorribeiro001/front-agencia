@@ -1,14 +1,20 @@
 "use client"
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Autocomplete, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { trips } from '../service/api/trip';
+import { trip, trips } from '../service/api/trip';
 import TripsAdapt from '../service/adapt/TripsAdapt';
+import TripAdapt from '../service/adapt/TripAdapt';
 
 export default function Maps() {
+    const [optionsTrip, setOptionsTrip] = useState<Model[]>([]);
+    const [selectedTrip, setSelectedTrip] = useState<Model | null>(null);
+    const [lat, setLat] = useState(-0.5947849);
+    const [lng, setLng] = useState(-47.3178818);
+    const mapRef = useRef<L.Map | null>(null);
     const zoom = 14;
 
     const convertDate = (isoDate: string) => {
@@ -17,13 +23,10 @@ export default function Maps() {
         return `${day}/${month}/${year}`;
     }
 
-    const getTrips = async () => {
-        const response = await trips();
-        const tripAdapt = new TripsAdapt(response?.data ?? []);
-    
-        const tripData = tripAdapt.externalTripsAdapt;
-    
-        const map = L.map('map').setView([-0.5947849, -47.3178818], zoom);
+    const initMap = (tripData: Trip[]) => {
+        if (mapRef.current) return;
+        const map = L.map('map').setView([lat, lng], zoom);
+        mapRef.current = map;
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -36,6 +39,24 @@ export default function Maps() {
 
             L.marker([trip.latitude, trip.longitude], { icon: customIcon }).addTo(map);
         }
+    }
+
+    const getTrips = async () => {
+        const response = await trips();
+        const tripAdapt = new TripsAdapt(response?.data ?? []);
+    
+        const tripData = tripAdapt.externalTripsAdapt;
+
+        const listTrip = tripData.map(t => ({
+            label: t.titulo,
+            value: String(t.id),
+            name: '',
+            error: '',
+        }));
+
+        setOptionsTrip(listTrip);
+
+        initMap(tripData);
     }
     
     const generateMarker = ({ id, titulo, descricao, valor, avaliacao, data, vagas, FotoViagems }: Trip) => {
@@ -82,16 +103,33 @@ export default function Maps() {
         getTrips();
     }, []);
 
+    useEffect(() => {
+        if (selectedTrip) {
+            trip(selectedTrip.value).then((response) => {
+                const tripAdapt = new TripAdapt(response!);
+                const tripData = tripAdapt.externalTripAdapt;
+
+                setLat(tripData.latitude); 
+                setLng(tripData.longitude);
+
+                if (mapRef.current) {
+                    mapRef.current.flyTo([tripData.latitude, tripData.longitude], zoom);
+                }
+            });
+        }
+    }, [selectedTrip]);
+
     return (
         <div>
             <div className="flex justify-center w-[80%] absolute z-50 p-3 mx-8 px-14">
                 <Autocomplete
                     disablePortal
-                    options={[]}
+                    options={optionsTrip}
                     className="w-full"
-                    value={{label: '', value: ''}}
+                    value={selectedTrip}
                     onChange={(event, newValue) => {
                         if (newValue) {
+                            setSelectedTrip(newValue); 
                         }
                     }}
                     onInputChange={(event, inputValue, reason) => {
