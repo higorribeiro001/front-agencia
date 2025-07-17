@@ -10,6 +10,7 @@ import { trip, trips } from '../service/api/trip';
 import TripsAdapt from '../service/adapt/TripsAdapt';
 import TripAdapt from '../service/adapt/TripAdapt';
 import { useSearchParams } from 'next/navigation';
+import type { Map } from 'leaflet';
 
 export default function Maps() {
   const searchParams = useSearchParams();
@@ -20,7 +21,7 @@ export default function Maps() {
   const [selectedTrip, setSelectedTrip] = useState<Model | null>(null);
   const [lat, setLat] = useState<number>(parseFloat(latParam));
   const [lng, setLng] = useState<number>(parseFloat(lngParam));
-  const mapRef = useRef<any>(null); // useRef<L.Map | null>(null);
+  const mapRef = useRef<Map | null>(null);
   const zoom = 14;
 
   const convertDate = (isoDate: string) => {
