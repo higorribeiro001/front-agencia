@@ -40,6 +40,7 @@ export default function Viagens() {
                         longitude={item.longitude}
                         data={item.data}
                         vagas={item.vagas}
+                        FotoViagems={item.FotoViagems}
                     />
                 ))}
             </div>

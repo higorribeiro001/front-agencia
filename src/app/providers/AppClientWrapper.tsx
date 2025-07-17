@@ -24,18 +24,14 @@ const NAVIGATION: Navigation = [
         title: 'Gerenciamento',
         icon: <SettingsIcon />,
         children: [
-        {
-            segment: 'trip',
-            title: 'Viagens',
-        },
-        {
-            segment: 'register',
-            title: 'Cadastrar viagem',
-        },
-        {
-            segment: 'edit',
-            title: 'Editar viagem',
-        }
+            {
+                segment: 'trip',
+                title: 'Viagens',
+            },
+            {
+                segment: 'register',
+                title: 'Cadastrar viagem',
+            }
         ]
     },
 ];

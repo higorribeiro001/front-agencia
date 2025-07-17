@@ -4,9 +4,8 @@ import { DirectionsBusFilled } from "@mui/icons-material";
 import { Autocomplete, IconButton, InputAdornment, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export default function ColumnSearchTrip({ label, typeInput }: ColumnSearchTripInterface) {
+export default function ColumnSearchTrip({ label, typeInput, value, setValue }: ColumnSearchTripInterface) {
     const [optionsTrip, setOptionsTrip] = useState<Model[]>([]);
-    const [selectedTrip, setSelectedTrip] = useState<Model | null>(null);
     
     const getTrips = async () => {
         const response = await trips();
@@ -36,10 +35,10 @@ export default function ColumnSearchTrip({ label, typeInput }: ColumnSearchTripI
                     disablePortal
                     options={optionsTrip}
                     className="w-full"
-                    value={selectedTrip}
+                    value={value !== null ? value : {label: '', value: '', error: '', name: ''}}
                     onChange={(event, newValue) => {
                         if (newValue) {
-                            setSelectedTrip(newValue); 
+                            setValue!(newValue); 
                         }
                     }}
                     onInputChange={(event, inputValue, reason) => {

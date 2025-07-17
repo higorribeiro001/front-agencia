@@ -1149,6 +1149,8 @@ interface WeighingsInterface {
 interface ColumnSearchTripInterface {
     label: string;
     typeInput: string;
+    value?: Model;
+    setValue?: (value: Model) => void;
 }
 
 interface GeoInterface {

@@ -8,12 +8,18 @@ import 'leaflet/dist/leaflet.css';
 import { trip, trips } from '../service/api/trip';
 import TripsAdapt from '../service/adapt/TripsAdapt';
 import TripAdapt from '../service/adapt/TripAdapt';
+import { useSearchParams } from 'next/navigation';
 
 export default function Maps() {
+    const searchParams = useSearchParams();
+
+    const latParam = searchParams.get('lat') ?? '-0.5947849';
+    const lngParam = searchParams.get('lng') ?? '-47.3178818';
+
     const [optionsTrip, setOptionsTrip] = useState<Model[]>([]);
     const [selectedTrip, setSelectedTrip] = useState<Model | null>(null);
-    const [lat, setLat] = useState(-0.5947849);
-    const [lng, setLng] = useState(-47.3178818);
+    const [lat, setLat] = useState<number>(parseFloat(latParam));
+    const [lng, setLng] = useState<number>(parseFloat(lngParam));
     const mapRef = useRef<L.Map | null>(null);
     const zoom = 14;
 

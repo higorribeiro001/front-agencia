@@ -15,27 +15,16 @@ export default function CardTrip({ id, titulo, descricao, valor, avaliacao, data
     return (
         <div className="rounded-lg shadow-lg h-full hover:scale-110 transition-transform duration-500 w-[300px]">
             <div className="card-marker-content">
-                {FotoViagems && FotoViagems.map((item, index) => (
-                    <div key={index}>
-                        <img 
-                            src={item.url}
-                            alt="Local"
-                            style={{
-                                width: '300px',
-                                height: '150px',
-                                objectFit: 'cover',
-                                borderRadius: '4px 4px 0 0',
-                            }} 
-                        />
-                        <div className="p-1">
-                            <div className="flex flex-row justify-between items-center p-1">
-                                <button className="text-primary text-[16px] font-semibold">&lt;</button>
-                                <span className="rounded px-2">{index+1}/{FotoViagems.length}</span>
-                                <button className="text-primary text-[16px] font-semibold">&gt;</button>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                {FotoViagems && <img 
+                    src={FotoViagems[0].url}
+                    alt="Local"
+                    style={{
+                        width: '300px',
+                        height: '150px',
+                        objectFit: 'cover',
+                        borderRadius: '4px 4px 0 0',
+                    }} 
+                />}
                 <div className="p-1">
                     <div className="flex flex-col gap-1 p-1">
                         <h3 className="text-primary text-[16px] font-bold w-[284px] truncate">{titulo}</h3>
