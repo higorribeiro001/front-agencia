@@ -10,6 +10,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { patchTrip, trip } from "@/app/service/api/trip";
 import { getLocation } from "@/app/service/api/location";
 import TripAdapt from "@/app/service/adapt/TripAdapt";
+import { postImageTrip } from "@/app/service/api/imageTrip";
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -212,6 +213,11 @@ export default function EditTrip({ params }: { params: Promise<{ id: string }> }
           });
   
         if (response.status === 200) {
+          const formData = new FormData();
+          formData.append('viagem_id', resolvedParams.id ?? '');
+          formData.append('foto', imageUpload!);
+          
+          await postImageTrip(formData);
           setOpenAlert(true);
           setMessageAlert('Editado com sucesso!');
           setIsSuccess(true);

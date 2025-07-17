@@ -7,14 +7,11 @@ import { trips } from "@/app/service/api/trip";
 import TripsAdapt from "@/app/service/adapt/TripsAdapt";
 
 export default function Viagens() {
-    const [openAlert, setOpenAlert] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [messageAlert, setMessageAlert] = useState('');
     const [listTrips, setListTrips] = useState<Trip[]>([]);
 
     const getTrips = async () => {
         const response = await trips();
-        const tripAdapt = new TripsAdapt(response?.data!);
+        const tripAdapt = new TripsAdapt(response?.data ?? []);
     
         const tripData = tripAdapt.externalTripsAdapt;
     
@@ -27,9 +24,6 @@ export default function Viagens() {
 
     return (
         <Base
-            openAlert={openAlert}
-            isSuccess={isSuccess}
-            messageAlert={messageAlert}
             title="Viagens"
         >
             <div className="flex flex-wrap gap-12 justify-center lg:justify-between">

@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-export default function CardTrip({ id, titulo, descricao, dias, valor, avaliacao, data, vagas, FotoViagems }: Trip) {
+export default function CardTrip({ id, titulo, descricao, valor, avaliacao, data, vagas, FotoViagems }: Trip) {
     const route = useRouter();
 
     const convertDate = (isoDate: string) => {

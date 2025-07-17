@@ -1,66 +1,85 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Autocomplete, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { trips } from '../service/api/trip';
+import TripsAdapt from '../service/adapt/TripsAdapt';
 
 export default function Maps() {
-    const [zoom, setZoom] = useState(14);
+    const zoom = 14;
 
-    const handlePlusZoom = (value: number) => {
-        setZoom(value);
+    const convertDate = (isoDate: string) => {
+        isoDate = isoDate.split('T')[0];
+        const [year, month, day] = isoDate.split('-');
+        return `${day}/${month}/${year}`;
     }
 
-    useEffect(() => {
+    const getTrips = async () => {
+        const response = await trips();
+        const tripAdapt = new TripsAdapt(response?.data ?? []);
+    
+        const tripData = tripAdapt.externalTripsAdapt;
+    
         const map = L.map('map').setView([-0.5947849, -47.3178818], zoom);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        const customIcon = L.divIcon({
-        html: `
-            <div class="bg-white rounded-lg shadow-md h-full hover:scale-110 transition-transform duration-500">
-                <div class="card-marker-content">
-                    <img 
-                    style="width: 300px; height: 150px; object-fit: cover; border-radius: 4px 4px 0 0;" 
-                    src="https://agencia-api-rest.onrender.com/images/1751835542930_10746.jpg" 
-                    alt="Local"
-                    />
-                    <div class="p-1">
-                        <div class="flex flex-row justify-between items-center p-1">
-                            <button class="text-primary text-[16px] font-semibold">&lt;</button>
-                            <span class="text-black rounded px-2">1/1</span>
-                            <button class="text-primary text-[16px] font-semibold">&gt;</button>
-                        </div>
-                        <div class="flex flex-col gap-1 p-1">
-                            <h3 class="text-primary text-[16px] font-bold w-[284px] truncate">Salinópolis</h3>
-                            <p class="text-primary text-[12px] text-justify font-normal h-[54px] line-clamp-3">Viagem para a praia de Salinas, hospedagem em hotel 5 estrelas (Hotel Concha do Mar), com direito a 2 cafés da manhã.</p>
-                            <span>⭐⭐⭐⭐⭐</span>
-                            <div class="flex flex-row!important gap-1 justify-between mt-1">
-                            <div class="bg-green-300 shadow-md rounded p-1 text-green-700 text-center font-semibold w-1/2">
-                                01/08/2025
-                            </div>
-                            <div class="bg-green-300 shadow-md rounded p-1 text-green-700 text-center font-semibold w-1/2">
-                                50 vagas
-                            </div>
-                            </div>
-                            <span class="my-2 text-[22px] text-black">R$ 600,00</span>
-                            <button class="rounded border-[0.5px] border-primary border-solid bg-white text-primary font-medium p-2 hover:bg-primary hover:text-white transition-all duration-500">
-                            SABER MAIS
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `,
-        className: 'custom-html-marker',
-        iconSize: [300, 430]
-        });
+        for (const trip of tripData) {
+            if (!trip.latitude || !trip.longitude) continue;
+            
+            const customIcon = generateMarker(trip);
 
-        L.marker([-0.5947849, -47.3178818], { icon: customIcon }).addTo(map);
+            L.marker([trip.latitude, trip.longitude], { icon: customIcon }).addTo(map);
+        }
+    }
+    
+    const generateMarker = ({ id, titulo, descricao, valor, avaliacao, data, vagas, FotoViagems }: Trip) => {
+        const starsHtml = Array.from({ length: avaliacao }, () => '⭐').join('');
+        const photoUrl = FotoViagems?.[0]?.url ?? '';
+
+        return L.divIcon({
+            html: `
+                <div class="bg-white rounded-lg shadow-md h-full hover:scale-110 transition-transform duration-500">
+                    <div class="card-marker-content">
+                        <img 
+                        style="width: 300px; height: 150px; object-fit: cover; border-radius: 4px 4px 0 0;" 
+                        src="${photoUrl}" 
+                        alt="Local"
+                        />
+                        <div class="p-1">
+                        <div class="flex flex-col gap-1 p-1">
+                                <h3 class="text-primary text-[16px] font-bold w-[284px] truncate">${titulo}</h3>
+                                <p class="text-primary text-[12px] text-justify font-normal h-[54px] line-clamp-3">${descricao}</p>
+                                <span>${starsHtml}</span>
+                                <div class="flex flex-row!important gap-1 justify-between mt-1">
+                                    <div class="bg-green-300 shadow-md rounded p-1 text-green-700 text-center font-semibold w-1/2">
+                                    ${convertDate(data)}
+                                    </div>
+                                    <div class="bg-green-300 shadow-md rounded p-1 text-green-700 text-center font-semibold w-1/2">
+                                    ${vagas} vagas
+                                    </div>
+                                    </div>
+                                <span class="my-2 text-[22px] text-black">R$ ${String(valor).replace('.', ',')}</span>
+                                <button class="rounded border-[0.5px] border-primary border-solid bg-white text-primary font-medium p-2 hover:bg-primary hover:text-white transition-all duration-500" data-id="${id}">
+                                SABER MAIS
+                                </button>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+            `,
+            className: 'custom-html-marker',
+            iconSize: [300, 430]
+        });
+    }
+    
+    useEffect(() => {
+        getTrips();
     }, []);
 
     return (

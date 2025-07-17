@@ -182,7 +182,7 @@ export default function RegisterTrip() {
     
           if (response.status === 201) {
             const formData = new FormData();
-            formData.append('id', response?.data?.id ?? '');
+            formData.append('viagem_id', response?.data?.id ?? '');
             formData.append('foto', imageUpload!);
             
             await postImageTrip(formData);
