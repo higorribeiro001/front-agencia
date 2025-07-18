@@ -92,7 +92,7 @@ export default function EditTrip({ params }: { params: Promise<{ id: string }> }
                     <h3 className="font-semibold">
                         Garanta a sua vaga
                     </h3>
-                    <div className="flex justify-center items-center p-3 w-3/4">
+                    <div className="flex justify-center items-center p-3 w-3/4 bg-white">
                       <Image src={qrcode} alt="Qrcode" className="w-full h-full" width={150} height={150} />
                     </div>
                 </div>
