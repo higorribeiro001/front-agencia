@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Vaiali",
-  description: "Agende sua viagem agora memsmo.",
+  description: "Agende sua viagem agora mesmo.",
 };
 
 export default function RootLayout({
