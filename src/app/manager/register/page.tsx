@@ -252,7 +252,7 @@ export default function RegisterTrip() {
                           variant="contained"
                           tabIndex={-1}
                           startIcon={<CloudUploadIcon />}
-                          className="bg-primary w-full h-[56px]"
+                          className="bg-primary w-full lg:w-[49%] h-[56px]"
                           sx={{bgcolor: "var(--primary)"}}
                       >
                           Buscar imagem
