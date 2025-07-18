@@ -1,7 +1,7 @@
 'use client';
 
-import Maps from '@/app/maps/page';
 import { Suspense } from 'react';
+import Maps from '../Maps';
 
 export default function MapsWrapper() {
   return (
