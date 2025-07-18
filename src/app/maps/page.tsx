@@ -94,9 +94,9 @@ export default function Maps() {
                                     </div>
                                     </div>
                                 <span class="my-2 text-[22px] text-black">R$ ${String(valor).replace('.', ',')}</span>
-                                <button class="rounded border-[0.5px] border-primary border-solid bg-white text-primary font-medium p-2 hover:bg-primary hover:text-white transition-all duration-500" data-id="${id}">
+                                <a class="rounded border-[0.5px] border-primary border-solid bg-white text-center text-primary font-medium p-2 hover:bg-primary hover:text-white transition-all duration-500" href="/trip/${id}">
                                 SABER MAIS
-                                </button>
+                                </a>
                                 </div>
                                 </div>
                                 </div>
