@@ -1,7 +1,7 @@
 # front-agencia
 
 > Descrição:
-### Front-end desenvolvido em Next.js (framework do Javascritpt baseado em React), utilizando componentes do Material UI (MUI) e Tailwind CSS (framework CSS) para estilização. Estas ferramentas possibilitou que a parte visual da aplicação ficasse bem dinâmica, responsiva e com componentes com a cara de sites do mercado. Observação: reutilizei este front-end de outro projeto pessoal meu, pois já tinha muitos components prontos.
+### Front-end desenvolvido em Next.js (framework do Javascritpt baseado em React), utilizando componentes do Material UI (MUI) e Tailwind CSS (framework CSS) para estilização. Estas ferramentas possibilitou que a parte visual da aplicação ficasse bem dinâmica, responsiva e com componentes com a cara de sites do mercado. Além da biblioteca Leaflet utilizada para criar mapas interativos. Observação: reutilizei este front-end de outro projeto pessoal meu, pois já tinha muitos components prontos.
 
 ## - Tela de busca:
 <img width="1919" height="902" alt="image" src="https://github.com/user-attachments/assets/748862b9-c3a5-4d28-b6df-d4c4b1403564" />
