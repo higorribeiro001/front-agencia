@@ -245,7 +245,7 @@ export default function RegisterTrip() {
                   onSubmit={submitForm}
               >
                   <div className="w-full flex flex-wrap justify-between gap-5 mb-10">
-                    <div className="flex flex-col gap-2 w-[49%]">
+                    <div className="flex flex-col gap-2 w-full lg:w-[49%]">
                       <Button
                           component="label"
                           role={undefined}
