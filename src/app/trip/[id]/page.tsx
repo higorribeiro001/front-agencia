@@ -59,9 +59,8 @@ export default function EditTrip({ params }: { params: Promise<{ id: string }> }
                   {tripData.FotoViagems && <img 
                       src={tripData.FotoViagems[0].url}
                       alt="Local"
+                      className="w-full lg:w-[300px] h-[250px] lg:h-[200px]"
                       style={{
-                          width: '300px',
-                          height: '150px',
                           objectFit: 'cover',
                           borderRadius: '4px 4px 0 0',
                       }} 
