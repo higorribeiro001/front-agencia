@@ -21,7 +21,7 @@ export default function Maps() {
   const [selectedTrip, setSelectedTrip] = useState<Model | null>(null);
   const [lat, setLat] = useState<number>(parseFloat(latParam));
   const [lng, setLng] = useState<number>(parseFloat(lngParam));
-  const mapRef = useRef<any>(null);
+  const mapRef = useRef<L.Map | null>(null);
   const zoom = 14;
 
   const convertDate = (isoDate: string) => {
