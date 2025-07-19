@@ -3,14 +3,20 @@
 > Descrição:
 ### Front-end desenvolvido em Next.js (framework do Javascritpt baseado em React), utilizando componentes do Material UI (MUI) e Tailwind CSS (framework CSS) para estilização. Estas ferramentas possibilitou que a parte visual da aplicação ficasse bem dinâmica, responsiva e com componentes com a cara de sites do mercado. Além da biblioteca Leaflet utilizada para criar mapas interativos. Observação: reutilizei este front-end de outro projeto pessoal meu, pois já tinha muitos components prontos.
 
-## - Tela de busca:
+#### - Tela de busca:
 <img width="1919" height="902" alt="image" src="https://github.com/user-attachments/assets/748862b9-c3a5-4d28-b6df-d4c4b1403564" />
 
-## - Com troca de tema:
+#### - Com troca de tema:
 <img width="1919" height="910" alt="image" src="https://github.com/user-attachments/assets/6999f801-b79a-4ae9-937c-28df44f22b7d" />
 
-## - Responsivo:
+#### - Responsivo:
 <img width="356" height="797" alt="image" src="https://github.com/user-attachments/assets/a4b07798-d0b0-4eac-bb11-e0dfd852afbf" />
+
+#### - Tela do mapa:
+<img width="1916" height="942" alt="image" src="https://github.com/user-attachments/assets/8ad96c4b-d8d4-4ea8-8f28-eaf57d8007f9" />
+
+#### - Mais sobre a viagem
+<img width="1919" height="943" alt="image" src="https://github.com/user-attachments/assets/914ef2fa-22e9-4fba-8781-5c2a9daf1f43" />
 
 > Pré-execução:
 
